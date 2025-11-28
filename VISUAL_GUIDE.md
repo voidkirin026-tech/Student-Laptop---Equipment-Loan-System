@@ -97,7 +97,7 @@ Submit
 │  │ [Checkout Equipment] [Clear]          │  │
 │  └──────────────────────────────────────┘  │
 │                                            │
-│  ✅ Success Message:                       │
+│ ✅ Success Message:                        │ 
 │  Equipment checked out! Email sent.        │
 └────────────────────────────────────────────┘
 ```
@@ -123,11 +123,11 @@ Submit
 │  ┌──────────────────────────────────────┐  │
 │  │ Equipment Inventory                  │  │
 │  ├──────────────────────────────────────┤  │
-│  │ Name │ Category │ Serial │ Condition│  │
-│  │ MacBook│Laptop │MLB123│Good      │  │
-│  │ iPad  │Tablet │IPAD1 │Good      │  │
-│  │ HDD   │Storage│WD2TB │Good      │  │
-│  │ [Edit] [Edit] [Edit]                │  │
+│  │ Name │ Category │ Serial │ Condition │  │
+│  │ MacBook│Laptop │MLB123│Good          │  │
+│  │ iPad  │Tablet │IPAD1 │Good           │  │
+│  │ HDD   │Storage│WD2TB │Good           │  │
+│  │ [Edit] [Edit] [Edit]                 │  │
 │  └──────────────────────────────────────┘  │
 └────────────────────────────────────────────┘
 ```

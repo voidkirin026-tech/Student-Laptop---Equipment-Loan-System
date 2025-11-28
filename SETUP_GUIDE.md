@@ -23,7 +23,7 @@ This is a complete Student Laptop/Equipment Loan System built with Python Flask,
 
 ### 1. Clone/Download the project
 ```bash
-cd c:\Users\Josef Michael\Desktop\docker-test
+cd "c:\Users\Josef Michael\Desktop\Student Laptop & Equipment Loan System"
 ```
 
 ### 2. Create virtual environment

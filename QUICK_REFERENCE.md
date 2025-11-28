@@ -26,7 +26,7 @@
 
 ### Start Application
 ```bash
-cd c:\Users\Josef Michael\Desktop\docker-test
+cd "c:\Users\Josef Michael\Desktop\Student Laptop & Equipment Loan System"
 source venv/bin/activate  # or: venv\Scripts\activate
 python app.py
 ```

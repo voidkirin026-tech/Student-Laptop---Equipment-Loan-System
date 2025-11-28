@@ -77,7 +77,7 @@ psql --version
 ### 2. Setup
 ```bash
 # Clone/Download project
-cd docker-test
+cd "Student Laptop & Equipment Loan System"
 
 # Create virtual environment
 python -m venv venv
