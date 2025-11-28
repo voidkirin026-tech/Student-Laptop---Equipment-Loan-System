@@ -1,0 +1,57 @@
+Final Project: Building Your Information System
+Below are 8 distinct scenarios for your final project. Each group will build an Information System to solve one of these problems. Each group, with at most 4 students, must pick a scenario that has not yet been selected twice beforehand.
+Once your group has decided on a scenario, the group leader must then put a class comment in the class activity containing the name of the system and the full name and email address used in the google classroom of each group member, for example:
+Peer Tutoring System
+1. Juan Amazing Dela Cruz (juana.delacruz@gmail.com)
+2. John Sample Doe (johns.doe@gmail.com)
+3. Jane Sample Doe (janes.doe@gmail.com)
+Each group must present their Information System, either online or face-to-face, before Christmas break. The presentation must, at least, cover the features and system architecture used in its implementation.
+1. Peer Tutoring Matching System
+This system should accept tutoring requests from students via a form, capturing their name, email, and subject.
+The system shall maintain a database of registered tutors and their available subjects.
+The system must automatically find an available tutor who matches the requested subject.
+Upon finding a match, the system must log the match and automatically notify the tutor via email.
+2. Club Budget & Reimbursement System
+This system should allow club leaders to submit funding or reimbursement requests via a form.
+The system shall maintain a database of clubs, their current budgets, and their advisor's email.
+All new requests must be logged with a "Pending" status and automatically routed to the correct advisor for approval.
+The system must provide a way for the advisor to approve or deny requests (e.g., via email links).
+Upon approval, the system must automatically update the request's status and deduct the approved amount from the club's budget.
+3. Library/Lab Room Booking System
+This system should allow students to request a specific resource (e.g., room, equipment) for a defined start and end time.
+The system shall maintain a database of all confirmed bookings.
+The system must automatically check all new requests against the existing bookings database to prevent time-slot conflicts.
+If no conflict exists, the booking shall be confirmed, and the student notified.
+If a conflict exists, the booking shall be rejected, and the student notified of the failure.
+4. Employee "Kudos" (Staff Recognition) System
+This system should provide a form for any employee to submit "kudos" (praise) for a colleague, capturing the recipient's email and a message.
+The system shall maintain a directory of employees that includes their email and their manager's email.
+All "kudos" submissions must be logged in a database.
+The system must automatically look up the recipient's manager.
+The system must immediately send two notification emails: one to the recipient and one to their manager.
+5. Automated Homework Extension Request
+This system should allow students to request a homework extension via a form.
+The system shall maintain a database of students and their eligibility for an automatic, one-time extension.
+The system must check the student's eligibility upon submission.
+If the student is eligible, the request shall be automatically approved, their eligibility status updated, and the request logged.
+If the student is not eligible, the request's status shall be set to "Pending," and the teacher must be automatically notified for a manual review.
+6. Event Volunteer Sign-up & Hour Tracker
+This system should provide a form for volunteers to sign up for specific jobs and time slots.
+The system shall maintain a database of available jobs, their maximum capacity (number of slots), and all confirmed sign-ups.
+The system must automatically check if the chosen job is full.
+If slots are available, the volunteer shall be confirmed, and a confirmation email sent.
+If the job is full, the sign-up shall be rejected, and a notification email sent.
+The system must log the hours for each volunteer's completed shift.
+7. Student Laptop/Equipment Loan System
+This system should allow IT staff to log equipment checkouts via a form, capturing the item, student, and due date.
+The system shall maintain a database of all equipment and its status ("Available" or "On Loan").
+The system must log all active loans.
+When an item is checked out, its status in the equipment database must be automatically updated to "On Loan".
+The system must run a scheduled daily check to find all loans where the due date has passed.
+The system must automatically send "Overdue" reminder emails to students with past-due items.
+8. Project Proposal Submission & Review Tool
+This system should allow students to submit project proposals via a form.
+All submissions shall be logged in a database with a default "Pending" status.
+The system must automatically notify the professor of a new submission.
+The system must provide a mechanism for the professor to update the proposal's status (e.g., "Approved" or "Revisions Needed").
+The system must automatically notify the student of the professor's final decision.
