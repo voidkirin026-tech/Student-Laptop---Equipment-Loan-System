@@ -45,15 +45,17 @@ function loadOverdueTable(overdueLoans) {
     
     overdueLoans.forEach(loan => {
         const row = tbody.insertRow();
-        const daysOverdue = Math.floor((new Date() - new Date(loan.due_date)) / (1000 * 60 * 60 * 24));
+        const daysOverdue = Math.floor((new Date() - new Date(loan.date_due)) / (1000 * 60 * 60 * 24));
+        const studentName = loan.student ? `${loan.student.first_name} ${loan.student.last_name}` : 'Unknown';
+        const equipmentName = loan.equipment ? loan.equipment.name : 'Unknown';
         
         row.innerHTML = `
-            <td>${loan.student_name}</td>
-            <td>${loan.equipment_name}</td>
-            <td>${new Date(loan.due_date).toLocaleDateString()}</td>
+            <td>${equipmentName}</td>
+            <td>${studentName}</td>
+            <td>${new Date(loan.date_due).toLocaleDateString()}</td>
             <td>${daysOverdue} days</td>
             <td>
-                <button class="btn btn-success btn-sm" onclick="returnEquipment(${loan.id})">Return</button>
+                <button class="btn btn-success btn-sm" onclick="returnEquipment('${loan.id}')">Return</button>
             </td>
         `;
     });

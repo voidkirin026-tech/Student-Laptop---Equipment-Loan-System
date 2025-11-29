@@ -21,22 +21,26 @@ async function loadLoans(filter) {
     try {
         let url = '/api/loans';
         if (filter === 'active') {
-            url = '/api/loans?status=active';
+            url = '/api/loans/active';
         } else if (filter === 'overdue') {
             url = '/api/loans/overdue';
-        } else if (filter === 'returned') {
-            url = '/api/loans?status=returned';
         }
         
         const response = await fetch(url);
         const loans = await response.json();
+        
+        // Filter returned loans locally if needed
+        let filteredLoans = loans;
+        if (filter === 'returned') {
+            filteredLoans = loans.filter(l => l.status === 'Returned');
+        }
         
         const tbody = document.querySelector('#loans-table tbody');
         const noLoansMsg = document.getElementById('no-loans');
         
         tbody.innerHTML = '';
         
-        if (loans.length === 0) {
+        if (filteredLoans.length === 0) {
             document.getElementById('loans-table').style.display = 'none';
             noLoansMsg.classList.add('show');
             return;
@@ -45,20 +49,22 @@ async function loadLoans(filter) {
         document.getElementById('loans-table').style.display = 'table';
         noLoansMsg.classList.remove('show');
         
-        loans.forEach(loan => {
+        filteredLoans.forEach(loan => {
             const row = tbody.insertRow();
+            const studentName = loan.student ? `${loan.student.first_name} ${loan.student.last_name}` : 'Unknown';
+            const equipmentName = loan.equipment ? loan.equipment.name : 'Unknown';
             const statusClass = loan.status === 'Overdue' ? 'status-overdue' : 
                                loan.status === 'Returned' ? 'status-returned' : 'status-active';
             
             row.innerHTML = `
-                <td>${loan.student_name}</td>
-                <td>${loan.equipment_name}</td>
-                <td>${new Date(loan.checkout_date).toLocaleDateString()}</td>
-                <td>${new Date(loan.due_date).toLocaleDateString()}</td>
+                <td>${studentName}</td>
+                <td>${equipmentName}</td>
+                <td>${loan.date_borrowed ? new Date(loan.date_borrowed).toLocaleDateString() : 'N/A'}</td>
+                <td>${loan.date_due ? new Date(loan.date_due).toLocaleDateString() : 'N/A'}</td>
                 <td><span class="${statusClass}">${loan.status}</span></td>
                 <td>
-                    ${loan.status === 'Active' || loan.status === 'Overdue' ? 
-                        `<button class="btn btn-success btn-sm" onclick="returnLoan(${loan.id})">Return</button>` : 
+                    ${loan.status === 'Borrowed' ? 
+                        `<button class="btn btn-success btn-sm" onclick="returnLoan('${loan.id}')">Return</button>` : 
                         '-'}
                 </td>
             `;
