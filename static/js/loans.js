@@ -27,6 +27,7 @@ async function loadLoans(filter) {
         }
         
         const response = await fetch(url);
+        if (!response.ok) throw new Error('Failed to fetch loans');
         const loans = await response.json();
         
         // Filter returned loans locally if needed

@@ -18,6 +18,7 @@ async function initCheckout() {
 async function loadStudents() {
     try {
         const response = await fetch('/api/students');
+        if (!response.ok) throw new Error('Failed to fetch students');
         const students = await response.json();
         
         const select = document.getElementById('student');
@@ -36,6 +37,7 @@ async function loadStudents() {
 async function loadEquipment() {
     try {
         const response = await fetch('/api/equipment');
+        if (!response.ok) throw new Error('Failed to fetch equipment');
         const equipment = await response.json();
         
         const select = document.getElementById('equipment');
@@ -56,10 +58,30 @@ async function loadEquipment() {
 async function handleCheckout(event) {
     event.preventDefault();
     
+    const studentId = document.getElementById('student').value;
+    const equipmentId = document.getElementById('equipment').value;
+    const dueDate = document.getElementById('due-date').value;
+    
+    // Validate that all fields are selected
+    if (!studentId || !equipmentId || !dueDate) {
+        showMessage('Please select all required fields', 'danger');
+        return;
+    }
+    
+    // Validate that due date is in the future
+    const dueDateObj = new Date(dueDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    if (dueDateObj < today) {
+        showMessage('Due date must be in the future', 'danger');
+        return;
+    }
+    
     const formData = {
-        student_id: document.getElementById('student').value,
-        equipment_id: document.getElementById('equipment').value,
-        due_date: document.getElementById('due-date').value,
+        student_id: studentId,
+        equipment_id: equipmentId,
+        due_date: dueDate,
         notes: document.getElementById('notes').value
     };
     

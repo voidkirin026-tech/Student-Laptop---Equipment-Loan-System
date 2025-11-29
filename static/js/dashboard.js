@@ -5,26 +5,34 @@ async function loadDashboard() {
     try {
         // Load equipment stats
         const equipResponse = await fetch('/api/equipment');
+        if (!equipResponse.ok) throw new Error('Failed to fetch equipment');
         const equipment = await equipResponse.json();
         
-        document.getElementById('total-equipment').textContent = equipment.length;
-        document.getElementById('available-equipment').textContent = equipment.filter(e => e.status === 'Available').length;
+        document.getElementById('total-equipment').textContent = (equipment && equipment.length) || 0;
+        document.getElementById('available-equipment').textContent = (equipment && equipment.filter(e => e.availability_status === 'Available').length) || 0;
         
         // Load loans stats
         const loansResponse = await fetch('/api/loans');
+        if (!loansResponse.ok) throw new Error('Failed to fetch loans');
         const loans = await loansResponse.json();
         
-        document.getElementById('active-loans').textContent = loans.filter(l => l.status === 'Active').length;
+        document.getElementById('active-loans').textContent = (loans && loans.filter(l => l.status === 'Borrowed').length) || 0;
         
         // Load overdue loans
         const overdueResponse = await fetch('/api/loans/overdue');
+        if (!overdueResponse.ok) throw new Error('Failed to fetch overdue loans');
         const overdue = await overdueResponse.json();
         
-        document.getElementById('overdue-count').textContent = overdue.length;
+        document.getElementById('overdue-count').textContent = (overdue && overdue.length) || 0;
         
-        loadOverdueTable(overdue);
+        loadOverdueTable(overdue || []);
     } catch (error) {
         console.error('Error loading dashboard:', error);
+        // Set defaults if error occurs
+        document.getElementById('total-equipment').textContent = '0';
+        document.getElementById('available-equipment').textContent = '0';
+        document.getElementById('active-loans').textContent = '0';
+        document.getElementById('overdue-count').textContent = '0';
     }
 }
 

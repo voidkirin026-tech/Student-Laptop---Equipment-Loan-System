@@ -9,6 +9,7 @@ async function initEquipment() {
 async function loadEquipmentList() {
     try {
         const response = await fetch('/api/equipment');
+        if (!response.ok) throw new Error('Failed to fetch equipment');
         const equipment = await response.json();
         
         const tbody = document.querySelector('#equipment-table tbody');
