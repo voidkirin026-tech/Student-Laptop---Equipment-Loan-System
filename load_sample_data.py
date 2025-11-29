@@ -29,7 +29,7 @@ def load_sample_data():
             Student(
                 first_name="Maria",
                 last_name="Santos",
-                program="Information Technology",
+                program="Software Engineering",
                 year_level=3,
                 email="maria.santos@university.edu",
                 status="active"
@@ -37,7 +37,7 @@ def load_sample_data():
             Student(
                 first_name="Carlos",
                 last_name="Reyes",
-                program="Computer Science",
+                program="Mechanical Engineering",
                 year_level=1,
                 email="carlos.reyes@university.edu",
                 status="active"
@@ -45,9 +45,25 @@ def load_sample_data():
             Student(
                 first_name="Ana",
                 last_name="Garcia",
-                program="Software Engineering",
+                program="Business Administration",
                 year_level=4,
                 email="ana.garcia@university.edu",
+                status="active"
+            ),
+            Student(
+                first_name="Miguel",
+                last_name="Torres",
+                program="Electrical Engineering",
+                year_level=2,
+                email="miguel.torres@university.edu",
+                status="active"
+            ),
+            Student(
+                first_name="Sofia",
+                last_name="Lopez",
+                program="Medicine",
+                year_level=1,
+                email="sofia.lopez@university.edu",
                 status="active"
             ),
         ]

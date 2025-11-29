@@ -24,13 +24,14 @@ This system implements **Scenario #7** from the final project requirements:
 ## Features
 
 ### Core Functionality
-1. **Student Management**
+3. **Student Management**
    - ✅ Add and manage student database with comprehensive profiles
    - ✅ Track student program and year level
    - ✅ Email address validation and storage
    - ✅ Student status tracking (active/inactive)
    - ✅ View complete student roster
    - ✅ Form validation with user feedback
+   - ✅ 50+ real-world university programs from 10 categories
 
 2. **Equipment Management**
    - ✅ Add and track equipment inventory with category dropdown (Laptop, Tablet, Storage, etc.)
@@ -218,6 +219,49 @@ id, action, table_name, record_id, details, created_at
 - `GET /api/health` - Health check
 - `GET /api/audit-logs` - View audit trail (last 100)
 
+## University Programs
+
+The system includes **50+ realistic university programs** organized into 10 categories:
+
+### Engineering Programs
+- Civil Engineering, Mechanical Engineering, Electrical Engineering
+- Electronics Engineering, Chemical Engineering, Industrial Engineering
+
+### Computer Science & IT
+- Computer Science, Information Technology, Software Engineering
+- Cybersecurity, Data Science, Artificial Intelligence
+
+### Business & Commerce
+- Business Administration, Accounting, Finance, Marketing
+- Management, Economics, Business Analytics
+
+### Health Sciences
+- Medicine, Nursing, Pharmacy, Public Health
+- Dentistry, Physical Therapy
+
+### Natural Sciences
+- Physics, Chemistry, Biology, Biochemistry
+- Mathematics, Environmental Science
+
+### Arts & Humanities
+- English Literature, History, Philosophy, Psychology
+- Sociology, Anthropology
+
+### Social Sciences
+- Law, Political Science, International Relations
+- Communication, Journalism, Public Administration
+
+### Creative & Design
+- Graphic Design, Architecture, Fine Arts, Music
+- Digital Media, Industrial Design
+
+### Education & Teaching
+- Elementary Education, Secondary Education, Higher Education
+- Special Education
+
+### Agriculture & Environment
+- Agriculture, Forestry, Environmental Engineering, Veterinary Medicine
+
 ## Using the System
 
 ### Navigation Menu
@@ -307,10 +351,10 @@ python load_sample_data.py
 ```
 
 This creates:
-- 4 sample students
-- 6 equipment items
+- **6 sample students** from diverse programs (Computer Science, Software Engineering, Mechanical Engineering, Business Administration, Electrical Engineering, Medicine)
+- 6 equipment items with various brands and conditions
 - 2 staff members
-- 4 sample loans (including overdue items)
+- 4 sample loans (including overdue items for testing)
 
 ## Testing
 
