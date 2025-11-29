@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, jsonify, flash, redirect, url_for
-from flask_migrate import Migrate
 from config import config
 import os
 from models import db

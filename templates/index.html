@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Equipment Loan System{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h2>Dashboard</h2>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3 id="total-equipment">0</h3>
+            <p>Total Equipment</p>
+        </div>
+        <div class="stat-card">
+            <h3 id="available-equipment">0</h3>
+            <p>Available</p>
+        </div>
+        <div class="stat-card">
+            <h3 id="active-loans">0</h3>
+            <p>Active Loans</p>
+        </div>
+        <div class="stat-card alert-warning">
+            <h3 id="overdue-count">0</h3>
+            <p>Overdue Items</p>
+        </div>
+    </div>
+
+    <div class="overdue-section">
+        <h3>Overdue Equipment</h3>
+        <table id="overdue-table" class="data-table">
+            <thead>
+                <tr>
+                    <th>Equipment</th>
+                    <th>Student</th>
+                    <th>Due Date</th>
+                    <th>Days Overdue</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <p id="no-overdue" class="empty-message">No overdue items</p>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

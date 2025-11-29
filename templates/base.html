@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Equipment Loan System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <h1>📦 Equipment Loan System</h1>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="{{ url_for('index') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('checkout') }}">Checkout</a></li>
+                <li><a href="{{ url_for('equipment') }}">Equipment</a></li>
+                <li><a href="{{ url_for('loans') }}">Loans</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Equipment Loan System. All rights reserved.</p>
+    </footer>
+</body>
+</html>

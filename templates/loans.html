@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Loans Management - Equipment Loan System{% endblock %}
+
+{% block content %}
+<div class="loans-page">
+    <h2>Loans Management</h2>
+    
+    <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All Loans</button>
+        <button class="filter-btn" data-filter="active">Active</button>
+        <button class="filter-btn" data-filter="overdue">Overdue</button>
+        <button class="filter-btn" data-filter="returned">Returned</button>
+    </div>
+
+    <table id="loans-table" class="data-table">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Equipment</th>
+                <th>Checkout Date</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <p id="no-loans" class="empty-message">No loans found</p>
+</div>
+
+<script src="{{ url_for('static', filename='js/loans.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Equipment Checkout - Equipment Loan System{% endblock %}
+
+{% block content %}
+<div class="checkout-form">
+    <h2>Equipment Checkout</h2>
+    
+    <form id="checkout-form">
+        <div class="form-group">
+            <label for="student">Student *</label>
+            <select id="student" name="student_id" required>
+                <option value="">Select a student...</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="equipment">Equipment *</label>
+            <select id="equipment" name="equipment_id" required>
+                <option value="">Select equipment...</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="due-date">Due Date *</label>
+            <input type="date" id="due-date" name="due_date" required>
+        </div>
+
+        <div class="form-group">
+            <label for="notes">Notes</label>
+            <textarea id="notes" name="notes" rows="4"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Checkout Equipment</button>
+    </form>
+
+    <div id="message"></div>
+</div>
+
+<script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+{% endblock %}
