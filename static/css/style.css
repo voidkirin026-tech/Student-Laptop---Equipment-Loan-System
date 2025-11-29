@@ -333,6 +333,22 @@ footer {
     margin-top: 3rem;
 }
 
+/* Category Selection */
+#category-select {
+    margin-bottom: 0.75rem;
+}
+
+#category-select + input[type="text"] {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    color: #666;
+}
+
+#category-select + input[type="text"]::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
 /* Animations */
 @keyframes slideDown {
     from {

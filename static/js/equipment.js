@@ -6,6 +6,18 @@ async function initEquipment() {
     document.getElementById('add-equipment-form').addEventListener('submit', handleAddEquipment);
 }
 
+function updateCategory() {
+    const select = document.getElementById('category-select');
+    const input = document.getElementById('category');
+    
+    if (select.value && select.value !== 'Other') {
+        input.value = select.value;
+    } else {
+        input.value = '';
+        input.focus();
+    }
+}
+
 async function loadEquipmentList() {
     try {
         const response = await fetch('/api/equipment');

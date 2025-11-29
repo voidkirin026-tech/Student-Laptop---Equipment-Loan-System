@@ -22,7 +22,20 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="category">Category *</label>
-                    <input type="text" id="category" name="category" required>
+                    <select id="category-select" name="category_select" onchange="updateCategory()">
+                        <option value="">Select a category...</option>
+                        <option value="Laptop">Laptop</option>
+                        <option value="Desktop">Desktop</option>
+                        <option value="Tablet">Tablet</option>
+                        <option value="Monitor">Monitor</option>
+                        <option value="Keyboard">Keyboard</option>
+                        <option value="Mouse">Mouse</option>
+                        <option value="Headphones">Headphones</option>
+                        <option value="Storage">Storage</option>
+                        <option value="Accessory">Accessory</option>
+                        <option value="Other">Other / Custom...</option>
+                    </select>
+                    <input type="text" id="category" name="category" placeholder="Or type custom category" required>
                 </div>
                 <div class="form-group">
                     <label for="condition">Condition</label>
