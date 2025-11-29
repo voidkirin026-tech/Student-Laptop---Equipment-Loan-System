@@ -278,10 +278,10 @@ A: "We use parameterized queries to prevent SQL injection, SMTP TLS for email se
 
 **Use this to credit your team:**
 
-- [Member 1]: Frontend Development (HTML/CSS/JavaScript)
-- [Member 2]: Backend Development (Flask/Python)
-- [Member 3]: Database Design (PostgreSQL/SQLAlchemy)
-- [Member 4]: Email Service & Scheduler Integration
+- [Josef Michael A. Damaso]: Frontend Development (HTML/CSS/JavaScript)
+- [Josef Michael A. Damaso]: Backend Development (Flask/Python)
+- [Josef Michael A. Damaso]: Database Design (PostgreSQL/SQLAlchemy)
+- [Josef Michael A. Damaso]: Email Service & Scheduler Integration
 
 ---
 
