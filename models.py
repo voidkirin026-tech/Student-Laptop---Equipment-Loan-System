@@ -1,8 +1,67 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 from uuid import uuid4
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
+
+class User(UserMixin, db.Model):
+    """User model for authentication (admin, staff, borrower)"""
+    __tablename__ = 'users'
+    
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid4()))
+    username = db.Column(db.String(100), unique=True, nullable=False, index=True)
+    email = db.Column(db.String(120), unique=True, nullable=False, index=True)
+    password_hash = db.Column(db.String(255), nullable=False)
+    first_name = db.Column(db.String(100))
+    last_name = db.Column(db.String(100))
+    role = db.Column(db.String(20), default='borrower')  # admin, staff, borrower
+    status = db.Column(db.String(20), default='active')  # active, inactive, disabled
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    last_login = db.Column(db.DateTime)
+    
+    def __repr__(self):
+        return f'<User {self.username}>'
+    
+    def set_password(self, password):
+        """Hash and set password"""
+        self.password_hash = generate_password_hash(password)
+    
+    def check_password(self, password):
+        """Check if provided password matches hash"""
+        return check_password_hash(self.password_hash, password)
+    
+    def is_admin(self):
+        """Check if user is admin"""
+        return self.role == 'admin'
+    
+    def is_staff(self):
+        """Check if user is staff"""
+        return self.role in ['admin', 'staff']
+    
+    def is_borrower(self):
+        """Check if user is borrower"""
+        return self.role in ['admin', 'staff', 'borrower']
+    
+    def can_manage_equipment(self):
+        """Check if user can add/edit/delete equipment"""
+        return self.role in ['admin', 'staff']
+    
+    def can_approve_loans(self):
+        """Check if user can approve/deny loans"""
+        return self.role in ['admin', 'staff']
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'role': self.role,
+            'status': self.status
+        }
 
 class Student(db.Model):
     __tablename__ = 'students'
