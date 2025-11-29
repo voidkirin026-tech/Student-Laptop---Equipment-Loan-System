@@ -57,12 +57,18 @@ async function loadEquipmentList() {
 async function handleAddEquipment(event) {
     event.preventDefault();
     
+    const conditionSelect = document.getElementById('condition').value;
+    if (!conditionSelect) {
+        alert('Please select a condition for the equipment');
+        return;
+    }
+    
     const formData = {
         name: document.getElementById('name').value,
         model: document.getElementById('model').value,
         serial_number: document.getElementById('serial').value,
         category: document.getElementById('category').value,
-        condition: document.getElementById('condition').value,
+        condition: conditionSelect,
         availability_status: 'Available'
     };
     

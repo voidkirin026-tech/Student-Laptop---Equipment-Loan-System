@@ -42,6 +42,11 @@ def create_app(config_name='development'):
         """Equipment checkout page"""
         return render_template('checkout.html')
     
+    @app.route('/students')
+    def students():
+        """Student management page"""
+        return render_template('students.html')
+    
     @app.route('/equipment')
     def equipment():
         """Equipment management page"""

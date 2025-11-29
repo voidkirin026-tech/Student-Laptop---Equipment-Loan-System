@@ -45,10 +45,13 @@
                 </div>
                 <div class="form-group">
                     <label for="condition">Condition</label>
-                    <select id="condition" name="condition">
-                        <option value="Good">Good</option>
-                        <option value="Fair">Fair</option>
-                        <option value="Poor">Poor</option>
+                    <select id="condition" name="condition" class="condition-select">
+                        <option value="">Select condition...</option>
+                        <option value="Excellent">✓ Excellent - Like new, no issues</option>
+                        <option value="Good">✓ Good - Minor wear, fully functional</option>
+                        <option value="Fair">⚠ Fair - Some damage, still usable</option>
+                        <option value="Poor">✗ Poor - Significant issues</option>
+                        <option value="Damaged">✗ Damaged - Not operational</option>
                     </select>
                 </div>
             </div>

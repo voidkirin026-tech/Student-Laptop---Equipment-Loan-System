@@ -349,6 +349,70 @@ footer {
     font-style: italic;
 }
 
+/* Condition Dropdown - Modernized */
+.condition-select {
+    font-size: 0.95rem;
+    padding: 0.85rem !important;
+}
+
+.condition-select option {
+    padding: 0.5rem;
+}
+
+.condition-select option[value="Excellent"] {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.condition-select option[value="Good"] {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.condition-select option[value="Fair"] {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.condition-select option[value="Poor"] {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.condition-select option[value="Damaged"] {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Students Page */
+.students-page {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin: 1.5rem 0;
+}
+
+.add-student-form {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 6px;
+    border-left: 4px solid #3498db;
+    margin-bottom: 2rem;
+}
+
+.students-list {
+    margin-top: 2rem;
+}
+
+.data-table .status-active {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
 /* Animations */
 @keyframes slideDown {
     from {

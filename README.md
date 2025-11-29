@@ -24,26 +24,29 @@ This system implements **Scenario #7** from the final project requirements:
 ## Features
 
 ### Core Functionality
-1. **Equipment Management**
+1. **Student Management**
+   - ✅ Add and manage student database with comprehensive profiles
+   - ✅ Track student program and year level
+   - ✅ Email address validation and storage
+   - ✅ Student status tracking (active/inactive)
+   - ✅ View complete student roster
+   - ✅ Form validation with user feedback
+
+2. **Equipment Management**
    - ✅ Add and track equipment inventory with category dropdown (Laptop, Tablet, Storage, etc.)
    - ✅ Custom category support for flexible classification
    - ✅ Track equipment status (Available/On Loan)
-   - ✅ Monitor equipment condition (Good/Fair/Poor)
+   - ✅ Modernized condition dropdown with 5 detailed options (Excellent, Good, Fair, Poor, Damaged)
+   - ✅ Equipment model/brand tracking for detailed inventory
    - ✅ View equipment history and details
 
-2. **Loan Management**
+3. **Loan Management**
    - ✅ Log equipment checkouts with due dates
    - ✅ Form validation (prevents past dates, ensures all fields selected)
    - ✅ Track active and returned loans with filtering
    - ✅ Automatic status updates on checkout/return
    - ✅ View loan history with comprehensive details
    - ✅ Real-time loan status updates
-
-3. **Student Management**
-   - ✅ Maintain student database
-   - ✅ Track student program and year level
-   - ✅ Monitor borrowing history
-   - ✅ Student dropdown for easy selection during checkout
 
 4. **Automated Email Notifications**
    - ✅ Checkout confirmation emails
@@ -52,13 +55,21 @@ This system implements **Scenario #7** from the final project requirements:
    - ✅ Email delivery logging and tracking
    - ✅ Works with Gmail and other SMTP providers
 
-5. **Scheduled Tasks**
+5. **UI/UX Enhancements**
+   - ✅ Modern dropdown styling for equipment conditions with color-coded indicators
+   - ✅ Intuitive form layouts with grouped fields
+   - ✅ Real-time table updates without page refresh
+   - ✅ Status badges with visual indicators
+   - ✅ Responsive design for all devices
+   - ✅ Accessibility-friendly interface
+
+6. **Scheduled Tasks**
    - ✅ Daily overdue check at 8:00 AM
    - ✅ Automatic email dispatch for overdue items
    - ✅ Proper app context handling for database access
    - ✅ Configurable scheduling
 
-6. **Dashboard & Analytics**
+7. **Dashboard & Analytics**
    - ✅ Real-time statistics (Total, Available, Active, Overdue)
    - ✅ Overdue items monitoring with days overdue calculation
    - ✅ Active loans tracking
@@ -66,7 +77,7 @@ This system implements **Scenario #7** from the final project requirements:
    - ✅ Auto-refresh every 30 seconds
    - ✅ Error handling and graceful fallbacks
 
-7. **Audit Trail**
+8. **Audit Trail**
    - ✅ Log all system actions
    - ✅ Track equipment status changes
    - ✅ Email delivery history
@@ -166,18 +177,30 @@ id, loan_id, recipient_email, email_type, sent_at, status
 id, action, table_name, record_id, details, created_at
 ```
 
-## API Endpoints
+### API Endpoints
 
 ### Students
 - `GET /api/students` - List all students
-- `POST /api/students` - Create new student
+- `POST /api/students` - Create new student (requires: first_name, last_name, email)
 - `GET /api/students/<id>` - Get student details
+- **Example POST:**
+  ```json
+  {
+    "first_name": "Juan",
+    "last_name": "Dela Cruz",
+    "email": "juan@university.edu",
+    "program": "Computer Science",
+    "year_level": 2,
+    "status": "active"
+  }
+  ```
 
 ### Equipment
 - `GET /api/equipment` - List all equipment
 - `POST /api/equipment` - Add new equipment
 - `GET /api/equipment/available` - Get available equipment only
 - `GET /api/equipment/<id>` - Get equipment details
+- **Condition values:** Excellent, Good, Fair, Poor, Damaged
 
 ### Loans
 - `POST /api/loans/checkout` - Checkout equipment
@@ -197,11 +220,33 @@ id, action, table_name, record_id, details, created_at
 
 ## Using the System
 
+### Navigation Menu
+- **Dashboard** - View system statistics and overdue items
+- **Students** - Manage student database and profiles
+- **Checkout** - Log equipment checkouts to students
+- **Equipment** - Manage equipment inventory
+- **Loans** - Track active and returned loans
+
+### Adding a Student
+1. Navigate to "Students"
+2. Fill in the form:
+   - First Name and Last Name (required)
+   - Email Address (required, validated)
+   - Program (optional dropdown)
+   - Year Level (optional dropdown)
+3. Click "Add Student"
+4. Student appears in the table immediately
+
 ### Adding Equipment
-1. Navigate to "Manage Equipment"
+1. Navigate to "Equipment"
 2. Click "+ Add New Equipment"
-3. Enter: Name, Category, Serial Number, Condition
-4. Submit
+3. Enter:
+   - Equipment Name (required)
+   - Model/Brand (optional but recommended)
+   - Serial Number (required, must be unique)
+   - Category (select from dropdown or custom)
+   - Condition (select from 5-level scale: Excellent, Good, Fair, Poor, Damaged)
+4. Submit - Equipment added to inventory
 
 ### Checking Out Equipment
 1. Go to "Checkout Equipment"
@@ -333,31 +378,33 @@ curl http://localhost:5000/api/loans/overdue
 
 ```
 .
-├── app.py                   # Main Flask application
+├── app.py                   # Main Flask application with routes
 ├── config.py               # Configuration (dev, test, prod)
-├── models.py               # SQLAlchemy database models
-├── routes.py               # REST API endpoints
-├── email_service.py        # Email handling
-├── scheduler.py            # Background task scheduling
-├── load_sample_data.py     # Sample data loader
+├── models.py               # SQLAlchemy database models (7 tables)
+├── routes.py               # REST API endpoints (20+ routes)
+├── email_service.py        # Email handling and SMTP setup
+├── scheduler.py            # Background task scheduling (APScheduler)
+├── load_sample_data.py     # Sample data loader for testing
 ├── requirements.txt        # Python dependencies
 ├── Database Schema.sql     # SQL database schema
 ├── .env.example           # Environment variables template
 ├── SETUP_GUIDE.md         # Detailed setup instructions
 ├── README.md              # This file
-├── templates/             # HTML templates
-│   ├── base.html          # Base layout
-│   ├── index.html         # Dashboard
-│   ├── checkout.html      # Checkout form
-│   ├── equipment.html     # Equipment management
-│   └── loans.html         # Loan management
+├── templates/             # HTML templates (Jinja2)
+│   ├── base.html          # Base layout and navigation
+│   ├── index.html         # Dashboard & statistics
+│   ├── students.html      # Student management (NEW)
+│   ├── checkout.html      # Equipment checkout form
+│   ├── equipment.html     # Equipment inventory management
+│   └── loans.html         # Active/returned loans tracking
 └── static/                # Static files
     ├── css/
-    │   └── style.css      # Styling
+    │   └── style.css      # Modern styling (updated condition colors)
     └── js/
-        ├── dashboard.js   # Dashboard functionality
-        ├── checkout.js    # Checkout form
-        ├── equipment.js   # Equipment management
+        ├── dashboard.js   # Dashboard auto-refresh
+        ├── checkout.js    # Checkout form handler
+        ├── equipment.js   # Equipment CRUD operations
+        ├── students.js    # Student CRUD operations (NEW)
         └── loans.js       # Loan management
 ```
 
@@ -392,7 +439,7 @@ app.run(port=5001)
 | Requirement | Implementation | Status |
 |-------------|-----------------|--------|
 | Checkout form for IT staff | checkout.html with form | ✅ |
-| Equipment database | PostgreSQL equipment table | ✅ |
+| Equipment database | PostgreSQL equipment table with model field | ✅ |
 | Log active loans | loans table with tracking | ✅ |
 | Auto-update status | Automatic on checkout/return | ✅ |
 | Daily scheduler | APScheduler at 8 AM | ✅ |
@@ -400,6 +447,9 @@ app.run(port=5001)
 | Email reminders | Flask-Mail notifications | ✅ |
 | Email logging | email_logs table | ✅ |
 | Audit trail | audit_logs table | ✅ |
+| Student Management | students.html page (NEW) | ✅ |
+| Modern UI/UX | Condition dropdown with 5 levels (NEW) | ✅ |
+| Equipment Model Field | Track brand/model details (NEW) | ✅ |
 
 ## Scalability & Future Enhancements
 
@@ -445,9 +495,20 @@ app.run(port=5001)
 
 This is an educational project for a school assignment.
 
+## Recent Updates (November 2025)
+
+- ✅ Added Student Management page with full CRUD functionality
+- ✅ Modernized Equipment Condition dropdown (5 levels: Excellent, Good, Fair, Poor, Damaged)
+- ✅ Added Equipment Model/Brand field to track manufacturer details
+- ✅ Enhanced UI with color-coded condition indicators
+- ✅ Improved form validation and user feedback
+- ✅ Updated navigation menu with Students link
+- ✅ Enhanced CSS styling for better visual hierarchy
+
 ---
 
-**Last Updated**: November 2025
-**Version**: 1.0
+**Last Updated**: November 29, 2025
+**Version**: 1.1
 **Python**: 3.8+
 **Database**: PostgreSQL 12+
+**Status**: Production Ready ✅
