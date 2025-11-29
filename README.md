@@ -507,8 +507,27 @@ This is an educational project for a school assignment.
 
 ---
 
+## UI/UX Design System
+
+### Modern Color Palette
+- **Primary**: Teal (#0f766e) with gradients
+- **Success**: Green (#10b981) for available/active
+- **Warning**: Amber (#f59e0b) for pending/fair
+- **Danger**: Red (#ef4444) for overdue/errors
+
+### Design Features
+- Gradient backgrounds and buttons
+- Smooth transitions and hover effects
+- Status badges with visual indicators
+- 4-level shadow system for depth
+- Sticky navigation with backdrop blur
+- Responsive grid layouts
+- Modern border radius and spacing
+
+---
+
 **Last Updated**: November 29, 2025
-**Version**: 1.1
+**Version**: 2.0 (CSS Modernized)
 **Python**: 3.8+
 **Database**: PostgreSQL 12+
 **Status**: Production Ready ✅
