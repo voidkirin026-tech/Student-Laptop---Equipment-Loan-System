@@ -24,7 +24,7 @@ async function loadStudents() {
         students.forEach(student => {
             const option = document.createElement('option');
             option.value = student.id;
-            option.textContent = student.name;
+            option.textContent = `${student.first_name} ${student.last_name}`;
             select.appendChild(option);
         });
     } catch (error) {
@@ -40,7 +40,7 @@ async function loadEquipment() {
         
         const select = document.getElementById('equipment');
         equipment.forEach(item => {
-            if (item.status === 'Available') {
+            if (item.availability_status === 'Available') {
                 const option = document.createElement('option');
                 option.value = item.id;
                 option.textContent = `${item.name} (${item.serial_number})`;
@@ -57,8 +57,8 @@ async function handleCheckout(event) {
     event.preventDefault();
     
     const formData = {
-        student_id: parseInt(document.getElementById('student').value),
-        equipment_id: parseInt(document.getElementById('equipment').value),
+        student_id: document.getElementById('student').value,
+        equipment_id: document.getElementById('equipment').value,
         due_date: document.getElementById('due-date').value,
         notes: document.getElementById('notes').value
     };

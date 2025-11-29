@@ -31,7 +31,7 @@ async function loadEquipmentList() {
                 <td>${item.name}</td>
                 <td>${item.serial_number}</td>
                 <td>${item.category}</td>
-                <td><span class="status-${item.status.toLowerCase()}">${item.status}</span></td>
+                <td><span class="status-${item.availability_status.toLowerCase()}">${item.availability_status}</span></td>
                 <td>${item.condition || 'Good'}</td>
             `;
         });
@@ -48,7 +48,7 @@ async function handleAddEquipment(event) {
         serial_number: document.getElementById('serial').value,
         category: document.getElementById('category').value,
         condition: document.getElementById('condition').value,
-        status: 'Available'
+        availability_status: 'Available'
     };
     
     try {
