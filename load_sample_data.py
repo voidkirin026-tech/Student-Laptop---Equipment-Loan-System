@@ -13,8 +13,8 @@ def load_sample_data():
     
     with app.app_context():
         # Clear existing data (optional)
-        # db.drop_all()
-        # db.create_all()
+        db.drop_all()
+        db.create_all()
         
         print("Loading sample students...")
         students = [
