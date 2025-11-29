@@ -38,19 +38,39 @@ pip install -r requirements.txt
 ```
 
 ### 4. Setup PostgreSQL Database
+**Using pgAdmin or psql:**
 ```sql
 -- In PostgreSQL
 CREATE DATABASE equipment_loan_db;
 ```
 
+Or use **pgAdmin GUI**:
+1. Connect to your PostgreSQL server
+2. Right-click "Databases" → Create → Database
+3. Name: `equipment_loan_db`
+4. Click Save
+
 ### 5. Create .env file
 Copy `.env.example` to `.env` and update with your settings:
 ```
-DATABASE_URL=postgresql://user:password@localhost:5432/equipment_loan_db
+# Database Configuration
+DATABASE_URL=postgresql://postgres:your_password@localhost:5432/equipment_loan_db
+
+# Flask Configuration
+FLASK_APP=app.py
+FLASK_ENV=development
+SECRET_KEY=dev-secret-key-change-in-production
+
+# Email Configuration (optional, leave as-is for no emails)
 MAIL_SERVER=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USE_TLS=True
 MAIL_USERNAME=your-email@gmail.com
 MAIL_PASSWORD=your-app-password
+MAIL_DEFAULT_SENDER=noreply@equipmentloan.com
 ```
+
+**Note**: The username is typically `postgres` (the default PostgreSQL superuser)
 
 ### 6. Initialize Database
 ```bash

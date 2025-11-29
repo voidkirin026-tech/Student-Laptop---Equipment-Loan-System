@@ -26,10 +26,17 @@
 
 ### Start Application
 ```bash
+# Windows
 cd "c:\Users\Josef Michael\Desktop\Student Laptop & Equipment Loan System"
-source venv/bin/activate  # or: venv\Scripts\activate
+venv\Scripts\activate
+python app.py
+
+# Linux/Mac
+source venv/bin/activate
 python app.py
 ```
+
+Then open: **http://localhost:5000**
 
 ### Access System
 ```
@@ -145,16 +152,20 @@ SECRET_KEY=your-secret-key
 
 ## Features Summary
 
-✅ Equipment checkout logging
-✅ Automatic status updates
+✅ Equipment checkout logging with form validation
+✅ Automatic status updates (Available ↔ On Loan)
 ✅ Email notifications (checkout, return, overdue)
-✅ Daily scheduled overdue checking
+✅ Daily scheduled overdue checking at 8:00 AM
 ✅ Loan tracking and history
 ✅ Equipment inventory management
-✅ Dashboard with statistics
+✅ Category dropdown with custom category support
+✅ Dashboard with real-time statistics
 ✅ Audit trail of all actions
 ✅ Email delivery logging
-✅ Multiple filter views
+✅ Multiple filter views (All, Active, Overdue, Returned)
+✅ Proper error handling and user feedback
+✅ Browser-friendly page titles
+✅ Data validation throughout
 
 ## Performance Expectations
 
