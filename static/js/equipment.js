@@ -42,6 +42,7 @@ async function loadEquipmentList() {
             const row = tbody.insertRow();
             row.innerHTML = `
                 <td>${item.name}</td>
+                <td>${item.model || '-'}</td>
                 <td>${item.serial_number}</td>
                 <td>${item.category}</td>
                 <td><span class="status-${item.availability_status.toLowerCase()}">${item.availability_status}</span></td>
@@ -58,6 +59,7 @@ async function handleAddEquipment(event) {
     
     const formData = {
         name: document.getElementById('name').value,
+        model: document.getElementById('model').value,
         serial_number: document.getElementById('serial').value,
         category: document.getElementById('category').value,
         condition: document.getElementById('condition').value,

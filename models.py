@@ -37,6 +37,7 @@ class Equipment(db.Model):
     
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid4()))
     name = db.Column(db.String(200), nullable=False)
+    model = db.Column(db.String(100))
     category = db.Column(db.String(100))
     serial_number = db.Column(db.String(100), unique=True)
     condition = db.Column(db.String(50), default='Good')
@@ -52,6 +53,7 @@ class Equipment(db.Model):
         return {
             'id': self.id,
             'name': self.name,
+            'model': self.model,
             'category': self.category,
             'serial_number': self.serial_number,
             'condition': self.condition,

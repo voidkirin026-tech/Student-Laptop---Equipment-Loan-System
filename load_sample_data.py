@@ -62,6 +62,7 @@ def load_sample_data():
         equipment = [
             Equipment(
                 name="MacBook Pro 16",
+                model="MacBook Pro 16 2023 M3",
                 category="Laptop",
                 serial_number="MLB123456",
                 condition="Good",
@@ -69,6 +70,7 @@ def load_sample_data():
             ),
             Equipment(
                 name="Dell XPS 13",
+                model="Dell XPS 13 Plus",
                 category="Laptop",
                 serial_number="DELL987654",
                 condition="Good",
@@ -76,6 +78,7 @@ def load_sample_data():
             ),
             Equipment(
                 name="iPad Pro 12.9",
+                model="iPad Pro 12.9 6th Gen",
                 category="Tablet",
                 serial_number="IPAD111222",
                 condition="Good",
@@ -83,6 +86,7 @@ def load_sample_data():
             ),
             Equipment(
                 name="External Hard Drive",
+                model="WD Blue 2TB",
                 category="Storage",
                 serial_number="WD2TB333444",
                 condition="Good",
@@ -90,6 +94,7 @@ def load_sample_data():
             ),
             Equipment(
                 name="USB-C Hub",
+                model="Anker 7-in-1",
                 category="Accessory",
                 serial_number="HUB555666",
                 condition="Fair",
@@ -97,6 +102,7 @@ def load_sample_data():
             ),
             Equipment(
                 name="Wireless Mouse",
+                model="Logitech MX Master 3S",
                 category="Accessory",
                 serial_number="MOUSE777888",
                 condition="Good",

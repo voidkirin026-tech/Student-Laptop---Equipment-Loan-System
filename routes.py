@@ -71,6 +71,7 @@ def create_equipment():
         
         equipment = Equipment(
             name=data['name'],
+            model=data.get('model'),
             category=data.get('category'),
             serial_number=data.get('serial_number'),
             condition=data.get('condition', 'Good'),
