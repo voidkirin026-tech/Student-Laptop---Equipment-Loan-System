@@ -101,9 +101,11 @@ function openDamageModal(loan) {
     modal.style.display = 'block';
     
     // Calculate days late if overdue
-    if (loan.status === 'Overdue' || loan.date_due) {
+    if (loan.date_due) {
         const dueDate = new Date(loan.date_due);
+        dueDate.setHours(0, 0, 0, 0);  // Set to midnight for accurate date comparison
         const today = new Date();
+        today.setHours(0, 0, 0, 0);
         const daysLate = Math.max(0, Math.floor((today - dueDate) / (1000 * 60 * 60 * 24)));
         
         if (daysLate > 0) {

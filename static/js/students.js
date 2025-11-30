@@ -28,9 +28,10 @@ async function loadStudentsList() {
         
         students.forEach(student => {
             const row = tbody.insertRow();
+            const studentName = `${student.first_name} ${student.last_name}`.replace(/'/g, "\\'");
             const actionsHTML = `
                 <button class="action-btn edit-btn" onclick="editStudent('${student.id}')">✏️ Edit</button>
-                <button class="action-btn delete-btn" onclick="deleteStudent('${student.id}', '${student.first_name} ${student.last_name}')">🗑️ Delete</button>
+                <button class="action-btn delete-btn" onclick="deleteStudent('${student.id}', '${studentName}')">🗑️ Delete</button>
             `;
             row.innerHTML = `
                 <td>${student.first_name || '-'}</td>

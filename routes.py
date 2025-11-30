@@ -60,9 +60,24 @@ def get_student(student_id):
 
 @api_bp.route('/equipment', methods=['GET'])
 def get_equipment():
-    """Get all equipment"""
-    equipment = Equipment.query.all()
-    return jsonify([e.to_dict() for e in equipment]), 200
+    """Get all equipment with pagination support"""
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 10))
+    
+    # If no pagination params provided, return all for backward compatibility
+    if not request.args.get('page'):
+        equipment = Equipment.query.all()
+        return jsonify([e.to_dict() for e in equipment]), 200
+    
+    # Return paginated data
+    paginated = Equipment.query.paginate(page=page, per_page=per_page)
+    return jsonify({
+        'items': [e.to_dict() for e in paginated.items],
+        'total': paginated.total,
+        'pages': paginated.pages,
+        'current_page': page,
+        'per_page': per_page
+    }), 200
 
 @api_bp.route('/equipment', methods=['POST'])
 @login_required
@@ -570,7 +585,6 @@ def delete_student(student_id):
 
 @api_bp.route('/loans/<loan_id>/return-with-damage', methods=['POST'])
 @login_required
-@borrower_required
 def return_equipment_with_damage(loan_id):
     """Return equipment with damage assessment and fine calculation"""
     try:

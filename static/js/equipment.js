@@ -101,9 +101,10 @@ async function loadEquipmentList(page = 1) {
         
         equipment.forEach(item => {
             const row = tbody.insertRow();
+            const itemName = item.name.replace(/'/g, "\\'");
             const actionsHTML = `
                 <button class="action-btn edit-btn" onclick="editEquipment('${item.id}')">✏️ Edit</button>
-                <button class="action-btn delete-btn" onclick="deleteEquipment('${item.id}', '${item.name}')">🗑️ Delete</button>
+                <button class="action-btn delete-btn" onclick="deleteEquipment('${item.id}', '${itemName}')">🗑️ Delete</button>
             `;
             row.innerHTML = `
                 <td>${item.name}</td>
