@@ -1,6 +1,8 @@
 // Equipment management functionality
 document.addEventListener('DOMContentLoaded', initEquipment);
 
+let currentEditingId = null;
+
 async function initEquipment() {
     loadEquipmentList();
     document.getElementById('add-equipment-form').addEventListener('submit', handleAddEquipment);
@@ -40,6 +42,10 @@ async function loadEquipmentList() {
         
         equipment.forEach(item => {
             const row = tbody.insertRow();
+            const actionsHTML = `
+                <button class="action-btn edit-btn" onclick="editEquipment('${item.id}')">✏️ Edit</button>
+                <button class="action-btn delete-btn" onclick="deleteEquipment('${item.id}', '${item.name}')">🗑️ Delete</button>
+            `;
             row.innerHTML = `
                 <td>${item.name}</td>
                 <td>${item.model || '-'}</td>
@@ -47,6 +53,7 @@ async function loadEquipmentList() {
                 <td>${item.category}</td>
                 <td><span class="status-${item.availability_status.toLowerCase()}">${item.availability_status}</span></td>
                 <td>${item.condition || 'Good'}</td>
+                <td>${actionsHTML}</td>
             `;
         });
     } catch (error) {
@@ -91,5 +98,70 @@ async function handleAddEquipment(event) {
     } catch (error) {
         console.error('Error:', error);
         alert('Error adding equipment');
+    }
+}
+
+async function editEquipment(equipmentId) {
+    try {
+        // Fetch equipment details
+        const response = await fetch(`/api/equipment/${equipmentId}`);
+        if (!response.ok) throw new Error('Failed to fetch equipment');
+        const equipment = await response.json();
+        
+        // Show edit prompts
+        const newName = prompt('Equipment Name:', equipment.name);
+        if (newName === null) return;
+        
+        const newModel = prompt('Model:', equipment.model || '');
+        const newCondition = prompt('Condition (Excellent/Good/Fair/Poor/Damaged):', equipment.condition || 'Good');
+        const newCategory = prompt('Category:', equipment.category || '');
+        
+        // Update equipment
+        const updateResponse = await fetch(`/api/equipment/${equipmentId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: newName,
+                model: newModel,
+                category: newCategory,
+                condition: newCondition
+            })
+        });
+        
+        if (updateResponse.ok) {
+            alert('Equipment updated successfully!');
+            loadEquipmentList();
+        } else {
+            const error = await updateResponse.json();
+            alert('Error updating equipment: ' + (error.error || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error updating equipment');
+    }
+}
+
+async function deleteEquipment(equipmentId, equipmentName) {
+    if (!confirm(`Are you sure you want to delete "${equipmentName}"? This action cannot be undone.`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/equipment/${equipmentId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            alert('Equipment deleted successfully!');
+            loadEquipmentList();
+        } else {
+            const error = await response.json();
+            alert('Error deleting equipment: ' + (error.error || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error deleting equipment');
     }
 }

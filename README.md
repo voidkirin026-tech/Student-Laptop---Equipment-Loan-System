@@ -1,8 +1,8 @@
-# Student Laptop/Equipment Loan System
+# 📦 Student Laptop/Equipment Loan System
 
-A complete web-based information system for managing equipment checkouts, tracking loans, and automating overdue notifications.
+A complete web-based information system for managing equipment checkouts, tracking loans, automating overdue notifications, and providing role-based access control with full multi-user support.
 
-## System Overview
+## 🎯 System Overview
 
 This system implements **Scenario #7** from the final project requirements:
 - ✅ Form for IT staff to log equipment checkouts (item, student, due date)
@@ -11,15 +11,21 @@ This system implements **Scenario #7** from the final project requirements:
 - ✅ Automatic equipment status updates upon checkout
 - ✅ Daily scheduled check for overdue items (past due date)
 - ✅ Automatic email reminders for overdue items to students
+- ✨ **NEW:** Complete user authentication system with password hashing
+- ✨ **NEW:** Role-based access control (Admin, Staff, Borrower)
+- ✨ **NEW:** Equipment edit and delete functionality
+- ✨ **NEW:** Multi-user support with session management
 
-## Technology Stack
+## 🛠️ Technology Stack
 
-- **Backend**: Python 3.8+ with Flask
-- **Database**: PostgreSQL 12+
-- **Task Scheduler**: APScheduler (daily automated tasks)
+- **Backend**: Python 3.13 with Flask 3.0+
+- **Database**: PostgreSQL 18+
+- **Authentication**: Flask-Login with Werkzeug password hashing
+- **Task Scheduler**: APScheduler (daily automated tasks at 8 AM)
 - **Email Service**: Flask-Mail (SMTP support)
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript
-- **ORM**: SQLAlchemy
+- **ORM**: SQLAlchemy 2.0+
+- **Security**: PBKDF2 password hashing, CSRF protection, secure sessions
 
 ## Features
 
@@ -92,57 +98,120 @@ This system implements **Scenario #7** from the final project requirements:
 - ✅ Safe null value handling
 - ✅ Browser tab titles (no more "localhost:5000")
 
-## Quick Start
+## 🚀 Quick Start (2 Minutes)
+
+### Try It Immediately
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Load sample data (creates users & equipment)
+python load_sample_data.py
+
+# Start the server
+python app.py
+```
+
+Then visit: **http://localhost:5000/login**
+
+### Test Credentials
+```
+Admin:    username=admin    password=admin123
+Staff:    username=staff1   password=staff123
+Borrower: username=borrower1 password=borrower123
+```
+
+---
+
+## 📖 Full Setup Guide
 
 ### 1. Prerequisites
 ```bash
-# Python 3.8+
+# Python 3.13+
 python --version
 
-# PostgreSQL 12+
+# PostgreSQL 18+ (or use SQLite for development)
 psql --version
 ```
 
-### 2. Setup
+### 2. Installation
 ```bash
-# Clone/Download project
+# Clone project
 cd "Student Laptop & Equipment Loan System"
 
 # Create virtual environment
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
 ```
 
 ### 3. Configure Database
-```bash
-# Create PostgreSQL database
-createdb equipment_loan_db
+Edit `config.py` to set your database:
+```python
+# SQLite (development)
+SQLALCHEMY_DATABASE_URI = 'sqlite:///equipment_loan.db'
 
-# Copy and configure environment
-cp .env.example .env
-# Edit .env with your database URL and email settings
+# PostgreSQL (production)
+SQLALCHEMY_DATABASE_URI = 'postgresql://user:password@localhost/equipment_loan'
 ```
 
-### 4. Initialize Database
+### 4. Initialize System
 ```bash
-# Run Python shell
-python
+# Load sample data (creates users, equipment, and sample loans)
+python load_sample_data.py
 
-# In Python:
-from app import create_app, db
-app = create_app()
-with app.app_context():
-    db.create_all()
-exit()
+# The script will:
+# - Create all database tables
+# - Create 3 test users (admin, staff, borrower)
+# - Add 6 sample equipment items
+# - Create 4 sample loans
+# - Display credentials for testing
 ```
 
-### 5. Run the Application
+### 5. Run Application
 ```bash
+# Start development server
 python app.py
+
+# Server starts at: http://localhost:5000
+# Login page: http://localhost:5000/login
+# Dashboard: http://localhost:5000/ (after login)
 ```
+
+### 6. Optional: Configure Email
+Edit `config.py`:
+```python
+MAIL_SERVER = 'smtp.gmail.com'
+MAIL_PORT = 587
+MAIL_USERNAME = 'your-email@gmail.com'
+MAIL_PASSWORD = 'your-app-password'
+```
+
+---
+
+## ✨ What's New (November 30, 2025)
+
+### Authentication & Authorization
+- ✅ Secure user login/registration system
+- ✅ Password hashing with Werkzeug PBKDF2
+- ✅ Three user roles with different permissions
+- ✅ Session management
+- ✅ Protected pages and API endpoints
+
+### Equipment Management
+- ✅ **Edit equipment** - Update name, model, condition
+- ✅ **Delete equipment** - With safety checks (prevents deletion if on loan)
+- ✅ Equipment action buttons in inventory table
+- ✅ Audit logging for all changes
+
+### User Experience
+- ✅ Modern login/register pages
+- ✅ User badge in navbar showing name and role
+- ✅ Logout button (red) in navbar
+- ✅ Permission-based UI elements
+- ✅ Role restrictions explained in error messages
 
 Visit: **http://localhost:5000**
 

@@ -4,7 +4,7 @@ Run this script to populate the database with sample data for testing
 """
 
 from app import create_app, db
-from models import Student, Equipment, Staff, Loan
+from models import Student, Equipment, Staff, Loan, User
 from datetime import datetime, timedelta
 
 def load_sample_data():
@@ -15,6 +15,48 @@ def load_sample_data():
         # Clear existing data (optional)
         db.drop_all()
         db.create_all()
+        
+        print("Loading admin and staff users...")
+        users = [
+            User(
+                username="admin",
+                email="admin@university.edu",
+                first_name="Admin",
+                last_name="User",
+                role="admin",
+                status="active"
+            ),
+            User(
+                username="staff1",
+                email="staff1@university.edu",
+                first_name="John",
+                last_name="Smith",
+                role="staff",
+                status="active"
+            ),
+            User(
+                username="borrower1",
+                email="borrower1@university.edu",
+                first_name="Sample",
+                last_name="Borrower",
+                role="borrower",
+                status="active"
+            ),
+        ]
+        
+        # Set passwords
+        users[0].set_password("admin123")
+        users[1].set_password("staff123")
+        users[2].set_password("borrower123")
+        
+        for user in users:
+            db.session.add(user)
+        
+        db.session.commit()
+        print(f"✓ Added {len(users)} users")
+        print("  - Admin: username=admin, password=admin123")
+        print("  - Staff: username=staff1, password=staff123")
+        print("  - Borrower: username=borrower1, password=borrower123")
         
         print("Loading sample students...")
         students = [

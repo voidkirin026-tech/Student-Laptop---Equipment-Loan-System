@@ -1,7 +1,9 @@
 from flask import Blueprint, request, jsonify
+from flask_login import login_required, current_user
 from datetime import datetime, timedelta
 from models import db, Student, Equipment, Loan, Staff, AuditLog
 from email_service import send_checkout_email, send_return_confirmation
+from decorators import staff_required, admin_required, borrower_required
 import uuid
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
@@ -15,8 +17,10 @@ def get_students():
     return jsonify([s.to_dict() for s in students]), 200
 
 @api_bp.route('/students', methods=['POST'])
+@login_required
+@staff_required
 def create_student():
-    """Create a new student"""
+    """Create a new student (staff/admin only)"""
     try:
         data = request.get_json()
         
@@ -61,8 +65,10 @@ def get_equipment():
     return jsonify([e.to_dict() for e in equipment]), 200
 
 @api_bp.route('/equipment', methods=['POST'])
+@login_required
+@staff_required
 def create_equipment():
-    """Create new equipment"""
+    """Create new equipment (staff/admin only)"""
     try:
         data = request.get_json()
         
@@ -102,9 +108,77 @@ def get_equipment_detail(equipment_id):
         return jsonify({'error': 'Equipment not found'}), 404
     return jsonify(equipment.to_dict()), 200
 
+@api_bp.route('/equipment/<equipment_id>', methods=['PUT'])
+@login_required
+@staff_required
+def update_equipment(equipment_id):
+    """Update equipment (staff/admin only)"""
+    try:
+        equipment = Equipment.query.get(equipment_id)
+        if not equipment:
+            return jsonify({'error': 'Equipment not found'}), 404
+        
+        data = request.get_json()
+        
+        # Update fields
+        if 'name' in data:
+            equipment.name = data['name']
+        if 'model' in data:
+            equipment.model = data['model']
+        if 'category' in data:
+            equipment.category = data['category']
+        if 'serial_number' in data:
+            equipment.serial_number = data['serial_number']
+        if 'condition' in data:
+            equipment.condition = data['condition']
+        if 'availability_status' in data:
+            equipment.availability_status = data['availability_status']
+        
+        db.session.commit()
+        
+        log_audit('UPDATE', 'equipment', equipment.id, {'updated_fields': data})
+        
+        return jsonify({
+            'message': 'Equipment updated successfully',
+            'equipment': equipment.to_dict()
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 400
+
+@api_bp.route('/equipment/<equipment_id>', methods=['DELETE'])
+@login_required
+@staff_required
+def delete_equipment(equipment_id):
+    """Delete equipment (staff/admin only)"""
+    try:
+        equipment = Equipment.query.get(equipment_id)
+        if not equipment:
+            return jsonify({'error': 'Equipment not found'}), 404
+        
+        # Check if equipment is on loan
+        active_loans = Loan.query.filter_by(equipment_id=equipment_id, status='Borrowed').all()
+        if active_loans:
+            return jsonify({'error': 'Cannot delete equipment that is currently on loan'}), 400
+        
+        equipment_name = equipment.name
+        db.session.delete(equipment)
+        db.session.commit()
+        
+        log_audit('DELETE', 'equipment', equipment_id, {'name': equipment_name})
+        
+        return jsonify({
+            'message': f'Equipment "{equipment_name}" deleted successfully'
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 400
+
 # ===== LOANS ENDPOINTS =====
 
 @api_bp.route('/loans/checkout', methods=['POST'])
+@login_required
+@borrower_required
 def checkout_equipment():
     """Create a new loan (checkout equipment)"""
     try:

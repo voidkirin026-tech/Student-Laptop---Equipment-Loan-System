@@ -4,6 +4,7 @@ from config import config
 import os
 from models import db, User
 from routes import api_bp
+from auth_routes import auth_bp
 from email_service import mail
 from scheduler import init_scheduler, shutdown_scheduler
 import atexit
@@ -31,6 +32,7 @@ def create_app(config_name='development'):
     
     # Register blueprints
     app.register_blueprint(api_bp)
+    app.register_blueprint(auth_bp)
     
     # Create database tables
     with app.app_context():

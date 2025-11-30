@@ -18,6 +18,15 @@
                 <li><a href="{{ url_for('checkout') }}">Checkout</a></li>
                 <li><a href="{{ url_for('equipment') }}">Equipment</a></li>
                 <li><a href="{{ url_for('loans') }}">Loans</a></li>
+                {% if current_user.is_authenticated %}
+                    <li class="nav-user-info">
+                        <span class="user-badge">
+                            👤 {{ current_user.first_name or current_user.username }} 
+                            <small>({{ current_user.role.title() }})</small>
+                        </span>
+                    </li>
+                    <li><a href="{{ url_for('logout') }}" class="nav-logout">Logout</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
