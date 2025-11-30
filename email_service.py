@@ -98,8 +98,8 @@ IT Equipment Loan System
         db.session.commit()
         return False
 
-def send_return_confirmation(student_email, student_name, equipment_name, loan_id):
-    """Send return confirmation email"""
+def send_return_confirmation(student_email, student_name, equipment_name, loan_id, damage_status=None, late_fine=0, days_late=0):
+    """Send return confirmation email with optional damage and fine info"""
     try:
         subject = f"Equipment Return Confirmed - {equipment_name}"
         body = f"""
@@ -108,7 +108,24 @@ Dear {student_name},
 This is to confirm that your return of the following equipment has been recorded:
 
 Equipment: {equipment_name}
-
+"""
+        
+        # Add damage and fine information if provided
+        if damage_status and damage_status != 'None':
+            body += f"""
+DAMAGE ASSESSMENT:
+- Damage Status: {damage_status}
+- Equipment Condition: Updated in system
+"""
+        
+        if days_late > 0:
+            body += f"""
+LATE RETURN CHARGES:
+- Days Late: {days_late}
+- Late Fine: ${late_fine:.2f} @ $5.00/day
+"""
+        
+        body += """
 Thank you for using the IT Equipment Loan System.
 
 Best regards,

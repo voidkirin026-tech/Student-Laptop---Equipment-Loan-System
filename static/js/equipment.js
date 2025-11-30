@@ -2,10 +2,52 @@
 document.addEventListener('DOMContentLoaded', initEquipment);
 
 let currentEditingId = null;
+let currentPage = 1;
+let currentFilters = {
+    query: '',
+    category: '',
+    condition: '',
+    status: ''
+};
 
 async function initEquipment() {
     loadEquipmentList();
+    loadFilterOptions();
+    setupEventListeners();
     document.getElementById('add-equipment-form').addEventListener('submit', handleAddEquipment);
+}
+
+function setupEventListeners() {
+    // Search functionality
+    document.getElementById('search-btn').addEventListener('click', performSearch);
+    document.getElementById('clear-search-btn').addEventListener('click', clearSearch);
+    document.getElementById('search-query').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') performSearch();
+    });
+    
+    // Filter functionality
+    document.getElementById('filter-category').addEventListener('change', performSearch);
+    document.getElementById('filter-condition').addEventListener('change', performSearch);
+    document.getElementById('filter-status').addEventListener('change', performSearch);
+}
+
+async function loadFilterOptions() {
+    try {
+        // Load categories
+        const categoriesResponse = await fetch('/api/filters/categories');
+        if (categoriesResponse.ok) {
+            const categories = await categoriesResponse.json();
+            const categorySelect = document.getElementById('filter-category');
+            categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat;
+                categorySelect.appendChild(option);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading filter options:', error);
+    }
 }
 
 function updateCategory() {
@@ -20,11 +62,27 @@ function updateCategory() {
     }
 }
 
-async function loadEquipmentList() {
+async function loadEquipmentList(page = 1) {
     try {
-        const response = await fetch('/api/equipment');
+        // Build query string
+        let url = '/api/equipment?page=' + page + '&per_page=10';
+        
+        // Use search endpoint if any filters are active
+        if (currentFilters.query || currentFilters.category || currentFilters.condition || currentFilters.status) {
+            url = '/api/search/equipment?page=' + page + '&per_page=10';
+            if (currentFilters.query) url += '&q=' + encodeURIComponent(currentFilters.query);
+            if (currentFilters.category) url += '&category=' + encodeURIComponent(currentFilters.category);
+            if (currentFilters.condition) url += '&condition=' + encodeURIComponent(currentFilters.condition);
+            if (currentFilters.status) url += '&status=' + encodeURIComponent(currentFilters.status);
+        }
+        
+        const response = await fetch(url);
         if (!response.ok) throw new Error('Failed to fetch equipment');
-        const equipment = await response.json();
+        
+        const data = await response.json();
+        const equipment = data.items || data;
+        const totalPages = data.pages || 1;
+        const total = data.total || equipment.length;
         
         const tbody = document.querySelector('#equipment-table tbody');
         const noEquipmentMsg = document.getElementById('no-equipment');
@@ -34,6 +92,7 @@ async function loadEquipmentList() {
         if (equipment.length === 0) {
             document.getElementById('equipment-table').style.display = 'none';
             noEquipmentMsg.style.display = 'block';
+            updatePaginationControls(0, 0, 0);
             return;
         }
         
@@ -56,9 +115,60 @@ async function loadEquipmentList() {
                 <td>${actionsHTML}</td>
             `;
         });
+        
+        updatePaginationControls(page, totalPages, total);
     } catch (error) {
         console.error('Error loading equipment:', error);
     }
+}
+
+function updatePaginationControls(currentPage, totalPages, total) {
+    const topPagination = document.getElementById('pagination-top');
+    const bottomPagination = document.getElementById('pagination-bottom');
+    
+    let html = '';
+    
+    if (totalPages > 1) {
+        html = `
+            <div class="pagination">
+                <button ${currentPage === 1 ? 'disabled' : ''} onclick="loadEquipmentList(1)">First</button>
+                <button ${currentPage === 1 ? 'disabled' : ''} onclick="loadEquipmentList(${currentPage - 1})">Previous</button>
+        `;
+        
+        // Show page numbers
+        for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+            html += `<button ${i === currentPage ? 'class="active"' : ''} onclick="loadEquipmentList(${i})">${i}</button>`;
+        }
+        
+        html += `
+                <button ${currentPage === totalPages ? 'disabled' : ''} onclick="loadEquipmentList(${currentPage + 1})">Next</button>
+                <button ${currentPage === totalPages ? 'disabled' : ''} onclick="loadEquipmentList(${totalPages})">Last</button>
+                <span class="page-info">Page ${currentPage} of ${totalPages} (${total} total)</span>
+            </div>
+        `;
+    }
+    
+    topPagination.innerHTML = html;
+    bottomPagination.innerHTML = html;
+}
+
+function performSearch() {
+    currentFilters.query = document.getElementById('search-query').value;
+    currentFilters.category = document.getElementById('filter-category').value;
+    currentFilters.condition = document.getElementById('filter-condition').value;
+    currentFilters.status = document.getElementById('filter-status').value;
+    currentPage = 1;
+    loadEquipmentList(1);
+}
+
+function clearSearch() {
+    document.getElementById('search-query').value = '';
+    document.getElementById('filter-category').value = '';
+    document.getElementById('filter-condition').value = '';
+    document.getElementById('filter-status').value = '';
+    currentFilters = { query: '', category: '', condition: '', status: '' };
+    currentPage = 1;
+    loadEquipmentList(1);
 }
 
 async function handleAddEquipment(event) {

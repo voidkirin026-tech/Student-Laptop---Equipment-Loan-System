@@ -2,6 +2,8 @@
 document.addEventListener('DOMContentLoaded', initLoans);
 
 let currentFilter = 'all';
+let currentLoanId = null;
+let currentLoanData = null;
 
 async function initLoans() {
     loadLoans('all');
@@ -15,6 +17,9 @@ async function initLoans() {
             loadLoans(currentFilter);
         });
     });
+    
+    // Damage form submission
+    document.getElementById('damage-form').addEventListener('submit', handleDamageSubmit);
 }
 
 async function loadLoans(filter) {
@@ -75,22 +80,113 @@ async function loadLoans(filter) {
     }
 }
 
-async function returnLoan(loanId) {
-    if (!confirm('Are you sure you want to return this equipment?')) return;
+function returnLoan(loanId) {
+    try {
+        // Fetch loan details to show damage assessment
+        fetch(`/api/loans/${loanId}`)
+            .then(r => r.json())
+            .then(loan => {
+                currentLoanId = loanId;
+                currentLoanData = loan;
+                openDamageModal(loan);
+            });
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error fetching loan details');
+    }
+}
+
+function openDamageModal(loan) {
+    const modal = document.getElementById('damage-modal');
+    modal.style.display = 'block';
+    
+    // Calculate days late if overdue
+    if (loan.status === 'Overdue' || loan.date_due) {
+        const dueDate = new Date(loan.date_due);
+        const today = new Date();
+        const daysLate = Math.max(0, Math.floor((today - dueDate) / (1000 * 60 * 60 * 24)));
+        
+        if (daysLate > 0) {
+            document.getElementById('charge-summary').style.display = 'block';
+            document.getElementById('days-late').textContent = daysLate;
+            document.getElementById('late-fee').textContent = (daysLate * 5).toFixed(2);
+        }
+    }
+}
+
+function closeDamageModal() {
+    const modal = document.getElementById('damage-modal');
+    modal.style.display = 'none';
+    document.getElementById('damage-form').reset();
+    document.getElementById('charge-summary').style.display = 'none';
+    currentLoanId = null;
+    currentLoanData = null;
+}
+
+async function handleDamageSubmit(event) {
+    event.preventDefault();
+    
+    if (!currentLoanId) {
+        alert('Error: No loan selected');
+        return;
+    }
+    
+    const damageStatus = document.getElementById('damage-status').value;
+    const damageNotes = document.getElementById('damage-notes').value;
+    const newCondition = document.getElementById('new-condition').value;
+    
+    if (!newCondition) {
+        alert('Please select a condition');
+        return;
+    }
     
     try {
-        const response = await fetch(`/api/loans/${loanId}/return`, {
-            method: 'POST'
+        const response = await fetch(`/api/loans/${currentLoanId}/return-with-damage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                damage_status: damageStatus,
+                damage_notes: damageNotes,
+                new_condition: newCondition
+            })
         });
         
         if (response.ok) {
-            alert('Equipment returned successfully!');
+            const result = await response.json();
+            let message = 'Equipment returned successfully!';
+            
+            if (result.late_fine > 0) {
+                message += `\n\nLate Return Charges:\n`;
+                message += `Days Late: ${result.days_late}\n`;
+                message += `Charge (₱5/day): ₱${result.late_fine.toFixed(2)}`;
+            }
+            
+            if (damageStatus !== 'None') {
+                message += `\n\nDamage Assessment:\nStatus: ${damageStatus}`;
+                if (damageNotes) {
+                    message += `\nNotes: ${damageNotes}`;
+                }
+            }
+            
+            alert(message);
+            closeDamageModal();
             loadLoans(currentFilter);
         } else {
-            alert('Error returning equipment');
+            const error = await response.json();
+            alert('Error returning equipment: ' + (error.error || 'Unknown error'));
         }
     } catch (error) {
         console.error('Error:', error);
         alert('Error returning equipment');
+    }
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('damage-modal');
+    if (event.target === modal) {
+        closeDamageModal();
     }
 }

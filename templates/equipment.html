@@ -62,6 +62,48 @@
 
     <div class="equipment-list">
         <h3>Equipment Inventory</h3>
+        
+        <!-- Search and Filter Section -->
+        <div class="search-filter-section">
+            <div class="search-bar">
+                <input type="text" id="search-query" placeholder="Search by name, model, or serial number..." class="search-input">
+                <button id="search-btn" class="btn btn-secondary">🔍 Search</button>
+                <button id="clear-search-btn" class="btn btn-secondary">Clear</button>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="filter-category">Category:</label>
+                    <select id="filter-category" class="filter-select">
+                        <option value="">All Categories</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-condition">Condition:</label>
+                    <select id="filter-condition" class="filter-select">
+                        <option value="">All Conditions</option>
+                        <option value="Excellent">Excellent</option>
+                        <option value="Good">Good</option>
+                        <option value="Fair">Fair</option>
+                        <option value="Poor">Poor</option>
+                        <option value="Damaged">Damaged</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-status">Status:</label>
+                    <select id="filter-status" class="filter-select">
+                        <option value="">All Statuses</option>
+                        <option value="Available">Available</option>
+                        <option value="Borrowed">Borrowed</option>
+                        <option value="Maintenance">Maintenance</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pagination Controls -->
+        <div id="pagination-top" class="pagination-controls"></div>
+        
         <table id="equipment-table" class="data-table">
             <thead>
                 <tr>
@@ -77,6 +119,9 @@
             <tbody></tbody>
         </table>
         <p id="no-equipment" class="empty-message">No equipment added yet</p>
+        
+        <!-- Pagination Controls -->
+        <div id="pagination-bottom" class="pagination-controls"></div>
     </div>
 </div>
 

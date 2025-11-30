@@ -347,6 +347,305 @@ def create_staff():
         db.session.rollback()
         return jsonify({'error': str(e)}), 400
 
+# ===== SEARCH & FILTERING ENDPOINTS =====
+
+@api_bp.route('/search/equipment', methods=['GET'])
+def search_equipment():
+    """Search equipment by name, model, serial, or category"""
+    try:
+        query = request.args.get('q', '').strip()
+        category = request.args.get('category', '')
+        condition = request.args.get('condition', '')
+        status = request.args.get('status', '')
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 10))
+        
+        # Start with all equipment
+        q = Equipment.query
+        
+        # Apply search query
+        if query:
+            q = q.filter(
+                (Equipment.name.ilike(f'%{query}%')) |
+                (Equipment.model.ilike(f'%{query}%')) |
+                (Equipment.serial_number.ilike(f'%{query}%'))
+            )
+        
+        # Apply filters
+        if category:
+            q = q.filter_by(category=category)
+        if condition:
+            q = q.filter_by(condition=condition)
+        if status:
+            q = q.filter_by(availability_status=status)
+        
+        # Paginate results
+        paginated = q.paginate(page=page, per_page=per_page)
+        
+        return jsonify({
+            'items': [e.to_dict() for e in paginated.items],
+            'total': paginated.total,
+            'pages': paginated.pages,
+            'current_page': page,
+            'per_page': per_page
+        }), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+@api_bp.route('/search/students', methods=['GET'])
+def search_students():
+    """Search students by name, email, or program"""
+    try:
+        query = request.args.get('q', '').strip()
+        program = request.args.get('program', '')
+        year_level = request.args.get('year_level', '')
+        status = request.args.get('status', '')
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 10))
+        
+        # Start with all students
+        q = Student.query
+        
+        # Apply search query
+        if query:
+            q = q.filter(
+                (Student.first_name.ilike(f'%{query}%')) |
+                (Student.last_name.ilike(f'%{query}%')) |
+                (Student.email.ilike(f'%{query}%'))
+            )
+        
+        # Apply filters
+        if program:
+            q = q.filter_by(program=program)
+        if year_level:
+            q = q.filter_by(year_level=int(year_level))
+        if status:
+            q = q.filter_by(status=status)
+        
+        # Paginate results
+        paginated = q.paginate(page=page, per_page=per_page)
+        
+        return jsonify({
+            'items': [s.to_dict() for s in paginated.items],
+            'total': paginated.total,
+            'pages': paginated.pages,
+            'current_page': page,
+            'per_page': per_page
+        }), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+@api_bp.route('/search/loans', methods=['GET'])
+def search_loans():
+    """Search loans with filters"""
+    try:
+        student_id = request.args.get('student_id', '')
+        equipment_id = request.args.get('equipment_id', '')
+        status = request.args.get('status', '')
+        overdue_only = request.args.get('overdue_only', 'false').lower() == 'true'
+        page = int(request.args.get('page', 1))
+        per_page = int(request.args.get('per_page', 10))
+        
+        # Start with all loans
+        q = Loan.query
+        
+        # Apply filters
+        if student_id:
+            q = q.filter_by(student_id=student_id)
+        if equipment_id:
+            q = q.filter_by(equipment_id=equipment_id)
+        if status:
+            q = q.filter_by(status=status)
+        if overdue_only:
+            today = datetime.utcnow().date()
+            q = q.filter(
+                (Loan.status == 'Borrowed') &
+                (Loan.date_due < today)
+            )
+        
+        # Paginate results
+        paginated = q.order_by(Loan.date_borrowed.desc()).paginate(page=page, per_page=per_page)
+        
+        return jsonify({
+            'items': [l.to_dict() for l in paginated.items],
+            'total': paginated.total,
+            'pages': paginated.pages,
+            'current_page': page,
+            'per_page': per_page
+        }), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+@api_bp.route('/filters/categories', methods=['GET'])
+def get_categories():
+    """Get all unique equipment categories for filtering"""
+    categories = db.session.query(Equipment.category).distinct().filter(
+        Equipment.category.isnot(None)
+    ).order_by(Equipment.category).all()
+    return jsonify([cat[0] for cat in categories if cat[0]]), 200
+
+@api_bp.route('/filters/conditions', methods=['GET'])
+def get_conditions():
+    """Get all unique equipment conditions for filtering"""
+    conditions = ['Excellent', 'Good', 'Fair', 'Poor', 'Damaged']
+    return jsonify(conditions), 200
+
+@api_bp.route('/filters/programs', methods=['GET'])
+def get_programs():
+    """Get all unique student programs for filtering"""
+    programs = db.session.query(Student.program).distinct().filter(
+        Student.program.isnot(None)
+    ).order_by(Student.program).all()
+    return jsonify([prog[0] for prog in programs if prog[0]]), 200
+
+# ===== STUDENT EDIT/DELETE ENDPOINTS =====
+
+@api_bp.route('/students/<student_id>', methods=['PUT'])
+@login_required
+@staff_required
+def update_student(student_id):
+    """Update student (staff/admin only)"""
+    try:
+        student = Student.query.get(student_id)
+        if not student:
+            return jsonify({'error': 'Student not found'}), 404
+        
+        data = request.get_json()
+        
+        # Update fields
+        if 'first_name' in data:
+            student.first_name = data['first_name']
+        if 'last_name' in data:
+            student.last_name = data['last_name']
+        if 'email' in data:
+            student.email = data['email']
+        if 'program' in data:
+            student.program = data['program']
+        if 'year_level' in data:
+            student.year_level = data['year_level']
+        if 'status' in data:
+            student.status = data['status']
+        
+        db.session.commit()
+        
+        log_audit('UPDATE', 'students', student.id, {'updated_fields': data})
+        
+        return jsonify({
+            'message': 'Student updated successfully',
+            'student': student.to_dict()
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 400
+
+@api_bp.route('/students/<student_id>', methods=['DELETE'])
+@login_required
+@staff_required
+def delete_student(student_id):
+    """Delete student (staff/admin only)"""
+    try:
+        student = Student.query.get(student_id)
+        if not student:
+            return jsonify({'error': 'Student not found'}), 404
+        
+        # Check if student has active loans
+        active_loans = Loan.query.filter_by(student_id=student_id, status='Borrowed').all()
+        if active_loans:
+            return jsonify({'error': 'Cannot delete student with active loans'}), 400
+        
+        student_name = f"{student.first_name} {student.last_name}"
+        db.session.delete(student)
+        db.session.commit()
+        
+        log_audit('DELETE', 'students', student_id, {'name': student_name})
+        
+        return jsonify({
+            'message': f'Student "{student_name}" deleted successfully'
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 400
+
+# ===== RETURN WITH DAMAGE TRACKING =====
+
+@api_bp.route('/loans/<loan_id>/return-with-damage', methods=['POST'])
+@login_required
+@borrower_required
+def return_equipment_with_damage(loan_id):
+    """Return equipment with damage assessment and fine calculation"""
+    try:
+        loan = Loan.query.get(loan_id)
+        if not loan:
+            return jsonify({'error': 'Loan not found'}), 404
+        
+        if loan.status == 'Returned':
+            return jsonify({'error': 'Equipment already returned'}), 400
+        
+        data = request.get_json()
+        damage_status = data.get('damage_status', 'None')  # None, Minor, Major, Lost
+        damage_notes = data.get('damage_notes', '')
+        new_condition = data.get('new_condition', 'Good')
+        
+        # Calculate late fine (e.g., $5 per day overdue)
+        today = datetime.utcnow().date()
+        days_late = max(0, (today - loan.date_due).days)
+        late_fine = days_late * 5.00
+        
+        # Update loan
+        loan.date_returned = today
+        loan.status = 'Returned'
+        
+        # Update equipment
+        equipment = Equipment.query.get(loan.equipment_id)
+        equipment.availability_status = 'Available'
+        
+        # Update condition if damaged
+        if damage_status != 'None':
+            if damage_status == 'Lost':
+                equipment.condition = 'Damaged'
+            else:
+                equipment.condition = new_condition
+        
+        db.session.commit()
+        
+        # Send return confirmation with damage/fine info
+        send_return_confirmation(
+            student_email=loan.student.email,
+            student_name=f"{loan.student.first_name} {loan.student.last_name}",
+            equipment_name=equipment.name,
+            loan_id=loan.id,
+            damage_status=damage_status,
+            late_fine=late_fine,
+            days_late=days_late
+        )
+        
+        # Log action
+        log_audit('UPDATE', 'loans', loan.id, {
+            'action': 'return_with_damage',
+            'date_returned': loan.date_returned.isoformat(),
+            'damage_status': damage_status,
+            'damage_notes': damage_notes,
+            'new_condition': new_condition,
+            'days_late': days_late,
+            'late_fine': late_fine
+        })
+        
+        return jsonify({
+            'message': 'Equipment returned successfully',
+            'loan': loan.to_dict(),
+            'damage_assessment': {
+                'damage_status': damage_status,
+                'damage_notes': damage_notes,
+                'new_condition': new_condition,
+                'days_late': days_late,
+                'late_fine': late_fine
+            }
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 400
+
 # ===== UTILITY ENDPOINTS =====
 
 def log_audit(action, table_name, record_id, details):

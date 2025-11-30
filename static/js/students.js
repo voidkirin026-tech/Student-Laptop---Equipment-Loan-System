@@ -28,6 +28,10 @@ async function loadStudentsList() {
         
         students.forEach(student => {
             const row = tbody.insertRow();
+            const actionsHTML = `
+                <button class="action-btn edit-btn" onclick="editStudent('${student.id}')">✏️ Edit</button>
+                <button class="action-btn delete-btn" onclick="deleteStudent('${student.id}', '${student.first_name} ${student.last_name}')">🗑️ Delete</button>
+            `;
             row.innerHTML = `
                 <td>${student.first_name || '-'}</td>
                 <td>${student.last_name || '-'}</td>
@@ -35,6 +39,7 @@ async function loadStudentsList() {
                 <td>${student.program || '-'}</td>
                 <td>${student.year_level || '-'}</td>
                 <td><span class="status-${student.status}">${student.status}</span></td>
+                <td>${actionsHTML}</td>
             `;
         });
     } catch (error) {
@@ -82,5 +87,90 @@ async function handleAddStudent(event) {
     } catch (error) {
         console.error('Error:', error);
         alert('Error adding student');
+    }
+}
+
+async function editStudent(studentId) {
+    try {
+        // Fetch student details
+        const response = await fetch(`/api/students/${studentId}`);
+        if (!response.ok) throw new Error('Failed to fetch student');
+        const student = await response.json();
+        
+        // Show edit prompts
+        const newFirstName = prompt('First Name:', student.first_name || '');
+        if (newFirstName === null) return;
+        
+        const newLastName = prompt('Last Name:', student.last_name || '');
+        if (newLastName === null) return;
+        
+        const newEmail = prompt('Email:', student.email || '');
+        if (newEmail === null) return;
+        
+        const newProgram = prompt('Program:', student.program || '');
+        const newYearLevel = prompt('Year Level (1-4):', student.year_level || '');
+        
+        // Validate inputs
+        if (!newFirstName.trim()) {
+            alert('First name cannot be empty');
+            return;
+        }
+        if (!newLastName.trim()) {
+            alert('Last name cannot be empty');
+            return;
+        }
+        if (!newEmail.includes('@')) {
+            alert('Please enter a valid email address');
+            return;
+        }
+        
+        // Update student
+        const updateResponse = await fetch(`/api/students/${studentId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                first_name: newFirstName.trim(),
+                last_name: newLastName.trim(),
+                email: newEmail.trim(),
+                program: newProgram.trim() || null,
+                year_level: newYearLevel ? parseInt(newYearLevel) : null
+            })
+        });
+        
+        if (updateResponse.ok) {
+            alert('Student updated successfully!');
+            loadStudentsList();
+        } else {
+            const error = await updateResponse.json();
+            alert('Error updating student: ' + (error.error || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error updating student');
+    }
+}
+
+async function deleteStudent(studentId, studentName) {
+    if (!confirm(`Are you sure you want to delete "${studentName}"? This action cannot be undone.`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/students/${studentId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            alert('Student deleted successfully!');
+            loadStudentsList();
+        } else {
+            const error = await response.json();
+            alert('Error deleting student: ' + (error.error || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error deleting student');
     }
 }

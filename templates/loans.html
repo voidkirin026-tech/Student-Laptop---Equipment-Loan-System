@@ -29,5 +29,56 @@
     <p id="no-loans" class="empty-message">No loans found</p>
 </div>
 
+<!-- Damage Assessment Modal -->
+<div id="damage-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Return Equipment with Damage Assessment</h3>
+            <button class="modal-close" onclick="closeDamageModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="damage-form">
+                <div class="form-group">
+                    <label for="damage-status">Damage Status:</label>
+                    <select id="damage-status" name="damage_status" required>
+                        <option value="None">None - No damage</option>
+                        <option value="Minor">Minor - Small scratches, minor wear</option>
+                        <option value="Major">Major - Significant damage but functional</option>
+                        <option value="Lost">Lost - Equipment lost or stolen</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="damage-notes">Damage Notes (Optional):</label>
+                    <textarea id="damage-notes" name="damage_notes" placeholder="Describe the damage in detail..." rows="4"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-condition">New Equipment Condition:</label>
+                    <select id="new-condition" name="new_condition" required>
+                        <option value="">Select condition...</option>
+                        <option value="Excellent">Excellent - Like new</option>
+                        <option value="Good">Good - Minor wear</option>
+                        <option value="Fair">Fair - Some visible damage</option>
+                        <option value="Poor">Poor - Significant issues</option>
+                        <option value="Damaged">Damaged - Not operational</option>
+                    </select>
+                </div>
+                
+                <div id="charge-summary" class="charge-summary" style="display: none;">
+                    <h4>Charges Summary:</h4>
+                    <p>Days Late: <span id="days-late">0</span> days</p>
+                    <p>Late Fee (₱5/day): ₱<span id="late-fee">0.00</span></p>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Submit Return</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeDamageModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script src="{{ url_for('static', filename='js/loans.js') }}"></script>
 {% endblock %}
