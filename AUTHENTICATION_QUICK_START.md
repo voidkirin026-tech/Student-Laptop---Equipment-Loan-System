@@ -3,10 +3,12 @@
 ## Quick Start
 
 ### 1. Login to the System
-Visit: **http://localhost:5000/login**
+
+Visit: **<http://localhost:5000/login>**
 
 ### Test Credentials
-```
+
+```text
 ADMIN USER:
 - Username: admin
 - Password: admin123
@@ -24,26 +26,31 @@ BORROWER USER:
 ```
 
 ### 2. Create New Account
-Click "Sign up here" on the login page or visit: **http://localhost:5000/register**
+
+Click "Sign up here" on the login page or visit: **<http://localhost:5000/register>**
 
 ---
 
 ## 🛡️ Security Features
 
 ### Password Protection
+
 - All passwords are hashed using **Werkzeug PBKDF2** (industry-standard)
 - Passwords are salted automatically
 - Passwords are never stored in plaintext
 - Never sent in API responses
 
 ### Session Management
+
 - **Flask-Login** provides secure session handling
 - Sessions expire automatically
 - CSRF protection enabled
 - Secure cookies
 
 ### Role-Based Access Control (RBAC)
+
 Every operation checks user role:
+
 - **Admin** - Can do everything
 - **Staff** - Can manage equipment and students
 - **Borrower** - Can borrow equipment
@@ -53,6 +60,7 @@ Every operation checks user role:
 ## 📋 User Roles & Permissions
 
 ### Admin Role
+
 ```json
 {
   "can_add_equipment": true,
@@ -68,6 +76,7 @@ Every operation checks user role:
 ```
 
 ### Staff Role
+
 ```json
 {
   "can_add_equipment": true,
@@ -83,6 +92,7 @@ Every operation checks user role:
 ```
 
 ### Borrower Role
+
 ```json
 {
   "can_add_equipment": false,
@@ -104,6 +114,7 @@ Every operation checks user role:
 ### Authentication Endpoints
 
 #### Register New User
+
 ```http
 POST /api/auth/register
 Content-Type: application/json
@@ -131,6 +142,7 @@ Response (201):
 ```
 
 #### Login
+
 ```http
 POST /api/auth/login
 Content-Type: application/json
@@ -154,6 +166,7 @@ Response (200):
 ```
 
 #### Get Current User
+
 ```http
 GET /api/auth/current-user
 
@@ -170,6 +183,7 @@ Response (200):
 ```
 
 #### Logout
+
 ```http
 POST /api/auth/logout
 
@@ -180,6 +194,7 @@ Response (200):
 ```
 
 #### Change Password
+
 ```http
 PUT /api/auth/users/<user_id>/change-password
 Content-Type: application/json
@@ -196,6 +211,7 @@ Response (200):
 ```
 
 #### Update User Profile (Admin or Self)
+
 ```http
 PUT /api/auth/users/<user_id>
 Content-Type: application/json
@@ -214,6 +230,7 @@ Response (200):
 ```
 
 #### Get All Users (Admin Only)
+
 ```http
 GET /api/auth/users
 
@@ -231,6 +248,7 @@ Response (200):
 ```
 
 #### Disable User (Admin Only)
+
 ```http
 PUT /api/auth/users/<user_id>/disable
 
@@ -246,6 +264,7 @@ Response (200):
 ## 🎯 Protected Routes
 
 ### Pages (All Require Login)
+
 - `GET /` - Dashboard
 - `GET /students` - Student management
 - `GET /checkout` - Equipment checkout
@@ -255,7 +274,8 @@ Response (200):
 ### API Endpoints (Require Login + Role Check)
 
 #### Equipment Management
-```
+
+```http
 POST /api/equipment          [Staff+]  Add equipment
 PUT /api/equipment/<id>      [Staff+]  Edit equipment
 DELETE /api/equipment/<id>   [Staff+]  Delete equipment
@@ -264,14 +284,16 @@ GET /api/equipment/<id>      [Anyone]  View equipment details
 ```
 
 #### Student Management
-```
+
+```http
 POST /api/students          [Staff+]  Add student
 GET /api/students           [Anyone]  View all students
 GET /api/students/<id>      [Anyone]  View student details
 ```
 
 #### Loan Management
-```
+
+```http
 POST /api/loans/checkout    [Borrower+]  Create loan
 GET /api/loans              [Anyone]     View all loans
 GET /api/loans/active       [Anyone]     View active loans
@@ -286,6 +308,7 @@ POST /api/loans/<id>/return [Borrower+]  Return equipment
 ### For Developers
 
 #### Protect a Route
+
 ```python
 from flask_login import login_required
 from decorators import staff_required, admin_required
@@ -314,6 +337,7 @@ def disable_user(user_id):
 ```
 
 #### Check in Code
+
 ```python
 from flask_login import current_user
 
@@ -335,12 +359,15 @@ if current_user.can_manage_equipment():
 ## 💡 Common Tasks
 
 ### Create a New Admin User
+
 1. Login as admin
 2. Go to API endpoint or use admin panel (when created)
 3. POST to `/api/auth/register` with `role: "admin"`
 
 ### Reset a User's Password
+
 As admin:
+
 ```http
 PUT /api/auth/users/<user_id>/change-password
 {
@@ -350,12 +377,15 @@ PUT /api/auth/users/<user_id>/change-password
 ```
 
 ### Disable a User Account
+
 As admin:
+
 ```http
 PUT /api/auth/users/<user_id>/disable
 ```
 
 ### Change My Own Password
+
 ```http
 PUT /api/auth/users/me/change-password
 {
@@ -369,7 +399,9 @@ PUT /api/auth/users/me/change-password
 ## ⚙️ Configuration
 
 ### Session Settings
+
 Edit `config.py` to change session behavior:
+
 ```python
 SESSION_COOKIE_SECURE = True  # Only send over HTTPS
 SESSION_COOKIE_HTTPONLY = True  # No JS access
@@ -378,7 +410,9 @@ PERMANENT_SESSION_LIFETIME = 1800  # 30 minutes
 ```
 
 ### Password Requirements
+
 Current requirements:
+
 - Minimum 6 characters
 - Can contain any character
 - Recommend using strong passwords
@@ -390,26 +424,31 @@ To change, edit `auth_routes.py` in `/api/auth/register`
 ## 🐛 Troubleshooting
 
 ### "Invalid username or password"
+
 - Check username spelling (case-sensitive)
 - Verify password is correct
 - User account must be active (not disabled)
 
 ### "Admin access required"
+
 - You don't have admin role
 - Ask admin to change your role
 - Admin role is required for user management
 
 ### "Staff access required"
+
 - You don't have staff or admin role
 - Cannot add/edit/delete equipment with borrower role
 - Need staff role for equipment management
 
 ### Session Expired
+
 - Login again with your credentials
 - Sessions expire after 30 minutes of inactivity
 - Check browser cookies are enabled
 
 ### Cannot Delete Equipment
+
 - Equipment is currently on loan
 - Return the equipment first, then delete
 - Delete is not allowed for active loans
@@ -419,12 +458,14 @@ To change, edit `auth_routes.py` in `/api/auth/register`
 ## 📊 User Management
 
 ### View All Users (Admin Only)
+
 ```bash
 curl -X GET http://localhost:5000/api/auth/users \
   -H "Authorization: Bearer <session_token>"
 ```
 
 ### Update User Details
+
 ```bash
 curl -X PUT http://localhost:5000/api/auth/users/<user_id> \
   -H "Content-Type: application/json" \
@@ -436,6 +477,7 @@ curl -X PUT http://localhost:5000/api/auth/users/<user_id> \
 ## 🔐 Security Best Practices
 
 ### For System Administrators
+
 1. ✅ Change default admin password immediately
 2. ✅ Use strong passwords (8+ characters, mix of types)
 3. ✅ Enable HTTPS in production
@@ -446,6 +488,7 @@ curl -X PUT http://localhost:5000/api/auth/users/<user_id> \
 8. ✅ Update Flask and dependencies regularly
 
 ### For Users
+
 1. ✅ Never share your password
 2. ✅ Use unique passwords
 3. ✅ Logout when done
@@ -457,6 +500,7 @@ curl -X PUT http://localhost:5000/api/auth/users/<user_id> \
 ## 📈 Audit Trail
 
 All user actions are logged with:
+
 - User ID
 - Action type (CREATE, UPDATE, DELETE)
 - Table affected
@@ -464,6 +508,7 @@ All user actions are logged with:
 - Details of change
 
 View audit logs:
+
 ```http
 GET /api/audit-logs
 ```
@@ -473,6 +518,7 @@ GET /api/audit-logs
 ## 🚀 Production Deployment
 
 ### Before Going Live
+
 1. Change all default passwords
 2. Set up HTTPS/SSL
 3. Use environment variables for secrets
@@ -485,6 +531,7 @@ GET /api/audit-logs
 10. Backup database regularly
 
 ### Environment Variables
+
 ```bash
 FLASK_ENV=production
 SECRET_KEY=<very-long-random-key>
