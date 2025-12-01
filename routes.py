@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 from datetime import datetime, timedelta
-from models import db, Student, Equipment, Loan, Staff, AuditLog
+from models import db, Student, Equipment, Loan, Staff, AuditLog, Reservation, DamageLog, ReturnDetail
 from email_service import send_checkout_email, send_return_confirmation
 from decorators import staff_required, admin_required, borrower_required
 import uuid
@@ -686,3 +686,361 @@ def get_audit_logs():
     """Get audit logs"""
     logs = AuditLog.query.order_by(AuditLog.created_at.desc()).limit(100).all()
     return jsonify([l.to_dict() for l in logs]), 200
+
+# ==================== RESERVATIONS ====================
+
+@api_bp.route('/reservations', methods=['POST'])
+@login_required
+def create_reservation():
+    """Create a new reservation"""
+    data = request.get_json()
+    
+    # Validation
+    if not all(k in data for k in ['student_id', 'equipment_id', 'date_from', 'date_to']):
+        return jsonify({'error': 'Missing required fields'}), 400
+    
+    # Check if student exists
+    student = Student.query.get(data['student_id'])
+    if not student:
+        return jsonify({'error': 'Student not found'}), 404
+    
+    # Check if equipment exists
+    equipment = Equipment.query.get(data['equipment_id'])
+    if not equipment:
+        return jsonify({'error': 'Equipment not found'}), 404
+    
+    # Check for conflicts
+    from datetime import datetime as dt
+    date_from = dt.fromisoformat(data['date_from']).date()
+    date_to = dt.fromisoformat(data['date_to']).date()
+    
+    conflicts = Reservation.query.filter(
+        Reservation.equipment_id == data['equipment_id'],
+        Reservation.status.in_(['Pending', 'Confirmed']),
+        db.or_(
+            db.and_(Reservation.date_from <= date_from, Reservation.date_to >= date_from),
+            db.and_(Reservation.date_from <= date_to, Reservation.date_to >= date_to),
+            db.and_(Reservation.date_from >= date_from, Reservation.date_to <= date_to)
+        )
+    ).first()
+    
+    if conflicts:
+        return jsonify({'error': 'Equipment is already reserved for this period'}), 409
+    
+    # Create reservation
+    reservation = Reservation(
+        student_id=data['student_id'],
+        equipment_id=data['equipment_id'],
+        date_from=date_from,
+        date_to=date_to,
+        notes=data.get('notes', '')
+    )
+    
+    db.session.add(reservation)
+    db.session.commit()
+    
+    # Log audit
+    log_audit('CREATE', 'Reservation', reservation.id, {'action': 'Reservation created'})
+    
+    return jsonify(reservation.to_dict()), 201
+
+@api_bp.route('/reservations', methods=['GET'])
+@login_required
+def get_reservations():
+    """Get all reservations with filtering"""
+    page = request.args.get('page', 1, type=int)
+    status = request.args.get('status')
+    student_id = request.args.get('student_id')
+    equipment_id = request.args.get('equipment_id')
+    
+    query = Reservation.query
+    
+    if status:
+        query = query.filter_by(status=status)
+    if student_id:
+        query = query.filter_by(student_id=student_id)
+    if equipment_id:
+        query = query.filter_by(equipment_id=equipment_id)
+    
+    query = query.order_by(Reservation.created_at.desc())
+    reservations = query.paginate(page=page, per_page=20)
+    
+    return jsonify({
+        'data': [r.to_dict() for r in reservations.items],
+        'total': reservations.total,
+        'pages': reservations.pages
+    }), 200
+
+@api_bp.route('/reservations/<reservation_id>', methods=['GET'])
+@login_required
+def get_reservation(reservation_id):
+    """Get specific reservation"""
+    reservation = Reservation.query.get(reservation_id)
+    if not reservation:
+        return jsonify({'error': 'Reservation not found'}), 404
+    return jsonify(reservation.to_dict()), 200
+
+@api_bp.route('/reservations/<reservation_id>', methods=['PUT'])
+@login_required
+@staff_required
+def update_reservation(reservation_id):
+    """Update reservation"""
+    reservation = Reservation.query.get(reservation_id)
+    if not reservation:
+        return jsonify({'error': 'Reservation not found'}), 404
+    
+    data = request.get_json()
+    
+    if 'status' in data:
+        reservation.status = data['status']
+        if data['status'] == 'Confirmed':
+            reservation.confirmed_at = datetime.utcnow()
+    
+    if 'notes' in data:
+        reservation.notes = data['notes']
+    
+    db.session.commit()
+    log_audit('UPDATE', 'Reservation', reservation_id, {'status': data.get('status')})
+    
+    return jsonify(reservation.to_dict()), 200
+
+@api_bp.route('/reservations/<reservation_id>', methods=['DELETE'])
+@login_required
+@staff_required
+def delete_reservation(reservation_id):
+    """Delete reservation"""
+    reservation = Reservation.query.get(reservation_id)
+    if not reservation:
+        return jsonify({'error': 'Reservation not found'}), 404
+    
+    db.session.delete(reservation)
+    db.session.commit()
+    log_audit('DELETE', 'Reservation', reservation_id, {'action': 'Reservation deleted'})
+    
+    return jsonify({'message': 'Reservation deleted successfully'}), 200
+
+# ==================== DAMAGE LOGS ====================
+
+@api_bp.route('/damage-logs', methods=['POST'])
+@login_required
+@staff_required
+def create_damage_log():
+    """Create damage log entry"""
+    data = request.get_json()
+    
+    if not all(k in data for k in ['equipment_id', 'student_id', 'damage_type', 'description']):
+        return jsonify({'error': 'Missing required fields'}), 400
+    
+    # Verify references
+    equipment = Equipment.query.get(data['equipment_id'])
+    student = Student.query.get(data['student_id'])
+    
+    if not equipment or not student:
+        return jsonify({'error': 'Equipment or Student not found'}), 404
+    
+    damage_log = DamageLog(
+        equipment_id=data['equipment_id'],
+        student_id=data['student_id'],
+        loan_id=data.get('loan_id'),
+        damage_type=data['damage_type'],
+        description=data['description'],
+        reported_by=current_user.username,
+        repair_cost=data.get('repair_cost', 0),
+        replacement_cost=data.get('replacement_cost', 0)
+    )
+    
+    # Update equipment status if lost
+    if data['damage_type'] == 'Lost':
+        equipment.availability_status = 'Lost'
+        equipment.condition = 'Lost'
+    elif data['damage_type'] == 'Damage':
+        equipment.condition = 'Damaged'
+    
+    db.session.add(damage_log)
+    db.session.commit()
+    
+    log_audit('CREATE', 'DamageLog', damage_log.id, {'damage_type': data['damage_type']})
+    
+    return jsonify(damage_log.to_dict()), 201
+
+@api_bp.route('/damage-logs', methods=['GET'])
+@login_required
+def get_damage_logs():
+    """Get all damage logs"""
+    page = request.args.get('page', 1, type=int)
+    status = request.args.get('status')
+    damage_type = request.args.get('damage_type')
+    equipment_id = request.args.get('equipment_id')
+    
+    query = DamageLog.query
+    
+    if status:
+        query = query.filter_by(status=status)
+    if damage_type:
+        query = query.filter_by(damage_type=damage_type)
+    if equipment_id:
+        query = query.filter_by(equipment_id=equipment_id)
+    
+    query = query.order_by(DamageLog.created_at.desc())
+    logs = query.paginate(page=page, per_page=20)
+    
+    return jsonify({
+        'data': [l.to_dict() for l in logs.items],
+        'total': logs.total,
+        'pages': logs.pages
+    }), 200
+
+@api_bp.route('/damage-logs/<log_id>', methods=['PUT'])
+@login_required
+@staff_required
+def update_damage_log(log_id):
+    """Update damage log status"""
+    log = DamageLog.query.get(log_id)
+    if not log:
+        return jsonify({'error': 'Damage log not found'}), 404
+    
+    data = request.get_json()
+    
+    if 'status' in data:
+        log.status = data['status']
+        if data['status'] == 'Resolved':
+            log.resolved_at = datetime.utcnow()
+    
+    if 'repair_cost' in data:
+        log.repair_cost = data['repair_cost']
+    if 'replacement_cost' in data:
+        log.replacement_cost = data['replacement_cost']
+    
+    db.session.commit()
+    log_audit('UPDATE', 'DamageLog', log_id, {'status': data.get('status')})
+    
+    return jsonify(log.to_dict()), 200
+
+# ==================== REPORTING ====================
+
+@api_bp.route('/reports/equipment-usage', methods=['GET'])
+@login_required
+def equipment_usage_report():
+    """Equipment usage statistics"""
+    equipment_stats = db.session.query(
+        Equipment.id,
+        Equipment.name,
+        db.func.count(Loan.id).label('total_loans'),
+        db.func.count(db.case([(Loan.status == 'Borrowed', 1)])).label('active_loans')
+    ).outerjoin(Loan).group_by(Equipment.id, Equipment.name).all()
+    
+    data = [{
+        'equipment_id': stat[0],
+        'equipment_name': stat[1],
+        'total_loans': stat[2],
+        'active_loans': stat[3]
+    } for stat in equipment_stats]
+    
+    return jsonify(data), 200
+
+@api_bp.route('/reports/most-borrowed', methods=['GET'])
+@login_required
+def most_borrowed_report():
+    """Most borrowed equipment report"""
+    limit = request.args.get('limit', 10, type=int)
+    
+    most_borrowed = db.session.query(
+        Equipment.id,
+        Equipment.name,
+        Equipment.category,
+        db.func.count(Loan.id).label('loan_count')
+    ).join(Loan).group_by(Equipment.id, Equipment.name, Equipment.category)\
+     .order_by(db.func.count(Loan.id).desc()).limit(limit).all()
+    
+    data = [{
+        'equipment_id': item[0],
+        'equipment_name': item[1],
+        'category': item[2],
+        'loan_count': item[3]
+    } for item in most_borrowed]
+    
+    return jsonify(data), 200
+
+@api_bp.route('/reports/user-activity/<user_id>', methods=['GET'])
+@login_required
+def user_activity_report(user_id):
+    """Get user borrowing history and statistics"""
+    student = Student.query.get(user_id)
+    if not student:
+        return jsonify({'error': 'Student not found'}), 404
+    
+    loans = Loan.query.filter_by(student_id=user_id).all()
+    damage_logs = DamageLog.query.filter_by(student_id=user_id).all()
+    
+    total_borrowed = len(loans)
+    active_loans = len([l for l in loans if l.status == 'Borrowed'])
+    overdue_loans = len([l for l in loans if l.date_due < datetime.utcnow().date() and l.status == 'Borrowed'])
+    damage_count = len([d for d in damage_logs if d.damage_type == 'Damage'])
+    lost_count = len([d for d in damage_logs if d.damage_type == 'Lost'])
+    
+    return jsonify({
+        'student_id': user_id,
+        'student_name': f"{student.first_name} {student.last_name}",
+        'program': student.program,
+        'total_borrowed': total_borrowed,
+        'active_loans': active_loans,
+        'overdue_loans': overdue_loans,
+        'damage_count': damage_count,
+        'lost_count': lost_count,
+        'loans': [l.to_dict() for l in loans]
+    }), 200
+
+@api_bp.route('/reports/damage-summary', methods=['GET'])
+@login_required
+def damage_summary_report():
+    """Damage and loss report summary"""
+    damage_logs = DamageLog.query.all()
+    
+    total_damage = len([d for d in damage_logs if d.damage_type == 'Damage'])
+    total_lost = len([d for d in damage_logs if d.damage_type == 'Lost'])
+    total_cost = sum([d.repair_cost or 0 for d in damage_logs]) + \
+                sum([d.replacement_cost or 0 for d in damage_logs])
+    open_issues = len([d for d in damage_logs if d.status == 'Open'])
+    
+    return jsonify({
+        'total_damage_reports': total_damage,
+        'total_lost_items': total_lost,
+        'total_estimated_cost': total_cost,
+        'open_issues': open_issues,
+        'by_status': {
+            'Open': len([d for d in damage_logs if d.status == 'Open']),
+            'In Repair': len([d for d in damage_logs if d.status == 'In Repair']),
+            'Resolved': len([d for d in damage_logs if d.status == 'Resolved'])
+        },
+        'details': [d.to_dict() for d in damage_logs]
+    }), 200
+
+@api_bp.route('/reports/overdue-loans', methods=['GET'])
+@login_required
+def overdue_loans_report():
+    """Get overdue loans report"""
+    today = datetime.utcnow().date()
+    overdue = Loan.query.filter(
+        Loan.status == 'Borrowed',
+        Loan.date_due < today
+    ).all()
+    
+    data = []
+    for loan in overdue:
+        days_overdue = (today - loan.date_due).days
+        data.append({
+            'loan_id': loan.id,
+            'student': loan.student.to_dict() if loan.student else None,
+            'equipment': loan.equipment.to_dict() if loan.equipment else None,
+            'date_borrowed': loan.date_borrowed.isoformat(),
+            'date_due': loan.date_due.isoformat(),
+            'days_overdue': days_overdue,
+            'daily_fine': 5.0,
+            'fine_amount': days_overdue * 5.0
+        })
+    
+    return jsonify({
+        'total_overdue': len(data),
+        'total_fines': sum([item['fine_amount'] for item in data]),
+        'loans': data
+    }), 200

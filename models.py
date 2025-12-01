@@ -212,3 +212,111 @@ class AuditLog(db.Model):
             'details': self.details,
             'created_at': self.created_at.isoformat() if self.created_at else None
         }
+
+class ReturnDetail(db.Model):
+    """Track return details including damage and fines"""
+    __tablename__ = 'return_details'
+    
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid4()))
+    loan_id = db.Column(db.String(36), db.ForeignKey('loans.id'), nullable=False, unique=True)
+    damage_status = db.Column(db.String(50), default='None')  # None, Minor, Major, Lost
+    damage_notes = db.Column(db.Text)
+    condition_on_return = db.Column(db.String(50), default='Good')
+    days_late = db.Column(db.Integer, default=0)
+    late_fine = db.Column(db.Float, default=0.0)
+    damage_fine = db.Column(db.Float, default=0.0)
+    total_fine = db.Column(db.Float, default=0.0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __repr__(self):
+        return f'<ReturnDetail {self.loan_id}>'
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'loan_id': self.loan_id,
+            'damage_status': self.damage_status,
+            'damage_notes': self.damage_notes,
+            'condition_on_return': self.condition_on_return,
+            'days_late': self.days_late,
+            'late_fine': self.late_fine,
+            'damage_fine': self.damage_fine,
+            'total_fine': self.total_fine,
+            'created_at': self.created_at.isoformat() if self.created_at else None
+        }
+
+class DamageLog(db.Model):
+    """Track damaged and lost equipment"""
+    __tablename__ = 'damage_logs'
+    
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid4()))
+    equipment_id = db.Column(db.String(36), db.ForeignKey('equipment.id'), nullable=False)
+    student_id = db.Column(db.String(36), db.ForeignKey('students.id'), nullable=False)
+    loan_id = db.Column(db.String(36), db.ForeignKey('loans.id'))
+    damage_type = db.Column(db.String(50), nullable=False)  # Damage, Lost
+    description = db.Column(db.Text)
+    reported_by = db.Column(db.String(100))
+    status = db.Column(db.String(50), default='Open')  # Open, In Repair, Resolved
+    repair_cost = db.Column(db.Float)
+    replacement_cost = db.Column(db.Float)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    resolved_at = db.Column(db.DateTime)
+    
+    equipment = db.relationship('Equipment', backref='damage_logs')
+    student = db.relationship('Student', backref='damage_logs')
+    
+    def __repr__(self):
+        return f'<DamageLog {self.damage_type} for {self.equipment_id}>'
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'equipment_id': self.equipment_id,
+            'equipment': self.equipment.to_dict() if self.equipment else None,
+            'student_id': self.student_id,
+            'student': self.student.to_dict() if self.student else None,
+            'loan_id': self.loan_id,
+            'damage_type': self.damage_type,
+            'description': self.description,
+            'reported_by': self.reported_by,
+            'status': self.status,
+            'repair_cost': self.repair_cost,
+            'replacement_cost': self.replacement_cost,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'resolved_at': self.resolved_at.isoformat() if self.resolved_at else None
+        }
+
+class Reservation(db.Model):
+    """Equipment reservation system"""
+    __tablename__ = 'reservations'
+    
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid4()))
+    student_id = db.Column(db.String(36), db.ForeignKey('students.id'), nullable=False)
+    equipment_id = db.Column(db.String(36), db.ForeignKey('equipment.id'), nullable=False)
+    date_from = db.Column(db.Date, nullable=False)
+    date_to = db.Column(db.Date, nullable=False)
+    status = db.Column(db.String(50), default='Pending')  # Pending, Confirmed, Cancelled, Completed
+    notes = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    confirmed_at = db.Column(db.DateTime)
+    
+    student = db.relationship('Student', backref='reservations')
+    equipment = db.relationship('Equipment', backref='reservations')
+    
+    def __repr__(self):
+        return f'<Reservation {self.student_id} - {self.equipment_id}>'
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'student_id': self.student_id,
+            'student': self.student.to_dict() if self.student else None,
+            'equipment_id': self.equipment_id,
+            'equipment': self.equipment.to_dict() if self.equipment else None,
+            'date_from': self.date_from.isoformat() if self.date_from else None,
+            'date_to': self.date_to.isoformat() if self.date_to else None,
+            'status': self.status,
+            'notes': self.notes,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'confirmed_at': self.confirmed_at.isoformat() if self.confirmed_at else None
+        }
