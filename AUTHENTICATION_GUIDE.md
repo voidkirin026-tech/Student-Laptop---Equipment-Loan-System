@@ -3,6 +3,7 @@
 ## 🎯 Features Implemented
 
 ### 1. ✅ User Authentication System
+
 - **Login/Register Pages** - Beautiful, modern UI with forms
 - **Password Hashing** - Using Werkzeug for secure password storage
 - **Session Management** - Flask-Login for session handling
@@ -12,8 +13,9 @@
   - **Borrower** - Can checkout/return equipment
 
 ### 2. ✅ User Model with Security
+
 ```python
-- User table created with fields:
+User table created with fields:
   - username (unique)
   - email (unique)
   - password_hash (hashed with Werkzeug)
@@ -24,11 +26,12 @@
 ```
 
 ### 3. ✅ Role-Based Access Control (RBAC)
+
 - **Permission Decorators** - `@staff_required`, `@admin_required`, `@borrower_required`
 - **Protected Endpoints**:
   - POST /api/equipment - Staff/Admin only
-  - PUT /api/equipment/<id> - Staff/Admin only (NEW)
-  - DELETE /api/equipment/<id> - Staff/Admin only (NEW)
+  - PUT /api/equipment/{id} - Staff/Admin only (NEW)
+  - DELETE /api/equipment/{id} - Staff/Admin only (NEW)
   - POST /api/students - Staff/Admin only
   - POST /api/loans/checkout - Borrower+ only
 
@@ -37,29 +40,34 @@
   - Redirect to /login if not authenticated
 
 ### 4. ✅ Authentication Endpoints
+
 - **POST /api/auth/register** - Register new user
 - **POST /api/auth/login** - Login with username/password
 - **POST /api/auth/logout** - Logout (API)
 - **GET /api/auth/current-user** - Get logged-in user info
 - **GET /api/auth/users** - List all users (admin only)
-- **PUT /api/auth/users/<id>** - Update user (admin or self)
-- **PUT /api/auth/users/<id>/change-password** - Change password
-- **PUT /api/auth/users/<id>/disable** - Disable user (admin only)
+- **PUT /api/auth/users/{id}** - Update user (admin or self)
+- **PUT /api/auth/users/{id}/change-password** - Change password
+- **PUT /api/auth/users/{id}/disable** - Disable user (admin only)
 
 ### 5. ✅ Equipment Management Enhancements
-- **UPDATE Equipment** - PUT /api/equipment/<id> - Edit equipment details
-- **DELETE Equipment** - DELETE /api/equipment/<id> - Delete equipment (prevents if on loan)
+
+- **UPDATE Equipment** - PUT /api/equipment/{id} - Edit equipment details
+- **DELETE Equipment** - DELETE /api/equipment/{id} - Delete equipment (prevents if on loan)
 - Both operations require staff/admin role
 
 ### 6. ✅ Navigation & UI Updates
+
 - **User Info Badge** - Shows current user and role in navbar
 - **Logout Button** - Red logout button in navbar
 - **Login/Register Forms** - Modern, responsive design
 - **Error Messages** - Flash messages for authentication feedback
 
 ### 7. ✅ Sample Users Created
+
 On first run (load_sample_data.py), three test users are created:
-```
+
+```text
 Admin User:
   Username: admin
   Password: admin123
@@ -81,13 +89,15 @@ Borrower User:
 
 ## 📁 Files Created/Modified
 
-### New Files:
+### New Files
+
 1. **auth_routes.py** - All authentication endpoints
 2. **decorators.py** - Permission decorators for RBAC
 3. **templates/login.html** - Login page with form
 4. **templates/register.html** - Registration page with form
 
-### Modified Files:
+### Modified Files
+
 1. **models.py** - Added User model with password hashing
 2. **app.py** - Added Flask-Login initialization, protected routes
 3. **routes.py** - Added role decorators, equipment edit/delete endpoints
@@ -110,37 +120,44 @@ Borrower User:
 
 ## 🧪 How to Test
 
-### 1. Login as Admin:
-```
+### 1. Login as Admin
+
+```text
 Username: admin
 Password: admin123
 ```
+
 - Can manage equipment (add, edit, delete)
 - Can manage students
 - Can access all pages
 - Can manage other users
 
-### 2. Login as Staff:
-```
+### 2. Login as Staff
+
+```text
 Username: staff1
 Password: staff123
 ```
+
 - Can manage equipment (add, edit, delete)
 - Can manage students
 - Can process loans
 - Cannot manage other users
 
-### 3. Login as Borrower:
-```
+### 3. Login as Borrower
+
+```text
 Username: borrower1
 Password: borrower123
 ```
+
 - Can only checkout equipment
 - Cannot add/edit equipment
 - Cannot manage students
 
-### 4. Test Equipment Edit/Delete:
-```
+### 4. Test Equipment Edit/Delete
+
+```bash
 # Edit equipment (staff/admin only)
 curl -X PUT http://localhost:5000/api/equipment/EQUIPMENT_ID \
   -H "Content-Type: application/json" \
@@ -187,6 +204,7 @@ curl -X DELETE http://localhost:5000/api/equipment/EQUIPMENT_ID
 ## 🎓 Learning Resources
 
 The authentication system implements industry-standard practices:
+
 - OAuth2-inspired role-based access control
 - Werkzeug password hashing (PBKDF2)
 - Flask-Login session management
