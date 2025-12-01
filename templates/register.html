@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Equipment Loan System</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script>
+        // Dark mode initialization
+        if (localStorage.getItem('darkMode') === 'enabled' || 
+            (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    </script>
     <style>
         .auth-container {
             max-width: 500px;
@@ -70,6 +77,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 10px;
+            text-align: center;
         }
         
         .btn-register:hover {
@@ -110,9 +118,87 @@
             margin-bottom: 20px;
             border-left: 4px solid #4caf50;
         }
+        
+        /* Dark Mode Styles */
+        [data-theme="dark"] {
+            --primary-color: #14b8a6;
+            --primary-dark: #0d9488;
+            --text-color: #e5e7eb;
+            --border-color: #4b5563;
+            --bg-color: #1f2937;
+            --input-bg: #374151;
+        }
+        
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #111827 0%, #1a2e42 100%);
+            color: #e5e7eb;
+        }
+        
+        [data-theme="dark"] .auth-container {
+            background: #1f2937;
+            border-color: #4b5563;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+        
+        [data-theme="dark"] .form-group input {
+            background-color: #374151;
+            border-color: #4b5563;
+            color: #e5e7eb;
+        }
+        
+        [data-theme="dark"] .form-group input::placeholder {
+            color: #9ca3af;
+        }
+        
+        [data-theme="dark"] .form-group input:focus {
+            border-color: #14b8a6;
+        }
+        
+        [data-theme="dark"] .error-message {
+            background-color: #7f1d1d;
+            color: #fca5a5;
+            border-left-color: #fca5a5;
+        }
+        
+        [data-theme="dark"] .success-message {
+            background-color: #064e3b;
+            color: #86efac;
+            border-left-color: #86efac;
+        }
+        
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-color, #0f766e);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        [data-theme="dark"] .dark-mode-toggle {
+            background: #14b8a6;
+        }
     </style>
 </head>
 <body>
+    <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">🌙</button>
+    
     <nav class="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -168,7 +254,7 @@
                     <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
                 </div>
                 
-                <button type="submit" class="btn-register">Create Account</button>
+                <button type="submit" class="btn-register">✍️ Sign Up Now</button>
             </form>
             
             <div class="auth-footer">
@@ -182,6 +268,23 @@
     </footer>
 
     <script>
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        
+        darkModeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('darkMode', newTheme === 'dark' ? 'enabled' : 'disabled');
+            
+            darkModeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+        
+        // Set initial button text
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        darkModeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+        
         // Handle register form submission
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
