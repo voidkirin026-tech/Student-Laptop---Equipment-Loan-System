@@ -5,6 +5,7 @@ A complete web-based information system for managing equipment checkouts, tracki
 ## 🎯 System Overview
 
 This system implements **Scenario #7** from the final project requirements:
+
 - ✅ Form for IT staff to log equipment checkouts (item, student, due date)
 - ✅ Equipment database with status tracking ("Available" or "On Loan")
 - ✅ Active loan logging and recording
@@ -30,7 +31,8 @@ This system implements **Scenario #7** from the final project requirements:
 ## Features
 
 ### Core Functionality
-3. **Student Management**
+
+1. **Student Management**
    - ✅ Add and manage student database with comprehensive profiles
    - ✅ Track student program and year level
    - ✅ Email address validation and storage
@@ -91,6 +93,7 @@ This system implements **Scenario #7** from the final project requirements:
    - ✅ Comprehensive action logging
 
 ### Quality & Reliability
+
 - ✅ Form validation with user feedback
 - ✅ API error handling with meaningful messages
 - ✅ Defensive programming throughout
@@ -101,6 +104,7 @@ This system implements **Scenario #7** from the final project requirements:
 ## 🚀 Quick Start (2 Minutes)
 
 ### Try It Immediately
+
 ```bash
 # Install dependencies
 pip install -r requirements.txt
@@ -112,10 +116,11 @@ python load_sample_data.py
 python app.py
 ```
 
-Then visit: **http://localhost:5000/login**
+Then visit: <http://localhost:5000/login>
 
 ### Test Credentials
-```
+
+```bash
 Admin:    username=admin    password=admin123
 Staff:    username=staff1   password=staff123
 Borrower: username=borrower1 password=borrower123
@@ -126,6 +131,7 @@ Borrower: username=borrower1 password=borrower123
 ## 📖 Full Setup Guide
 
 ### 1. Prerequisites
+
 ```bash
 # Python 3.13+
 python --version
@@ -135,6 +141,7 @@ psql --version
 ```
 
 ### 2. Installation
+
 ```bash
 # Clone project
 cd "Student Laptop & Equipment Loan System"
@@ -148,7 +155,9 @@ pip install -r requirements.txt
 ```
 
 ### 3. Configure Database
+
 Edit `config.py` to set your database:
+
 ```python
 # SQLite (development)
 SQLALCHEMY_DATABASE_URI = 'sqlite:///equipment_loan.db'
@@ -158,6 +167,7 @@ SQLALCHEMY_DATABASE_URI = 'postgresql://user:password@localhost/equipment_loan'
 ```
 
 ### 4. Initialize System
+
 ```bash
 # Load sample data (creates users, equipment, and sample loans)
 python load_sample_data.py
@@ -171,6 +181,7 @@ python load_sample_data.py
 ```
 
 ### 5. Run Application
+
 ```bash
 # Start development server
 python app.py
@@ -181,7 +192,9 @@ python app.py
 ```
 
 ### 6. Optional: Configure Email
+
 Edit `config.py`:
+
 ```python
 MAIL_SERVER = 'smtp.gmail.com'
 MAIL_PORT = 587
@@ -194,6 +207,7 @@ MAIL_PASSWORD = 'your-app-password'
 ## ✨ What's New (November 30, 2025)
 
 ### Authentication & Authorization
+
 - ✅ Secure user login/registration system
 - ✅ Password hashing with Werkzeug PBKDF2
 - ✅ Three user roles with different permissions
@@ -201,48 +215,56 @@ MAIL_PASSWORD = 'your-app-password'
 - ✅ Protected pages and API endpoints
 
 ### Equipment Management
+
 - ✅ **Edit equipment** - Update name, model, condition
 - ✅ **Delete equipment** - With safety checks (prevents deletion if on loan)
 - ✅ Equipment action buttons in inventory table
 - ✅ Audit logging for all changes
 
 ### User Experience
+
 - ✅ Modern login/register pages
 - ✅ User badge in navbar showing name and role
 - ✅ Logout button (red) in navbar
 - ✅ Permission-based UI elements
 - ✅ Role restrictions explained in error messages
 
-Visit: **http://localhost:5000**
+Visit: <http://localhost:5000>
 
 ## Database Schema
 
 ### Students Table
+
 ```sql
 id, first_name, last_name, program, year_level, email, status, created_at
 ```
 
 ### Equipment Table
+
 ```sql
 id, name, category, serial_number, condition, availability_status, created_at
 ```
 
 ### Loans Table
+
 ```sql
 id, student_id, equipment_id, date_borrowed, date_due, date_returned, status, created_at
 ```
 
 ### Staff Table
+
 ```sql
 id, name, email, role, created_at
 ```
 
 ### Email Logs Table
+
 ```sql
 id, loan_id, recipient_email, email_type, sent_at, status
 ```
 
 ### Audit Logs Table
+
 ```sql
 id, action, table_name, record_id, details, created_at
 ```
@@ -250,10 +272,12 @@ id, action, table_name, record_id, details, created_at
 ### API Endpoints
 
 ### Students
+
 - `GET /api/students` - List all students
 - `POST /api/students` - Create new student (requires: first_name, last_name, email)
 - `GET /api/students/<id>` - Get student details
 - **Example POST:**
+
   ```json
   {
     "first_name": "Juan",
@@ -266,6 +290,7 @@ id, action, table_name, record_id, details, created_at
   ```
 
 ### Equipment
+
 - `GET /api/equipment` - List all equipment
 - `POST /api/equipment` - Add new equipment
 - `GET /api/equipment/available` - Get available equipment only
@@ -273,6 +298,7 @@ id, action, table_name, record_id, details, created_at
 - **Condition values:** Excellent, Good, Fair, Poor, Damaged
 
 ### Loans
+
 - `POST /api/loans/checkout` - Checkout equipment
 - `GET /api/loans` - List all loans
 - `GET /api/loans/active` - List active loans only
@@ -281,10 +307,12 @@ id, action, table_name, record_id, details, created_at
 - `GET /api/loans/<id>` - Get loan details
 
 ### Staff
+
 - `GET /api/staff` - List staff members
 - `POST /api/staff` - Add staff member
 
 ### System
+
 - `GET /api/health` - Health check
 - `GET /api/audit-logs` - View audit trail (last 100)
 
@@ -293,47 +321,58 @@ id, action, table_name, record_id, details, created_at
 The system includes **50+ realistic university programs** organized into 10 categories:
 
 ### Engineering Programs
+
 - Civil Engineering, Mechanical Engineering, Electrical Engineering
 - Electronics Engineering, Chemical Engineering, Industrial Engineering
 
 ### Computer Science & IT
+
 - Computer Science, Information Technology, Software Engineering
 - Cybersecurity, Data Science, Artificial Intelligence
 
 ### Business & Commerce
+
 - Business Administration, Accounting, Finance, Marketing
 - Management, Economics, Business Analytics
 
 ### Health Sciences
+
 - Medicine, Nursing, Pharmacy, Public Health
 - Dentistry, Physical Therapy
 
 ### Natural Sciences
+
 - Physics, Chemistry, Biology, Biochemistry
 - Mathematics, Environmental Science
 
 ### Arts & Humanities
+
 - English Literature, History, Philosophy, Psychology
 - Sociology, Anthropology
 
 ### Social Sciences
+
 - Law, Political Science, International Relations
 - Communication, Journalism, Public Administration
 
 ### Creative & Design
+
 - Graphic Design, Architecture, Fine Arts, Music
 - Digital Media, Industrial Design
 
 ### Education & Teaching
+
 - Elementary Education, Secondary Education, Higher Education
 - Special Education
 
 ### Agriculture & Environment
+
 - Agriculture, Forestry, Environmental Engineering, Veterinary Medicine
 
 ## Using the System
 
 ### Navigation Menu
+
 - **Dashboard** - View system statistics and overdue items
 - **Students** - Manage student database and profiles
 - **Checkout** - Log equipment checkouts to students
@@ -341,6 +380,7 @@ The system includes **50+ realistic university programs** organized into 10 cate
 - **Loans** - Track active and returned loans
 
 ### Adding a Student
+
 1. Navigate to "Students"
 2. Fill in the form:
    - First Name and Last Name (required)
@@ -351,6 +391,7 @@ The system includes **50+ realistic university programs** organized into 10 cate
 4. Student appears in the table immediately
 
 ### Adding Equipment
+
 1. Navigate to "Equipment"
 2. Click "+ Add New Equipment"
 3. Enter:
@@ -362,6 +403,7 @@ The system includes **50+ realistic university programs** organized into 10 cate
 4. Submit - Equipment added to inventory
 
 ### Checking Out Equipment
+
 1. Go to "Checkout Equipment"
 2. Select Student
 3. Select Available Equipment
@@ -372,6 +414,7 @@ The system includes **50+ realistic university programs** organized into 10 cate
    - ✓ Loan recorded in database
 
 ### Returning Equipment
+
 1. Go to "Loan Management" or "Dashboard"
 2. Find active loan
 3. Click "Return" button
@@ -380,6 +423,7 @@ The system includes **50+ realistic university programs** organized into 10 cate
    - ✓ Loan marked as "Returned"
 
 ### Monitoring Overdue Items
+
 1. Dashboard shows overdue count
 2. Click "Overdue Items" button
 3. View all overdue equipment with days overdue
@@ -388,7 +432,8 @@ The system includes **50+ realistic university programs** organized into 10 cate
 ## Configuration
 
 ### Email Setup (Gmail Example)
-```
+
+```text
 1. Enable 2-Factor Authentication in Gmail
 2. Generate App Password (16 characters)
 3. Add to .env:
@@ -397,7 +442,9 @@ The system includes **50+ realistic university programs** organized into 10 cate
 ```
 
 ### Change Scheduled Task Time
+
 Edit `scheduler.py`:
+
 ```python
 scheduler.add_job(
     func=check_overdue_loans,
@@ -408,8 +455,10 @@ scheduler.add_job(
 ```
 
 ### Database Connection
+
 Update in `.env`:
-```
+
+```sql
 DATABASE_URL=postgresql://user:password@localhost:5432/equipment_loan_db
 ```
 
@@ -420,6 +469,7 @@ python load_sample_data.py
 ```
 
 This creates:
+
 - **6 sample students** from diverse programs (Computer Science, Software Engineering, Mechanical Engineering, Business Administration, Electrical Engineering, Medicine)
 - 6 equipment items with various brands and conditions
 - 2 staff members
@@ -428,7 +478,8 @@ This creates:
 ## Testing
 
 ### Via Web Interface
-1. Access http://localhost:5000
+
+1. Access <http://localhost:5000>
 2. Add equipment
 3. Create students (can use API)
 4. Checkout equipment
@@ -436,6 +487,7 @@ This creates:
 6. Test return functionality
 
 ### Via API
+
 ```bash
 # Get all equipment
 curl http://localhost:5000/api/equipment
@@ -455,7 +507,7 @@ curl http://localhost:5000/api/loans/overdue
 
 ## System Architecture
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │        Web Browser (Frontend)           │
 │  Dashboard | Checkout | Inventory      │
@@ -489,7 +541,7 @@ curl http://localhost:5000/api/loans/overdue
 
 ## Project Files
 
-```
+```text
 .
 ├── app.py                   # Main Flask application with routes
 ├── config.py               # Configuration (dev, test, prod)
@@ -524,24 +576,28 @@ curl http://localhost:5000/api/loans/overdue
 ## Troubleshooting
 
 ### Email Not Sending
+
 - Verify SMTP settings in `.env`
 - Check email credentials are correct
 - Enable "Less secure app access" for Gmail
 - Check console for error messages
 
 ### Database Connection Error
+
 - Ensure PostgreSQL is running
 - Verify DATABASE_URL format
 - Check username/password
 - Create database if it doesn't exist
 
 ### Scheduler Not Running
+
 - Check logs for startup message
 - Verify Python is in development mode
 - Ensure APScheduler is installed
 - Check timezone settings
 
 ### Port Already in Use
+
 ```bash
 # Change port in app.py
 app.run(port=5001)
@@ -567,6 +623,7 @@ app.run(port=5001)
 ## Scalability & Future Enhancements
 
 ### Potential Additions
+
 - User authentication and roles
 - Equipment damage/loss tracking
 - Fine calculation for late returns
@@ -601,8 +658,8 @@ app.run(port=5001)
 - See `SETUP_GUIDE.md` for detailed installation
 - Code comments throughout for clarity
 - API endpoints documented above
-- Flask documentation: https://flask.palletsprojects.com/
-- SQLAlchemy docs: https://docs.sqlalchemy.org/
+- Flask documentation: <https://flask.palletsprojects.com/>
+- SQLAlchemy docs: <https://docs.sqlalchemy.org/>
 
 ## License
 
@@ -623,12 +680,14 @@ This is an educational project for a school assignment.
 ## UI/UX Design System
 
 ### Modern Color Palette
+
 - **Primary**: Teal (#0f766e) with gradients
 - **Success**: Green (#10b981) for available/active
 - **Warning**: Amber (#f59e0b) for pending/fair
 - **Danger**: Red (#ef4444) for overdue/errors
 
 ### Design Features
+
 - Gradient backgrounds and buttons
 - Smooth transitions and hover effects
 - Status badges with visual indicators

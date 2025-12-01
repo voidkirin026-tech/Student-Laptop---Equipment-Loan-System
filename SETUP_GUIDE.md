@@ -1,9 +1,11 @@
 # Equipment Loan System - Setup Guide
 
 ## Overview
+
 This is a complete Student Laptop/Equipment Loan System built with Python Flask, PostgreSQL, and a modern web interface.
 
 ## Features
+
 ✅ Equipment checkout form for IT staff
 ✅ Automatic status updates (Available → On Loan)
 ✅ Email notifications for checkout and returns
@@ -15,6 +17,7 @@ This is a complete Student Laptop/Equipment Loan System built with Python Flask,
 ✅ Audit logging
 
 ## Prerequisites
+
 - Python 3.8+
 - PostgreSQL 12+
 - pip (Python package manager)
@@ -22,37 +25,45 @@ This is a complete Student Laptop/Equipment Loan System built with Python Flask,
 ## Installation
 
 ### 1. Clone/Download the project
+
 ```bash
 cd "c:\Users\Josef Michael\Desktop\Student Laptop & Equipment Loan System"
 ```
 
 ### 2. Create virtual environment
+
 ```bash
 python -m venv venv
 venv\Scripts\activate
 ```
 
 ### 3. Install dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
 ### 4. Setup PostgreSQL Database
+
 **Using pgAdmin or psql:**
+
 ```sql
 -- In PostgreSQL
 CREATE DATABASE equipment_loan_db;
 ```
 
 Or use **pgAdmin GUI**:
+
 1. Connect to your PostgreSQL server
 2. Right-click "Databases" → Create → Database
 3. Name: `equipment_loan_db`
 4. Click Save
 
 ### 5. Create .env file
+
 Copy `.env.example` to `.env` and update with your settings:
-```
+
+```env
 # Database Configuration
 DATABASE_URL=postgresql://postgres:your_password@localhost:5432/equipment_loan_db
 
@@ -73,10 +84,13 @@ MAIL_DEFAULT_SENDER=noreply@equipmentloan.com
 **Note**: The username is typically `postgres` (the default PostgreSQL superuser)
 
 ### 6. Initialize Database
+
 ```bash
 python
 ```
+
 Then in Python shell:
+
 ```python
 from app import create_app, db
 app = create_app()
@@ -86,19 +100,22 @@ exit()
 ```
 
 Or run the SQL schema:
+
 ```bash
 psql -U user -d equipment_loan_db -f "Database Schema.sql"
 ```
 
 ### 7. Run the application
+
 ```bash
 python app.py
 ```
 
-The application will start at: http://localhost:5000
+The application will start at: <http://localhost:5000>
 
 ## Project Structure
-```
+
+```text
 ├── app.py                 # Main Flask application
 ├── config.py             # Configuration settings
 ├── models.py             # Database models
@@ -126,6 +143,7 @@ The application will start at: http://localhost:5000
 ## Key Components
 
 ### 1. Database Models (models.py)
+
 - **Student**: Stores student information
 - **Equipment**: Tracks equipment with status
 - **Loan**: Records borrowing transactions
@@ -134,6 +152,7 @@ The application will start at: http://localhost:5000
 - **AuditLog**: System action logging
 
 ### 2. API Endpoints (routes.py)
+
 - `GET /api/students` - List all students
 - `POST /api/students` - Create new student
 - `GET /api/equipment` - List equipment
@@ -146,18 +165,22 @@ The application will start at: http://localhost:5000
 - `POST /api/loans/{id}/return` - Return equipment
 
 ### 3. Email Service (email_service.py)
+
 Automatically sends:
+
 - Checkout confirmation emails
 - Return confirmation emails
 - Overdue reminder emails (daily)
 
 ### 4. Scheduler (scheduler.py)
+
 - Runs daily at 8:00 AM
 - Finds all overdue loans
 - Sends reminder emails to students
 - Logs all email activities
 
 ### 5. Frontend (templates + static)
+
 - Dashboard: Real-time statistics and overdue items
 - Checkout Form: Easy equipment checkout interface
 - Equipment Management: Add and manage inventory
@@ -166,11 +189,13 @@ Automatically sends:
 ## Usage
 
 ### Add Equipment
+
 1. Go to "Manage Equipment"
 2. Click "+ Add New Equipment"
 3. Fill in details and submit
 
 ### Checkout Equipment
+
 1. Go to "Checkout Equipment"
 2. Select student and equipment
 3. Set due date
@@ -178,6 +203,7 @@ Automatically sends:
 5. Student receives confirmation email
 
 ### Return Equipment
+
 1. Go to "Loan Management"
 2. Find the active loan
 3. Click "Return" button
@@ -185,6 +211,7 @@ Automatically sends:
 5. Student receives return confirmation
 
 ### Monitor Overdue Items
+
 1. Dashboard shows overdue count
 2. Click "Overdue" tab in Loan Management
 3. System automatically emails students daily
@@ -196,7 +223,8 @@ Automatically sends:
 3. Use the App Password in `.env`
 
 Example:
-```
+
+```text
 MAIL_USERNAME=your-email@gmail.com
 MAIL_PASSWORD=xxxx xxxx xxxx xxxx  # 16 character app password
 ```
@@ -204,7 +232,9 @@ MAIL_PASSWORD=xxxx xxxx xxxx xxxx  # 16 character app password
 ## Configuration
 
 ### Scheduled Job Timing
+
 Edit `scheduler.py` to change overdue check time:
+
 ```python
 scheduler.add_job(
     func=check_overdue_loans,
@@ -216,14 +246,17 @@ scheduler.add_job(
 ```
 
 ### Database Connection
+
 Update in `.env`:
-```
+
+```env
 DATABASE_URL=postgresql://username:password@localhost:5432/equipment_loan_db
 ```
 
 ## Testing
 
 ### Manual API Testing
+
 Use Postman or curl:
 
 ```bash
@@ -248,17 +281,20 @@ curl -X POST http://localhost:5000/api/loans/checkout \
 ## Troubleshooting
 
 ### Email not sending?
+
 - Check `.env` configuration
 - Verify SMTP credentials
 - Enable "Less secure app access" (Gmail)
 - Check Flask-Mail logs in console
 
 ### Database connection error?
+
 - Verify PostgreSQL is running
 - Check DATABASE_URL format
 - Run schema manually if needed
 
 ### Scheduler not running?
+
 - Check Flask environment is development
 - Verify APScheduler is installed
 - Check console for scheduler start message
@@ -266,6 +302,7 @@ curl -X POST http://localhost:5000/api/loans/checkout \
 ## Production Deployment
 
 For production:
+
 1. Change `FLASK_ENV` to `production`
 2. Use strong `SECRET_KEY`
 3. Configure proper email service
@@ -275,4 +312,5 @@ For production:
 7. Set up SSL/TLS
 
 ## Support
+
 For issues or questions about implementation, refer to the code comments and Flask/SQLAlchemy documentation.

@@ -4,7 +4,7 @@
 
 ### IT Staff User Flow
 
-```
+```http
 ┌─────────────────┐
 │   IT Staff      │
 │   Logs In       │
@@ -45,7 +45,8 @@ Submit
 ## 📱 System Pages
 
 ### 1. Dashboard (`/`)
-```
+
+```http
 ┌────────────────────────────────────────────┐
 │  Equipment Loan System          [Menu]     │
 ├────────────────────────────────────────────┤
@@ -75,7 +76,8 @@ Submit
 ```
 
 ### 2. Checkout Equipment (`/checkout`)
-```
+
+```http
 ┌────────────────────────────────────────────┐
 │  Equipment Loan System          [Menu]     │
 ├────────────────────────────────────────────┤
@@ -103,7 +105,8 @@ Submit
 ```
 
 ### 3. Manage Equipment (`/equipment`)
-```
+
+```http
 ┌────────────────────────────────────────────┐
 │  Equipment Loan System          [Menu]     │
 ├────────────────────────────────────────────┤
@@ -133,7 +136,8 @@ Submit
 ```
 
 ### 4. View Loans (`/loans`)
-```
+
+```http
 ┌────────────────────────────────────────────┐
 │  Equipment Loan System          [Menu]     │
 ├────────────────────────────────────────────┤
@@ -164,7 +168,8 @@ Submit
 ## 🔄 System Process Flows
 
 ### Checkout Process
-```
+
+```http
 Start
   │
   ▼
@@ -215,7 +220,8 @@ End - Show success
 ```
 
 ### Return Process
-```
+
+```http
 Start
   │
   ▼
@@ -252,7 +258,8 @@ End - Show success
 ```
 
 ### Daily Overdue Check
-```
+
+```http
 8:00 AM Daily
   │
   ▼
@@ -286,7 +293,7 @@ End - Next check tomorrow
 
 ## 📊 Database Relationships
 
-```
+```text
 ┌──────────────┐         ┌──────────────┐
 │   Student    │         │  Equipment   │
 ├──────────────┤         ├──────────────┤
@@ -335,7 +342,7 @@ End - Next check tomorrow
 
 ### Request-Response Cycle
 
-```
+```text
 1. User Action
    │
    ▼
@@ -388,7 +395,7 @@ End - Next check tomorrow
 
 ## 📈 System Capacity
 
-```
+```text
 Maximum Items:
 Equipment: 10,000+
 Students: 10,000+
@@ -410,21 +417,24 @@ Overdue check: < 10s
 ## 🎯 Key Decision Points in Flow
 
 ### At Checkout
-```
+
+```text
 ❓ Equipment available?
 ├─ No → Reject checkout, show error
 └─ Yes → Proceed with checkout
 ```
 
 ### At Return
-```
+
+```text
 ❓ Loan exists and not returned?
 ├─ No → Show error
 └─ Yes → Process return
 ```
 
 ### At Scheduled Check
-```
+
+```text
 ❓ Loan past due?
 ├─ No → Skip
 └─ Yes → Send reminder email
@@ -435,7 +445,8 @@ Overdue check: < 10s
 ## 📝 Status Values
 
 ### Equipment Status
-```
+
+```text
 Available ──────────────────► On Loan
    ▲                              │
    │                              │
@@ -443,7 +454,8 @@ Available ──────────────────► On Loan
 ```
 
 ### Loan Status
-```
+
+```text
 Borrowed ───────────────────► Returned
    │                              │
    └─ (Never changes back) ───────┘
@@ -453,7 +465,7 @@ Borrowed ───────────────────► Returned
 
 ## 🔔 Email Workflow
 
-```
+```text
 Event: Checkout
   │
   ├─ Trigger: Checkout API called
@@ -489,22 +501,26 @@ Event: Return
 ## 🎓 System Learning Highlights
 
 ### Frontend Technologies Used
+
 - HTML5 (Semantic markup)
 - CSS3 (Responsive design, Flexbox, Grid)
 - JavaScript (AJAX, DOM manipulation, Event handling)
 
 ### Backend Technologies Used
+
 - Python (OOP, decorators, modules)
 - Flask (Web framework, routing, templates)
 - SQLAlchemy (ORM, relationships, queries)
 
 ### Database Concepts
+
 - Normalization (6 tables, no redundancy)
 - Foreign keys (Referential integrity)
 - Relationships (1:N between tables)
 - Constraints (NOT NULL, UNIQUE)
 
 ### System Concepts
+
 - REST API design
 - Email service integration
 - Background task scheduling
@@ -514,4 +530,3 @@ Event: Return
 ---
 
 This visual guide helps understand the complete system flow from user action through database storage and background processing.
-

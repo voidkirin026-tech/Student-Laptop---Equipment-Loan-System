@@ -2,7 +2,7 @@
 
 ## System Workflow
 
-```
+```text
 1. IT Staff Logs In
    ↓
 2. Adds Equipment (if new)
@@ -25,6 +25,7 @@
 ## Quick Commands
 
 ### Start Application
+
 ```bash
 # Windows
 cd "c:\Users\Josef Michael\Desktop\Student Laptop & Equipment Loan System"
@@ -36,30 +37,33 @@ source venv/bin/activate
 python app.py
 ```
 
-Then open: **http://localhost:5000**
+Then open: <http://localhost:5000>
 
 ### Access System
-```
+
+```http
 Dashboard: http://localhost:5000
 API Health: http://localhost:5000/api/health
 ```
 
 ### Load Sample Data
+
 ```bash
 python load_sample_data.py
 ```
 
 ### Test Email
+
 Edit email_service.py to test sending an email directly.
 
 ## System Pages
 
 | Page | URL | Purpose |
 |------|-----|---------|
-| Dashboard | http://localhost:5000/ | View statistics, overdue items, recent loans |
-| Checkout | http://localhost:5000/checkout | Log equipment checkout |
-| Equipment | http://localhost:5000/equipment | Manage inventory |
-| Loans | http://localhost:5000/loans | View all loans, filter by status |
+| Dashboard | <http://localhost:5000/> | View statistics, overdue items, recent loans |
+| Checkout | <http://localhost:5000/checkout> | Log equipment checkout |
+| Equipment | <http://localhost:5000/equipment> | Manage inventory |
+| Loans | <http://localhost:5000/loans> | View all loans, filter by status |
 
 ## API Quick Reference
 
@@ -96,14 +100,17 @@ GET /api/loans/active
 ## Database Important Tables
 
 ### Loans Status Values
+
 - `Borrowed` - Equipment currently checked out
 - `Returned` - Equipment has been returned
 
 ### Equipment Status Values
+
 - `Available` - Equipment ready for checkout
 - `On Loan` - Equipment currently checked out
 
 ### Email Types Logged
+
 - `checkout_confirmation` - Sent when equipment is checked out
 - `return_confirmation` - Sent when equipment is returned
 - `overdue_reminder` - Sent daily for overdue items
@@ -111,7 +118,8 @@ GET /api/loans/active
 ## Configuration Files
 
 ### `.env` - Environment Variables
-```
+
+```env
 DATABASE_URL=postgresql://user:password@localhost:5432/equipment_loan_db
 MAIL_SERVER=smtp.gmail.com
 MAIL_USERNAME=your-email@gmail.com
@@ -120,6 +128,7 @@ SECRET_KEY=your-secret-key
 ```
 
 ### `config.py` - Application Settings
+
 - Database settings
 - Email settings
 - Flask configuration
@@ -128,24 +137,30 @@ SECRET_KEY=your-secret-key
 ## Common Issues & Solutions
 
 ### Issue: "Equipment is not available"
+
 **Cause**: Equipment status is "On Loan"
 **Solution**: Wait for item to be returned or use available item
 
 ### Issue: Emails not sending
+
 **Cause**: SMTP settings incorrect
-**Solution**: 
+**Solution**:
+
 1. Check `.env` configuration
 2. Verify email credentials
 3. Check if SMTP port is correct (587 for Gmail)
 4. Enable "Less secure apps" in Gmail
 
 ### Issue: Scheduler not running
+
 **Cause**: Flask environment not set to development
 **Solution**: Check FLASK_ENV=development in `.env`
 
 ### Issue: Database connection failed
+
 **Cause**: PostgreSQL not running or URL wrong
-**Solution**: 
+**Solution**:
+
 1. Start PostgreSQL service
 2. Verify DATABASE_URL in `.env`
 3. Ensure database exists
@@ -177,6 +192,7 @@ SECRET_KEY=your-secret-key
 ## User Roles
 
 ### IT Staff
+
 - Add equipment
 - Log checkouts
 - Process returns
@@ -184,6 +200,7 @@ SECRET_KEY=your-secret-key
 - Monitor overdue items
 
 ### System Administrator
+
 - View audit logs
 - Configure settings
 - Manage staff accounts

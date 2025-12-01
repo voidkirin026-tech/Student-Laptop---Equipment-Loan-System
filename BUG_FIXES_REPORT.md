@@ -10,10 +10,12 @@
 ## Bugs Detected
 
 ### 1. ❌ CRITICAL: Equipment List Pagination Broken
+
 **File:** `routes.py` - Line 61  
 **Issue:** The basic `/api/equipment` GET endpoint returned a simple array without pagination support, but `equipment.js` was trying to add `?page=` parameters, causing the frontend to fail pagination logic.
 
 **Root Cause:**
+
 ```python
 # BEFORE (broken)
 @api_bp.route('/equipment', methods=['GET'])
@@ -23,6 +25,7 @@ def get_equipment():
 ```
 
 The search endpoint returns paginated data:
+
 ```json
 {
   "items": [...],
@@ -35,6 +38,7 @@ The search endpoint returns paginated data:
 But the basic endpoint just returned an array `[...]`
 
 **Fix Applied:** ✅
+
 ```python
 # AFTER (fixed)
 @api_bp.route('/equipment', methods=['GET'])
@@ -65,10 +69,12 @@ def get_equipment():
 ---
 
 ### 2. ❌ HIGH: Damage Assessment Access Restriction Too Strict
+
 **File:** `routes.py` - Line 589  
 **Issue:** The `return-with-damage` endpoint had `@borrower_required` decorator, preventing staff members from processing returns on behalf of students.
 
 **Root Cause:**
+
 ```python
 @api_bp.route('/loans/<loan_id>/return-with-damage', methods=['POST'])
 @login_required
@@ -77,6 +83,7 @@ def return_equipment_with_damage(loan_id):
 ```
 
 **Fix Applied:** ✅
+
 ```python
 @api_bp.route('/loans/<loan_id>/return-with-damage', methods=['POST'])
 @login_required  # ← Now allows any logged-in user
@@ -89,12 +96,15 @@ def return_equipment_with_damage(loan_id):
 ---
 
 ### 3. ❌ HIGH: Date Calculation Bug in Damage Assessment
+
 **File:** `static/js/loans.js` - Line 103  
 **Issue:** The late fee calculation used faulty date comparison logic:
+
 1. Incorrectly checking `if (loan.status === 'Overdue' || loan.date_due)` - would be true if ANY date_due exists
 2. Not handling time component of ISO dates, causing off-by-one errors in day calculations
 
 **Root Cause:**
+
 ```javascript
 // BEFORE (broken)
 if (loan.status === 'Overdue' || loan.date_due) {  // ← Wrong logic
@@ -107,6 +117,7 @@ if (loan.status === 'Overdue' || loan.date_due) {  // ← Wrong logic
 Example: If due date is `2025-11-28` at 00:00 UTC but today is `2025-11-30` at 14:00 local time, the calculation could be off by a day.
 
 **Fix Applied:** ✅
+
 ```javascript
 // AFTER (fixed)
 if (loan.date_due) {
@@ -124,22 +135,26 @@ if (loan.date_due) {
 ---
 
 ### 4. ❌ MEDIUM: XSS Vulnerability in Delete Buttons
+
 **File:** `static/js/students.js` - Line 32 and `static/js/equipment.js` - Line 105  
 **Issue:** Student/Equipment names with quotes or special characters could break the onclick handler:
 
 **Vulnerable Code:**
+
 ```javascript
 // BEFORE (vulnerable)
 <button onclick="deleteStudent('${student.id}', '${student.first_name} ${student.last_name}')">
 ```
 
 Example: If student name is `O'Brien`, the HTML becomes:
+
 ```html
 <button onclick="deleteStudent('id', 'Patrick O'Brien')">
 <!-- This breaks because of unescaped quote! -->
 ```
 
 **Fix Applied:** ✅
+
 ```javascript
 // AFTER (fixed)
 const studentName = `${student.first_name} ${student.last_name}`.replace(/'/g, "\\'");

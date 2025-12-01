@@ -9,6 +9,7 @@ The entire Equipment Loan System has been completely modernized with a professio
 ## What Was Modernized
 
 ### ✅ Visual Design
+
 - **Color System**: Modern teal primary with semantic status colors (green, amber, red)
 - **Typography**: System fonts with improved hierarchy
 - **Spacing**: Consistent 1.5-2.5rem spacing throughout
@@ -16,6 +17,7 @@ The entire Equipment Loan System has been completely modernized with a professio
 - **Shadows**: 4-level shadow system for depth perception
 
 ### ✅ Components
+
 - Navigation bar with gradient and sticky positioning
 - Enhanced forms with better focus states
 - Gradient buttons with hover effects
@@ -25,6 +27,7 @@ The entire Equipment Loan System has been completely modernized with a professio
 - Better empty states
 
 ### ✅ Animations
+
 - Smooth slide-down alerts
 - Fade-in effects
 - Slide-up animations
@@ -32,6 +35,7 @@ The entire Equipment Loan System has been completely modernized with a professio
 - Transition effects on all interactive elements
 
 ### ✅ Responsive Design
+
 - Desktop, tablet, and mobile breakpoints
 - Flexible grid layouts
 - Touch-friendly buttons
@@ -39,6 +43,7 @@ The entire Equipment Loan System has been completely modernized with a professio
 - Adaptive typography
 
 ### ✅ Accessibility
+
 - WCAG AA color contrast ratios
 - Clear focus states
 - Status + color indicators
@@ -49,7 +54,7 @@ The entire Equipment Loan System has been completely modernized with a professio
 
 ## Color Palette
 
-```
+```css
 Primary (Teal):
   #0f766e - Main
   #14b8a6 - Light
@@ -71,7 +76,9 @@ Neutral:
 ## Modern Features
 
 ### CSS Variables
+
 All colors and sizing now use CSS custom properties for easy theming:
+
 ```css
 :root {
     --primary: #0f766e;
@@ -81,13 +88,15 @@ All colors and sizing now use CSS custom properties for easy theming:
 ```
 
 ### Gradient Backgrounds
+
 - Linear gradients on buttons (135° angle)
 - Gradient navbar (Primary → Dark Teal)
 - Radial overlays on stat cards
 - Gradient footer
 
 ### Shadow System
-```
+
+```css
 --shadow-sm: 1px 2px (subtle)
 --shadow-md: 4px 6px (cards)
 --shadow-lg: 10px 15px (hover)
@@ -95,6 +104,7 @@ All colors and sizing now use CSS custom properties for easy theming:
 ```
 
 ### Responsive Breakpoints
+
 - **≤1024px**: 2-column layouts
 - **≤768px**: Single column, optimized mobile
 
@@ -103,37 +113,43 @@ All colors and sizing now use CSS custom properties for easy theming:
 ## Component Showcase
 
 ### Navigation Bar
+
 - Gradient background (Teal shades)
 - Sticky positioning with backdrop blur
 - Hover cards effect
 - Better spacing and typography
 
 ### Dashboard
+
 - 4 stat cards with teal top border
 - Radial gradient overlays
 - Hover lift effects (translateY: -8px)
 - Large typography (2.75rem numbers)
 
 ### Forms
+
 - 2px primary-colored borders on focus
 - Hover background color change
 - Enhanced focus shadows
 - Better input spacing
 
 ### Tables
+
 - Gradient headers (Teal primary)
 - Color-coded status badges
 - Bullet point indicators
 - Better row spacing
 
 ### Buttons
+
 - Gradient backgrounds
 - Shadow effects
 - Hover transforms
 - 0.3s smooth transitions
 
 ### Status Badges
-```
+
+```css
 Active:     🟢 Green badge
 Overdue:    🔴 Red badge
 Returned:   ⚫ Gray badge
@@ -170,7 +186,7 @@ On Loan:    🟡 Amber (equipment)
 
 ## File Structure
 
-```
+```text
 static/
 └── css/
     └── style.css ✅ MODERNIZED
@@ -205,29 +221,34 @@ static/
 ## Live Features
 
 ### Navigation
+
 - Hover over menu items to see background cards
 - Notice sticky positioning when scrolling
 - Observe gradient from teal to dark teal
 
-### Dashboard
+### Dashboard 2
+
 - Stat cards lift on hover (8px up)
 - Teal top border on all cards
 - Radial gradient overlays visible
 - Large, readable numbers
 
 ### Forms (Try Adding Student/Equipment)
+
 - Borders turn teal on focus
 - Background color changes on hover
 - Shadow increases on focus
 - Better visual feedback
 
-### Tables
+### Tables 2
+
 - Gradient header (teal colors)
 - Status badges with colors and bullets
 - Rows have subtle hover effect
 - Clean, modern appearance
 
-### Buttons
+### Buttons 2
+
 - Gradient backgrounds
 - Shadow lifts on hover
 - Smooth transform effects
@@ -245,6 +266,7 @@ static/
 ✅ Android Chrome 88+
 
 Uses modern CSS:
+
 - CSS Grid & Flexbox
 - CSS Variables
 - Gradients
@@ -295,7 +317,7 @@ No special installation needed! The CSS modernization is a drop-in replacement:
 
 ## Current System Status
 
-```
+```text
 ┌─ Equipment Loan System v2.0
 │
 ├─ ✅ Backend (Flask)
@@ -316,7 +338,8 @@ No special installation needed! The CSS modernization is a drop-in replacement:
 ---
 
 ## Live URL
-**http://localhost:5000** - All pages updated with modern CSS
+
+<http://localhost:5000> - All pages updated with modern CSS
 
 ---
 

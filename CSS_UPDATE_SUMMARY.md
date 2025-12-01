@@ -5,6 +5,7 @@
 The entire application CSS has been completely modernized with a professional, contemporary design system featuring:
 
 ### ✨ Visual Enhancements
+
 - **Modern Color System**: Teal primary with green/amber/red status colors
 - **Gradient Backgrounds**: Headers, buttons, and footer with smooth gradients
 - **Advanced Shadows**: 4-level shadow system (sm, md, lg, xl) for depth
@@ -15,12 +16,14 @@ The entire application CSS has been completely modernized with a professional, c
 ### 🎯 Component Updates
 
 #### Navigation Bar
+
 - Gradient background (Teal to Dark Teal)
 - Sticky positioning with backdrop blur
 - Hover effects with background cards
 - Accent border bottom for visual interest
 
 #### Forms & Inputs
+
 - 2px borders instead of 1px
 - Better rounded corners (0.625rem)
 - Improved hover states with background color
@@ -28,6 +31,7 @@ The entire application CSS has been completely modernized with a professional, c
 - Better visual feedback
 
 #### Buttons
+
 - Gradient backgrounds for all types
 - Shadow effects that increase on hover
 - Smooth transform animations
@@ -35,6 +39,7 @@ The entire application CSS has been completely modernized with a professional, c
 - Icon-friendly flexbox layout
 
 #### Cards & Stat Cards
+
 - Rounded corners (1rem)
 - Top accent border (4px)
 - Radial gradient overlays
@@ -42,6 +47,7 @@ The entire application CSS has been completely modernized with a professional, c
 - Improved shadow depth
 
 #### Tables
+
 - Gradient headers (Primary colors)
 - Status badges instead of plain text
 - Bullet point indicators
@@ -49,6 +55,7 @@ The entire application CSS has been completely modernized with a professional, c
 - Smooth hover effects
 
 #### Status Indicators
+
 - `status-active`: Green badge
 - `status-overdue`: Red badge
 - `status-returned`: Gray badge
@@ -56,6 +63,7 @@ The entire application CSS has been completely modernized with a professional, c
 - `status-on-loan`: Amber (equipment)
 
 ### 📱 Responsive Design
+
 - Optimized for desktop, tablet, and mobile
 - Sticky navbar that adapts
 - Multi-column to single-column layouts
@@ -63,6 +71,7 @@ The entire application CSS has been completely modernized with a professional, c
 - Flexible typography
 
 ### ⚡ Performance
+
 - CSS variable reuse
 - Hardware-accelerated animations
 - Optimized shadows
@@ -73,7 +82,7 @@ The entire application CSS has been completely modernized with a professional, c
 
 ## Color Palette Reference
 
-```
+```css
 Primary Colors:
   Main: #0f766e (Teal)
   Light: #14b8a6 (Light Teal)
@@ -94,7 +103,9 @@ Neutral:
 ## CSS Architecture
 
 ### CSS Variables
+
 All colors and shadows now use CSS custom properties:
+
 ```css
 :root {
     --primary: #0f766e;
@@ -105,12 +116,14 @@ All colors and shadows now use CSS custom properties:
 ```
 
 ### Consistent Sizing
+
 - **Border Radius**: 0.625rem (forms), 1rem (cards)
 - **Padding**: 1.25-2.5rem in sections
 - **Gaps**: 1.5-2rem between components
 - **Font Sizes**: Scaled for hierarchy
 
 ### Shadow System
+
 - **sm**: Subtle outlines (1-2px)
 - **md**: Card shadows (4px blur)
 - **lg**: Hover effects (10px blur)
@@ -121,23 +134,27 @@ All colors and shadows now use CSS custom properties:
 ## Modern Design Patterns
 
 ### Gradient Usage
+
 - Horizontal and 135° angle gradients
 - Smooth color transitions
 - Used on buttons, backgrounds, headers
 
 ### Hover Effects
+
 - Color changes on interactive elements
 - Transform effects (translateY, scale)
 - Shadow enhancements
 - Smooth 0.3s transitions
 
 ### Visual Hierarchy
+
 - Large, bold headings (2rem)
 - Clear status badges
 - Color-coded information
 - Improved spacing
 
 ### Accessibility
+
 - WCAG AA color contrast ratios
 - Clear focus states
 - Status + color indicators (not color-only)
@@ -148,22 +165,27 @@ All colors and shadows now use CSS custom properties:
 ## Before & After Comparison
 
 ### Navigation
+
 - **Before**: Dark gray background, basic text color change
 - **After**: Gradient teal background, hover cards, sticky positioning
 
-### Buttons
+### Buttons 1
+
 - **Before**: Flat colors, simple hover
 - **After**: Gradients, shadows, transform effects
 
-### Tables
+### Tables 1
+
 - **Before**: Gray headers, plain status text
 - **After**: Gradient headers, color-coded badges with icons
 
 ### Forms
+
 - **Before**: 1px gray borders, basic focus
 - **After**: 2px borders, color feedback, enhanced shadows
 
 ### Cards
+
 - **Before**: White with basic shadow
 - **After**: Accent borders, overlays, better hover effects
 
@@ -178,6 +200,7 @@ All colors and shadows now use CSS custom properties:
 ✅ Chrome Android 88+
 
 Uses modern CSS features:
+
 - CSS Grid
 - Flexbox
 - CSS Variables
@@ -189,7 +212,7 @@ Uses modern CSS features:
 
 ## Files Changed
 
-```
+```text
 ✅ static/css/style.css - Complete rewrite (modern design system)
 ✅ README.md - Updated version to 2.0
 ✅ CSS_MODERNIZATION.md - New detailed documentation
@@ -228,6 +251,7 @@ Uses modern CSS features:
 ## Visual Examples
 
 ### Stat Cards
+
 - Teal top border
 - Hover lift effect (8px)
 - Radial gradient overlay
@@ -235,19 +259,22 @@ Uses modern CSS features:
 - Better shadows
 
 ### Status Badges
+
 - Green for active/available
 - Red for overdue
 - Gray for returned
 - Amber for on-loan/fair
 - Bullet point indicators
 
-### Forms
+### Forms 1
+
 - Better visual feedback
 - Color-coded borders
 - Hover states
 - Enhanced shadows
 
-### Buttons
+### Buttons 2
+
 - Gradient backgrounds
 - Shadow effects
 - Hover transforms
@@ -260,6 +287,7 @@ Uses modern CSS features:
 The system is now modernized and production-ready!
 
 ### Optional Future Enhancements
+
 1. Dark mode support (using CSS variables)
 2. Custom theme switcher
 3. Animation preferences

@@ -1,6 +1,7 @@
 # Equipment Loan System - Feature Analysis
 
 ## Overview
+
 This document analyzes your Equipment Loan System against the 10 main functionalities of a comprehensive equipment management system.
 
 ---
@@ -10,9 +11,10 @@ This document analyzes your Equipment Loan System against the 10 main functional
 ### 1. ✅ Equipment Inventory Management - FULLY IMPLEMENTED
 
 **Current Implementation:**
+
 - ✅ Add equipment (POST /api/equipment)
 - ✅ View all equipment (GET /api/equipment)
-- ✅ Get equipment details (GET /api/equipment/<id>)
+- ✅ Get equipment details (GET /api/equipment/(id))
 - ✅ Track equipment details:
   - Name, model, category, serial number
   - Condition (Excellent, Good, Fair, Poor, Damaged)
@@ -24,6 +26,7 @@ This document analyzes your Equipment Loan System against the 10 main functional
 **UI:** Equipment management page with form and table
 
 **NOT YET IMPLEMENTED:**
+
 - ❌ Edit equipment endpoint
 - ❌ Delete equipment endpoint
 - ❌ Mark equipment as "Under Maintenance"
@@ -35,6 +38,7 @@ This document analyzes your Equipment Loan System against the 10 main functional
 ### 2. ✅ User Management - PARTIALLY IMPLEMENTED (60%)
 
 **Current Implementation:**
+
 - ✅ Register users (students) - POST /api/students
 - ✅ View all users - GET /api/students
 - ✅ User details tracking:
@@ -49,6 +53,7 @@ This document analyzes your Equipment Loan System against the 10 main functional
 **UI:** Student management page
 
 **NOT YET IMPLEMENTED:**
+
 - ❌ User roles (admin, staff, borrower) - NO ROLE SYSTEM
 - ❌ Borrowing limits per user
 - ❌ Edit student endpoint
@@ -62,6 +67,7 @@ This document analyzes your Equipment Loan System against the 10 main functional
 ### 3. ✅ Loan Request / Checkout System - FULLY IMPLEMENTED
 
 **Current Implementation:**
+
 - ✅ Create a loan/checkout (POST /api/loans/checkout)
 - ✅ Auto-check for item availability
 - ✅ Track loan start date (date_borrowed)
@@ -77,6 +83,7 @@ This document analyzes your Equipment Loan System against the 10 main functional
 **UI:** Checkout page with form, Loans page with tracking
 
 **NOT YET IMPLEMENTED:**
+
 - ❌ Loan request approval workflow (auto-approved currently)
 - ❌ Rejection/denial system
 - ❌ Request status tracking (pending, approved, rejected)
@@ -86,13 +93,15 @@ This document analyzes your Equipment Loan System against the 10 main functional
 ### 4. ✅ Return & Check-In Processing - PARTIALLY IMPLEMENTED (50%)
 
 **Current Implementation:**
-- ✅ Mark equipment as returned (POST /api/loans/<id>/return)
+
+- ✅ Mark equipment as returned (POST /api/loans/`<id>`/return)
 - ✅ Update inventory status (On Loan → Available)
 - ✅ Log return details
 - ✅ Return button in loans table
 - ✅ Send return confirmation email
 
 **NOT YET IMPLEMENTED:**
+
 - ❌ Log condition of item on return
 - ❌ Damage assessment on return
 - ❌ Charge penalties (late fines, damage fines)
@@ -105,6 +114,7 @@ This document analyzes your Equipment Loan System against the 10 main functional
 ### 5. ✅ Notifications & Alerts - PARTIALLY IMPLEMENTED (50%)
 
 **Current Implementation:**
+
 - ✅ Checkout confirmation emails (send_checkout_email)
 - ✅ Return confirmation emails (send_return_confirmation)
 - ✅ Email delivery logging (EmailLog table)
@@ -113,6 +123,7 @@ This document analyzes your Equipment Loan System against the 10 main functional
 - ✅ Email service configured (Flask-Mail)
 
 **NOT YET IMPLEMENTED:**
+
 - ❌ Due date reminder emails (1 day before)
 - ❌ Reservation confirmation emails
 - ❌ In-app notifications/alerts
@@ -124,6 +135,7 @@ This document analyzes your Equipment Loan System against the 10 main functional
 ### 6. ✅ Reporting & History Tracking - PARTIALLY IMPLEMENTED (40%)
 
 **Current Implementation:**
+
 - ✅ Loan history per user (shown in checkout page)
 - ✅ Audit logs (AuditLog table)
 - ✅ Email delivery logs (EmailLog table)
@@ -131,6 +143,7 @@ This document analyzes your Equipment Loan System against the 10 main functional
 - ✅ Most overdue items visible on dashboard
 
 **NOT YET IMPLEMENTED:**
+
 - ❌ Equipment usage reports
 - ❌ Loan history export (CSV, PDF)
 - ❌ Most borrowed items report
@@ -143,10 +156,12 @@ This document analyzes your Equipment Loan System against the 10 main functional
 ### 7. ✅ Access Control / Permissions - NOT IMPLEMENTED (0%)
 
 **Current Implementation:**
+
 - ✅ Basic structure in place (Staff table exists)
 - ✅ Audit logging (who did what)
 
 **NOT YET IMPLEMENTED:**
+
 - ❌ Authentication/Login system
 - ❌ Role-based access control (RBAC)
 - ❌ Admin role (can add/edit equipment, approve loans)
@@ -164,12 +179,14 @@ This document analyzes your Equipment Loan System against the 10 main functional
 ### 8. ❌ Reservation System - NOT IMPLEMENTED
 
 **Why It's Useful:**
+
 - Students can reserve equipment for future dates
 - Prevents double-bookings
 - Better resource planning
 - Automatic notifications when available
 
 **Missing:**
+
 - No Reservation table/model
 - No reservation endpoints
 - No reservation UI
@@ -181,10 +198,12 @@ This document analyzes your Equipment Loan System against the 10 main functional
 ### 9. ❌ Damage & Lost Equipment Tracking - PARTIALLY IMPLEMENTED (20%)
 
 **Current Implementation:**
+
 - ✅ Condition field in Equipment (Excellent, Good, Fair, Poor, Damaged)
 - ✅ Condition visible in inventory
 
 **Missing:**
+
 - ❌ Damage report form/endpoint
 - ❌ Damage log (who damaged, when, how much)
 - ❌ Fine calculation for damage
@@ -198,10 +217,12 @@ This document analyzes your Equipment Loan System against the 10 main functional
 ### 10. ❌ Search & Filtering - NOT IMPLEMENTED
 
 **Current Implementation:**
+
 - ✅ View all equipment/students (basic list)
 - ✅ Filter by availability status (GET /api/equipment/available)
 
 **Missing:**
+
 - ❌ Search by name/keyword
 - ❌ Filter by category
 - ❌ Filter by date range
@@ -233,13 +254,14 @@ This document analyzes your Equipment Loan System against the 10 main functional
 ## PRIORITY RECOMMENDATIONS
 
 ### 🔴 CRITICAL (Do First)
+
 1. **Add Authentication/Login System**
    - User login for students
    - Admin dashboard
    - Staff access
    - Role-based access control
    - Session management
-   
+
 2. **Add Equipment Edit/Delete**
    - Edit endpoint & UI
    - Delete endpoint & UI
@@ -247,6 +269,7 @@ This document analyzes your Equipment Loan System against the 10 main functional
    - Mark for maintenance
 
 ### 🟠 HIGH (Do Second)
+
 1. **Improve Return Processing**
    - Add condition assessment form
    - Track damage on return
@@ -260,6 +283,7 @@ This document analyzes your Equipment Loan System against the 10 main functional
    - Add pagination
 
 ### 🟡 MEDIUM (Do Third)
+
 1. **Damage & Lost Equipment System**
    - Damage report form
    - Damage history per equipment
@@ -278,6 +302,7 @@ This document analyzes your Equipment Loan System against the 10 main functional
    - Report export (CSV/PDF)
 
 ### 🟢 LOW (Optional)
+
 1. **Additional Notifications**
    - SMS alerts
    - In-app notifications
@@ -287,7 +312,8 @@ This document analyzes your Equipment Loan System against the 10 main functional
 
 ## QUICK CHECKLIST FOR NEXT FEATURES
 
-### To Add Authentication:
+### To Add Authentication
+
 - [ ] Create User/Admin model with roles
 - [ ] Add password hashing (werkzeug.security)
 - [ ] Create login/logout endpoints
@@ -297,14 +323,16 @@ This document analyzes your Equipment Loan System against the 10 main functional
 - [ ] Create admin dashboard
 - [ ] Add role-based checks
 
-### To Add Equipment Edit/Delete:
-- [ ] Add PUT /api/equipment/<id> endpoint
-- [ ] Add DELETE /api/equipment/<id> endpoint
+### To Add Equipment Edit/Delete
+
+- [ ] Add PUT /api/equipment/(id) endpoint
+- [ ] Add DELETE /api/equipment/(id) endpoint
 - [ ] Create edit form in UI
 - [ ] Add delete confirmation
 - [ ] Update audit logs
 
-### To Add Return Damage Assessment:
+### To Add Return Damage Assessment
+
 - [ ] Add "Return Details" model/table
 - [ ] Add condition assessment form
 - [ ] Add damage reason dropdown
@@ -312,7 +340,8 @@ This document analyzes your Equipment Loan System against the 10 main functional
 - [ ] Update equipment condition
 - [ ] Create return UI form
 
-### To Add Search/Filtering:
+### To Add Search/Filtering
+
 - [ ] Add search endpoints
 - [ ] Add filter parameters
 - [ ] Create search UI
@@ -342,28 +371,30 @@ This document analyzes your Equipment Loan System against the 10 main functional
 ## API ENDPOINTS STATUS
 
 ### ✅ IMPLEMENTED
+
 - GET /api/students
 - POST /api/students
-- GET /api/students/<id>
+- GET /api/students/id
 - GET /api/equipment
 - POST /api/equipment
-- GET /api/equipment/<id>
+- GET /api/equipment/id
 - GET /api/equipment/available
 - POST /api/loans/checkout
 - GET /api/loans
 - GET /api/loans/active
 - GET /api/loans/overdue
-- POST /api/loans/<id>/return
+- POST /api/loans/id/return
 - GET /api/staff
 - POST /api/staff
 - GET /api/audit-logs
 - GET /api/health
 
 ### ❌ MISSING
-- PUT /api/equipment/<id> (edit)
-- DELETE /api/equipment/<id> (delete)
-- PUT /api/students/<id> (edit)
-- DELETE /api/students/<id> (delete)
+
+- PUT /api/equipment/id (edit)
+- DELETE /api/equipment/id (delete)
+- PUT /api/students/id (edit)
+- DELETE /api/students/id (delete)
 - POST /api/auth/login
 - POST /api/auth/logout
 - POST /api/reservations
@@ -376,6 +407,7 @@ This document analyzes your Equipment Loan System against the 10 main functional
 ## CONCLUSION
 
 Your system has **solid core functionality** with:
+
 - ✅ Complete equipment inventory system
 - ✅ Full loan checkout & tracking
 - ✅ Basic return processing
@@ -385,6 +417,7 @@ Your system has **solid core functionality** with:
 - ✅ Modern, responsive UI
 
 **Major gaps are:**
+
 - ❌ No authentication/login (CRITICAL)
 - ❌ No role-based access control
 - ❌ No search/filtering
@@ -393,6 +426,7 @@ Your system has **solid core functionality** with:
 - ❌ Limited reporting
 
 **Recommended next steps:**
+
 1. Add authentication system first (security critical)
 2. Add equipment edit/delete functionality
 3. Improve return processing with damage assessment

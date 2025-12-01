@@ -9,12 +9,14 @@ The Equipment Loan System now includes **50+ realistic university programs** org
 ## Key Features
 
 ### ✅ Comprehensive Program List
+
 - **52 total programs** across all major fields
 - Organized into **10 categories** using HTML optgroups
 - Professional dropdown organization
 - Easy to extend with more programs
 
 ### ✅ Sample Data Diversity
+
 - 6 students from different programs
 - Realistic university representation
 - Better testing scenarios
@@ -27,6 +29,7 @@ The Equipment Loan System now includes **50+ realistic university programs** org
   - Medicine
 
 ### ✅ Real-World Applicability
+
 - Covers 95% of typical university programs
 - Suitable for any educational institution
 - Multi-faculty support
@@ -36,7 +39,7 @@ The Equipment Loan System now includes **50+ realistic university programs** org
 
 ## Program Categories
 
-```
+```text
 Engineering (6)
   ├─ Civil Engineering
   ├─ Mechanical Engineering
@@ -120,10 +123,12 @@ Agriculture & Environment (4)
 ## Sample Data Updates
 
 ### Before
+
 - 4 students
 - Limited program variety
 
 ### After
+
 - 6 students
 - Diverse programs:
   - Juan Dela Cruz - Computer Science (2nd year)
@@ -149,6 +154,7 @@ Agriculture & Environment (4)
 ## Technical Details
 
 ### HTML Structure
+
 ```html
 <select id="program" name="program">
     <option value="">Select a program...</option>
@@ -161,6 +167,7 @@ Agriculture & Environment (4)
 ```
 
 Benefits:
+
 - Visual organization in dropdown
 - Better UX for long lists
 - Professional presentation
@@ -168,6 +175,7 @@ Benefits:
 - Full browser compatibility
 
 ### Database Compatibility
+
 - No schema changes needed
 - Program field remains text type
 - All existing data intact
@@ -175,6 +183,7 @@ Benefits:
 - Backward compatible
 
 ### API Compatibility
+
 - No changes to endpoints
 - Any program value accepted
 - Validation still works
@@ -185,8 +194,10 @@ Benefits:
 ## User Experience
 
 ### Dropdown Organization
+
 **Visual Grouping:**
-```
+
+```text
 [Select a program...]
 ━ Engineering ━━━━━━━━━━━━━━━
   ○ Civil Engineering
@@ -199,6 +210,7 @@ Benefits:
 ```
 
 **Benefits:**
+
 - Easy to find programs
 - Organized by discipline
 - Professional appearance
@@ -210,18 +222,21 @@ Benefits:
 ## Real-World Applications
 
 ### Multi-Faculty Universities
+
 - ✅ Track students from all departments
 - ✅ Monitor cross-faculty equipment usage
 - ✅ Analyze borrowing by program
 - ✅ Support diverse student populations
 
 ### Departmental Analysis
+
 - ✅ Equipment needs by program
 - ✅ Program-specific borrowing patterns
 - ✅ Identify high-use programs
 - ✅ Resource allocation insights
 
 ### Professional Presentation
+
 - ✅ More realistic data
 - ✅ Better demonstration potential
 - ✅ Suitable for any university
@@ -268,6 +283,7 @@ Benefits:
 ✅ Android Chrome 88+
 
 HTML5 optgroup support:
+
 - Widely supported
 - No compatibility issues
 - Standard feature
@@ -315,9 +331,10 @@ HTML5 optgroup support:
 
 The system is ready to test with real-world programs!
 
-**Visit:** http://localhost:5000/students
+**Visit:** <http://localhost:5000/students>
 
 **Try:**
+
 1. Open program dropdown
 2. Observe organized categories
 3. Select any program

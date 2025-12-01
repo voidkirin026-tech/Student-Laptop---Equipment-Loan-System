@@ -3,7 +3,8 @@
 ## Project Presentation Structure
 
 ### 1. Introduction (1-2 minutes)
-**"Hello, our group has built a Student Laptop/Equipment Loan System..."**
+
+## "Hello, our group has built a Student Laptop/Equipment Loan System..."
 
 - Project name: Student Laptop/Equipment Loan System
 - Problem solved: Manual equipment tracking, lost items, no automated reminders
@@ -12,6 +13,7 @@
 ### 2. System Features (2-3 minutes)
 
 #### Core Capabilities
+
 - ✅ Equipment checkout logging for IT staff
 - ✅ Automatic status updates (Available ↔ On Loan)
 - ✅ Email notifications:
@@ -23,6 +25,7 @@
 - ✅ Audit trail of all system actions
 
 #### Key Automation
+
 - **Daily Overdue Check**: Runs every day at 8:00 AM
 - **Automatic Emails**: Sends reminders to students with overdue items
 - **Status Updates**: Equipment status changes automatically on checkout/return
@@ -31,7 +34,7 @@
 
 **[Show/Diagram]**
 
-```
+```text
 Frontend Layer:
 - Web Dashboard (HTML5/CSS3/JavaScript)
 - Checkout Form
@@ -62,6 +65,7 @@ Automation Layer:
 ### 4. Technical Implementation (3-4 minutes)
 
 #### Technology Stack
+
 | Component | Technology |
 |-----------|-----------|
 | Backend | Python 3.8+ Flask |
@@ -71,7 +75,9 @@ Automation Layer:
 | Task Scheduler | APScheduler |
 
 #### Database Design
+
 **6 Tables with relationships:**
+
 1. **Students** - Student information
 2. **Equipment** - Inventory tracking
 3. **Loans** - Borrow records
@@ -81,8 +87,9 @@ Automation Layer:
 
 #### Key Features Implementation
 
-**1. Checkout Process**
-```
+## 1. Checkout Process
+
+```text
 User selects Student + Equipment + Due Date
 → System creates Loan record
 → Equipment status → "On Loan"
@@ -90,8 +97,9 @@ User selects Student + Equipment + Due Date
 → Audit logged
 ```
 
-**2. Automatic Overdue Check**
-```
+## 2. Automatic Overdue Check
+
+```text
 Daily at 8 AM:
 → Query loans where due_date < today
 → For each overdue loan:
@@ -101,8 +109,9 @@ Daily at 8 AM:
 → Process complete
 ```
 
-**3. Return Process**
-```
+## 3. Return Process
+
+```text
 User marks equipment as returned
 → Loan status → "Returned"
 → Equipment status → "Available"
@@ -144,6 +153,7 @@ User marks equipment as returned
 ### 6. Business Value (1-2 minutes)
 
 **Problems Solved:**
+
 - ❌ Manual tracking → ✅ Automated database
 - ❌ Lost items → ✅ Complete audit trail
 - ❌ Forgotten deadlines → ✅ Daily email reminders
@@ -151,6 +161,7 @@ User marks equipment as returned
 - ❌ Manual emails → ✅ Automatic notifications
 
 **Results:**
+
 - **Efficiency**: IT staff saves hours on manual tracking
 - **Accountability**: Complete history of all equipment
 - **User Experience**: Students get automatic reminders
@@ -159,6 +170,7 @@ User marks equipment as returned
 ### 7. Technical Highlights (1-2 minutes)
 
 **Architecture Decisions:**
+
 - **Microservices Ready**: Modular API design
 - **Database Normalization**: No data redundancy
 - **Automated Tasks**: APScheduler handles daily jobs
@@ -166,6 +178,7 @@ User marks equipment as returned
 - **Audit Trail**: Complete action history
 
 **Code Quality:**
+
 - Clean, documented code
 - Error handling throughout
 - Input validation on all endpoints
@@ -174,11 +187,13 @@ User marks equipment as returned
 ### 8. Scalability & Future Enhancements (1 minute)
 
 **Current System Handles:**
+
 - Unlimited students
 - Unlimited equipment items
 - Unlimited loans
 
 **Potential Enhancements:**
+
 - User authentication and roles
 - QR code scanning for equipment
 - Mobile app
@@ -201,6 +216,7 @@ User marks equipment as returned
 ### 10. Conclusion & Learnings (1 minute)
 
 **What We Learned:**
+
 - Full-stack web development (frontend, backend, database)
 - Automated task scheduling
 - Email integration
@@ -216,12 +232,14 @@ User marks equipment as returned
 ## Presentation Tips
 
 ### Visual Aids
+
 - Have laptop/screen ready for live demo
 - Show database schema diagram
 - Display system architecture diagram
 - Have screenshots as backup
 
 ### Talking Points
+
 - Start with the problem, not the technology
 - Show real value (time savings, reduced errors)
 - Live demo is most impressive part
@@ -229,6 +247,7 @@ User marks equipment as returned
 - Show code quality and organization
 
 ### Time Management
+
 - 2 min: Introduction
 - 3 min: Features
 - 3 min: Architecture
@@ -240,6 +259,7 @@ User marks equipment as returned
 **Total: ~19 minutes** (allows 1 min buffer and Q&A)
 
 ### Audience Engagement
+
 - Ask: "Has anyone used a manual checkout system before?"
 - Explain: Why automation matters
 - Show: Actual system working

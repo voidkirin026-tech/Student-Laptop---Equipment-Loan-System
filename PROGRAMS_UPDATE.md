@@ -9,6 +9,7 @@ The Equipment Loan System has been updated with a comprehensive list of **50+ re
 ## Program Categories
 
 ### 1. **Engineering** (6 programs)
+
 - Civil Engineering
 - Mechanical Engineering
 - Electrical Engineering
@@ -17,6 +18,7 @@ The Equipment Loan System has been updated with a comprehensive list of **50+ re
 - Industrial Engineering
 
 ### 2. **Computer Science & IT** (6 programs)
+
 - Computer Science
 - Information Technology
 - Software Engineering
@@ -25,6 +27,7 @@ The Equipment Loan System has been updated with a comprehensive list of **50+ re
 - Artificial Intelligence
 
 ### 3. **Business & Commerce** (7 programs)
+
 - Business Administration
 - Accounting
 - Finance
@@ -34,6 +37,7 @@ The Equipment Loan System has been updated with a comprehensive list of **50+ re
 - Business Analytics
 
 ### 4. **Health Sciences** (6 programs)
+
 - Medicine
 - Nursing
 - Pharmacy
@@ -42,6 +46,7 @@ The Equipment Loan System has been updated with a comprehensive list of **50+ re
 - Physical Therapy
 
 ### 5. **Natural Sciences** (6 programs)
+
 - Physics
 - Chemistry
 - Biology
@@ -50,6 +55,7 @@ The Equipment Loan System has been updated with a comprehensive list of **50+ re
 - Environmental Science
 
 ### 6. **Arts & Humanities** (6 programs)
+
 - English Literature
 - History
 - Philosophy
@@ -58,6 +64,7 @@ The Equipment Loan System has been updated with a comprehensive list of **50+ re
 - Anthropology
 
 ### 7. **Social Sciences** (6 programs)
+
 - Law
 - Political Science
 - International Relations
@@ -66,6 +73,7 @@ The Equipment Loan System has been updated with a comprehensive list of **50+ re
 - Public Administration
 
 ### 8. **Creative & Design** (6 programs)
+
 - Graphic Design
 - Architecture
 - Fine Arts
@@ -74,12 +82,14 @@ The Equipment Loan System has been updated with a comprehensive list of **50+ re
 - Industrial Design
 
 ### 9. **Education & Teaching** (4 programs)
+
 - Elementary Education
 - Secondary Education
 - Higher Education
 - Special Education
 
 ### 10. **Agriculture & Environment** (4 programs)
+
 - Agriculture
 - Forestry
 - Environmental Engineering
@@ -107,12 +117,15 @@ This provides realistic diversity across multiple departments when testing the s
 ## User Interface Improvements
 
 ### Program Dropdown
+
 **Before:**
+
 - 6 basic options
 - No organization
 - Limited scope
 
 **After:**
+
 - 50+ realistic programs
 - Organized into 10 categories using `<optgroup>`
 - Professional dropdown UI
@@ -120,6 +133,7 @@ This provides realistic diversity across multiple departments when testing the s
 - Easy to extend with more programs
 
 ### Dropdown Structure
+
 ```html
 <optgroup label="Engineering">
     <option>Civil Engineering</option>
@@ -132,6 +146,7 @@ This provides realistic diversity across multiple departments when testing the s
 ```
 
 Benefits:
+
 - Visual organization
 - Easier to find programs
 - Better user experience
@@ -162,18 +177,21 @@ Benefits:
 ## System Compatibility
 
 ### Database
+
 - No schema changes needed
 - Program field remains simple text
 - All existing data intact
 - New options immediately available
 
 ### API
+
 - No changes to API endpoints
 - Student creation works with any program
 - Program validation still works
 - Backward compatible
 
 ### Frontend
+
 - Dropdown works with all 50+ options
 - Optgroups for better organization
 - Styling maintained
@@ -186,17 +204,20 @@ Benefits:
 This update makes the system realistic for:
 
 ### Multi-Faculty Universities
+
 - Track students from all major departments
 - Monitor equipment across programs
 - Diverse borrowing patterns by faculty
 
 ### Cross-Campus Loans
+
 - Medicine students borrowing laptops
 - Engineering students getting equipment
 - Business students accessing resources
 - Any combination possible
 
 ### Analytics & Reporting
+
 - Can now analyze by program type
 - Department-level insights
 - Cross-faculty collaboration tracking
