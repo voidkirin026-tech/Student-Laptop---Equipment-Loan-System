@@ -120,6 +120,44 @@
             border-left: 4px solid #4caf50;
         }
         
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .btn-login:disabled,
+        .btn-register:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .loading-text {
+            display: none;
+        }
+        
+        .btn-login.loading .loading-text,
+        .btn-register.loading .loading-text {
+            display: inline;
+        }
+        
+        .btn-login.loading .button-text,
+        .btn-register.loading .button-text {
+            display: none;
+        }
+        
         /* Dark Mode Styles */
         [data-theme="dark"] {
             --primary-color: #14b8a6;
@@ -255,7 +293,10 @@
                     <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
                 </div>
                 
-                <button type="submit" class="btn-register">✍️ Sign Up Now</button>
+                <button type="submit" class="btn-register" id="registerBtn">
+                    <span class="button-text">✍️ Sign Up Now</span>
+                    <span class="loading-text"><span class="spinner"></span>Creating account...</span>
+                </button>
             </form>
             
             <div class="auth-footer">
@@ -290,6 +331,7 @@
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            const registerBtn = document.getElementById('registerBtn');
             const first_name = document.getElementById('first_name').value;
             const last_name = document.getElementById('last_name').value;
             const username = document.getElementById('username').value;
@@ -302,6 +344,10 @@
                 alert('Passwords do not match');
                 return;
             }
+            
+            // Show loading state
+            registerBtn.classList.add('loading');
+            registerBtn.disabled = true;
             
             try {
                 const response = await fetch('/api/auth/register', {
@@ -325,10 +371,14 @@
                     alert('Registration successful! Redirecting to login...');
                     window.location.href = '/login';
                 } else {
+                    registerBtn.classList.remove('loading');
+                    registerBtn.disabled = false;
                     alert(data.error || 'Registration failed');
                 }
             } catch (error) {
                 console.error('Registration error:', error);
+                registerBtn.classList.remove('loading');
+                registerBtn.disabled = false;
                 alert('An error occurred during registration');
             }
         });
