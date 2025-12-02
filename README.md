@@ -698,6 +698,12 @@ This is an educational project for a school assignment.
 
 ---
 
+## Documentation Index
+
+- [Full Documentation Index](FULL_DOCUMENTATION_INDEX.md)
+
+---
+
 **Last Updated**: November 29, 2025
 **Version**: 2.0 (CSS Modernized)
 **Python**: 3.8+
