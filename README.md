@@ -700,7 +700,7 @@ This is an educational project for a school assignment.
 
 ## Documentation Index
 
-- [Full Documentation Index](FULL_DOCUMENTATION_INDEX.md)
+- [Full Documentation Index](/MD%20Files/FULL_DOCUMENTATION_INDEX.md)
 
 ---
 
