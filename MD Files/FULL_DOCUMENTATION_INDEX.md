@@ -8,6 +8,10 @@
 - [Authentication Guide](/MD%20Files/AUTHENTICATION_GUIDE.md)
 - [Authentication Quick Start](/MD%20Files/AUTHENTICATION_QUICK_START.md)
 - [Readme React](/MD%20Files/README_REACT.md)
+- [Testing Guide](/MD%20Files/TESTING_GUIDE.md)
+- [Mobile Compatibility Guide](/MD%20Files/MOBILE_COMPATIBILITY_GUIDE.md)
+- [GitHub Deployment Guide](/MD%20Files/GITHUB_DEPLOYMENT_GUIDE.md)
+- [Setup Complete](/MD%20Files/SETUP_COMPLETE.md)
 
 ## Implementation/Features
 
@@ -52,6 +56,9 @@
 - [Session Report November 30](/MD%20Files/SESSION_REPORT_NOV30.md)
 - [Changelog November 29](/MD%20Files/CHANGELOG_NOV29.md)
 - [Bug Fixes Report](/MD%20Files/BUG_FIXES_REPORT.md)
+- [Frontend Troubleshooting Summary](/MD%20Files/FRONTEND_TROUBLESHOOTING_SUMMARY.md)
+- [Bug Scan Report](/MD%20Files/BUG_SCAN_REPORT.md)
+- [Analysis Summary](/MD%20Files/ANALYSIS_COMPLETE.md)
 
 ## Architecture/Reference/Quick Guides
 
