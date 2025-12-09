@@ -99,18 +99,20 @@ The Equipment Loan System has been updated with a comprehensive list of **50+ re
 
 ## Sample Data Updates
 
-The sample data has been updated with students from diverse programs:
+The sample data has been updated with students from diverse programs and education levels:
 
-| Student | Program | Year |
-|---------|---------|------|
-| Juan Dela Cruz | Computer Science | 2nd |
-| Maria Santos | Software Engineering | 3rd |
-| Carlos Reyes | Mechanical Engineering | 1st |
-| Ana Garcia | Business Administration | 4th |
-| Miguel Torres | Electrical Engineering | 2nd |
-| Sofia Lopez | Medicine | 1st |
+| Student | Program | Level | Type |
+|---------|---------|-------|------|
+| Juan Dela Cruz | Computer Science | 2nd Year | College |
+| Maria Santos | Software Engineering | 3rd Year | College |
+| Carlos Reyes | Mechanical Engineering | 1st Year | College |
+| Ana Garcia | Business Administration | 4th Year | College |
+| Miguel Torres | Electrical Engineering | 2nd Year | College |
+| Sofia Lopez | Medicine | 1st Year | College |
+| Jose Martinez | Physics | 10th Grade | Senior High |
+| Rosa Fernandez | Biology | 9th Grade | Junior High |
 
-This provides realistic diversity across multiple departments when testing the system.
+This provides realistic diversity across multiple departments and education levels when testing the system.
 
 ---
 
@@ -275,7 +277,10 @@ This update makes the system realistic for:
 3. Click **Program** dropdown
 4. See organized categories
 5. Select desired program
-6. Fill in year level
+6. Select **Year Level**:
+   - **Junior High**: 7th, 8th, 9th Grade
+   - **Senior High**: 10th, 11th, 12th Grade
+   - **College**: 1st, 2nd, 3rd, 4th Year
 7. Submit form
 
 ### Example Programs by Field
@@ -286,15 +291,25 @@ This update makes the system realistic for:
 **For Health:** Medicine, Nursing, Pharmacy
 **For Engineering:** Mechanical, Electrical, Civil
 
+### Example Year Levels
+
+**Junior High (Age 12-15):** 7th, 8th, 9th Grade
+**Senior High (Age 15-18):** 10th, 11th, 12th Grade
+**College (Age 18+):** 1st, 2nd, 3rd, 4th Year
+
 ---
 
 ## Statistics
 
 - **Total Programs**: 52
 - **Categories**: 10
-- **Sample Students**: 6 (diverse programs)
+- **Sample Students**: 8 (diverse programs and education levels)
+- **Year Levels Supported**:
+  - Junior High: 7-9
+  - Senior High: 10-12
+  - College: 1-4
 - **Program Distribution**: Even across fields
-- **Coverage**: ~95% of typical university programs
+- **Coverage**: ~95% of typical university programs + secondary education
 
 ---
 
