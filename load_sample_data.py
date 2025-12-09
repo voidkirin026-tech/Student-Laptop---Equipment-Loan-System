@@ -5,7 +5,7 @@ Run this script to populate the database with sample data for testing
 
 from app import create_app, db
 from models import Student, Equipment, Staff, Loan, User
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 def load_sample_data():
     """Load sample data into the database"""
@@ -199,30 +199,30 @@ def load_sample_data():
             Loan(
                 student_id=students[0].id,
                 equipment_id=equipment[2].id,  # iPad (On Loan)
-                date_borrowed=datetime.utcnow().date() - timedelta(days=5),
-                date_due=datetime.utcnow().date() + timedelta(days=10),
+                date_borrowed=datetime.now(timezone.utc).date() - timedelta(days=5),
+                date_due=datetime.now(timezone.utc).date() + timedelta(days=10),
                 status="Borrowed"
             ),
             Loan(
                 student_id=students[1].id,
                 equipment_id=equipment[0].id,  # MacBook
-                date_borrowed=datetime.utcnow().date() - timedelta(days=1),
-                date_due=datetime.utcnow().date() + timedelta(days=14),
+                date_borrowed=datetime.now(timezone.utc).date() - timedelta(days=1),
+                date_due=datetime.now(timezone.utc).date() + timedelta(days=14),
                 status="Borrowed"
             ),
             Loan(
                 student_id=students[2].id,
                 equipment_id=equipment[3].id,  # External HD
-                date_borrowed=datetime.utcnow().date() - timedelta(days=30),
-                date_due=datetime.utcnow().date() - timedelta(days=5),  # Overdue!
+                date_borrowed=datetime.now(timezone.utc).date() - timedelta(days=30),
+                date_due=datetime.now(timezone.utc).date() - timedelta(days=5),  # Overdue!
                 status="Borrowed"
             ),
             Loan(
                 student_id=students[3].id,
                 equipment_id=equipment[1].id,  # Dell XPS
-                date_borrowed=datetime.utcnow().date() - timedelta(days=20),
-                date_due=datetime.utcnow().date() - timedelta(days=10),
-                date_returned=datetime.utcnow().date() - timedelta(days=5),
+                date_borrowed=datetime.now(timezone.utc).date() - timedelta(days=20),
+                date_due=datetime.now(timezone.utc).date() - timedelta(days=10),
+                date_returned=datetime.now(timezone.utc).date() - timedelta(days=5),
                 status="Returned"
             ),
         ]
