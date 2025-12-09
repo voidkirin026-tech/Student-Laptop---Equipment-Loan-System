@@ -28,11 +28,18 @@ def create_student():
         if not data.get('first_name') or not data.get('last_name') or not data.get('email'):
             return jsonify({'error': 'Missing required fields'}), 400
         
+        # Validate year_level if provided (7-9 Junior High, 10-12 Senior High, 1-4 College)
+        year_level = data.get('year_level')
+        if year_level is not None:
+            year_level = int(year_level)
+            if not ((7 <= year_level <= 12) or (1 <= year_level <= 4)):
+                return jsonify({'error': 'Invalid year level. Use 7-9 (Junior High), 10-12 (Senior High), or 1-4 (College)'}), 400
+        
         student = Student(
             first_name=data['first_name'],
             last_name=data['last_name'],
             program=data.get('program'),
-            year_level=data.get('year_level'),
+            year_level=year_level,
             email=data['email'],
             status=data.get('status', 'active')
         )

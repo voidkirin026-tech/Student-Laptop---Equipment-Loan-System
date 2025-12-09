@@ -109,7 +109,7 @@ async function editStudent(studentId) {
         if (newEmail === null) return;
         
         const newProgram = prompt('Program:', student.program || '');
-        const newYearLevel = prompt('Year Level (1-4):', student.year_level || '');
+        const newYearLevel = prompt('Year Level (7-9: Junior High, 10-12: Senior High, 1-4: College):', student.year_level || '');
         
         // Validate inputs
         if (!newFirstName.trim()) {
@@ -123,6 +123,13 @@ async function editStudent(studentId) {
         if (!newEmail.includes('@')) {
             alert('Please enter a valid email address');
             return;
+        }
+        if (newYearLevel && newYearLevel.trim()) {
+            const yearLevelNum = parseInt(newYearLevel);
+            if (!((7 <= yearLevelNum && yearLevelNum <= 12) || (1 <= yearLevelNum && yearLevelNum <= 4))) {
+                alert('Invalid year level. Use 7-9 (Junior High), 10-12 (Senior High), or 1-4 (College)');
+                return;
+            }
         }
         
         // Update student
