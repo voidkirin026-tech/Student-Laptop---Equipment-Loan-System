@@ -1,10 +1,7 @@
-"""
-Sample Data Loader for Equipment Loan System
-Run this script to populate the database with sample data for testing
-"""
+# This shall serve as the official data loading module for the project.
 
-from app import create_app, db
-from models import Student, Equipment, Staff, Loan, User
+from app import create_app, db # pyright: ignore[reportMissingImports]
+from models import Student, Equipment, Staff, Loan, User # pyright: ignore[reportMissingImports]
 from datetime import datetime, timedelta, timezone
 
 def load_sample_data():
@@ -19,24 +16,24 @@ def load_sample_data():
         print("Loading admin and staff users...")
         users = [
             User(
-                username="admin",
-                email="admin@university.edu",
+                username="administrator",
+                email="administrator@gmail.com",
                 first_name="Admin",
                 last_name="User",
-                role="admin",
+                role="Administrator",
                 status="active"
             ),
             User(
                 username="staff1",
-                email="staff1@university.edu",
-                first_name="John",
-                last_name="Smith",
-                role="staff",
+                email="staff1@gmail.com",
+                first_name="Kirin",
+                last_name="Void",
+                role="Staff",
                 status="active"
             ),
             User(
                 username="borrower1",
-                email="borrower1@university.edu",
+                email="student@gmail.com",
                 first_name="Sample",
                 last_name="Borrower",
                 role="borrower",
@@ -44,68 +41,77 @@ def load_sample_data():
             ),
         ]
         
-        # Set passwords
-        users[0].set_password("admin123")
-        users[1].set_password("staff123")
-        users[2].set_password("borrower123")
+        users[0].set_password("655321")
+        users[1].set_password("655322")
+        users[2].set_password("655323")
         
         for user in users:
             db.session.add(user)
         
         db.session.commit()
         print(f"✓ Added {len(users)} users")
-        print("  - Admin: username=admin, password=admin123")
-        print("  - Staff: username=staff1, password=staff123")
-        print("  - Borrower: username=borrower1, password=borrower123")
+        print("     - Admin: username=administrator, password=655321")
+        print("     - Staff: username=staff1, password=655322")
+        print("     - Borrower: username=borrower1, password=655323")
         
+        # All emails listed below are examples only except for the first one
+        # That is my email
         print("Loading sample students...")
         students = [
             Student(
-                first_name="Juan",
-                last_name="Dela Cruz",
+                first_name="Josef Michael",
+                last_name="Damaso",
+                program="Information Technology",
+                year_level=2,
+                email="voidkirin026@gmail.com",
+                status="active"
+            ),
+            Student(
+                first_name="Khixter",
+                last_name="Mosqueda",
+                program="8th Grade",
+                year_level=8,
+                email="khixtermosqueda@gmail.com",
+                status="active"
+            ),
+            Student(
+                first_name="Jasmine",
+                last_name="Camacho",
+                program="Psychology",
+                year_level=1,
+                email="jasminecamacho@gmail.com",
+                status="active"
+            ),
+            Student(
+                first_name="Julianne Marie",
+                last_name="Mosqueda",
+                program="Accounting",
+                year_level=1,
+                email="juliannemosqueda@gmail.com",
+                status="active"
+            ),
+            Student(
+                first_name="Syiam",
+                last_name="Fortunado",
                 program="Computer Science",
                 year_level=2,
-                email="juan.delacruz@university.edu",
+                email="syiamfortunado@gmail.com",
                 status="active"
             ),
             Student(
-                first_name="Maria",
-                last_name="Santos",
-                program="Software Engineering",
-                year_level=3,
-                email="maria.santos@university.edu",
-                status="active"
-            ),
-            Student(
-                first_name="Carlos",
-                last_name="Reyes",
-                program="Mechanical Engineering",
-                year_level=1,
-                email="carlos.reyes@university.edu",
-                status="active"
-            ),
-            Student(
-                first_name="Ana",
-                last_name="Garcia",
-                program="Business Administration",
-                year_level=4,
-                email="ana.garcia@university.edu",
-                status="active"
-            ),
-            Student(
-                first_name="Miguel",
-                last_name="Torres",
-                program="Electrical Engineering",
+                first_name="John Anthony",
+                last_name="Santiago",
+                program="Computer Science",
                 year_level=2,
-                email="miguel.torres@university.edu",
+                email="johnsantiago@gmail.com",
                 status="active"
             ),
             Student(
-                first_name="Sofia",
-                last_name="Lopez",
-                program="Medicine",
-                year_level=1,
-                email="sofia.lopez@university.edu",
+                first_name="Ranie",
+                last_name="Bandejas",
+                program="Information Technology",
+                year_level=2,
+                email="raniebandejas@gmail.com",
                 status="active"
             ),
         ]
@@ -122,15 +128,15 @@ def load_sample_data():
                 name="MacBook Pro 16",
                 model="MacBook Pro 16 2023 M3",
                 category="Laptop",
-                serial_number="MLB123456",
-                condition="Good",
+                serial_number="MBP123456",
+                condition="Excellent",
                 availability_status="Available"
             ),
             Equipment(
                 name="Dell XPS 13",
                 model="Dell XPS 13 Plus",
                 category="Laptop",
-                serial_number="DELL987654",
+                serial_number="DELLXPS653",
                 condition="Good",
                 availability_status="Available"
             ),
@@ -138,32 +144,32 @@ def load_sample_data():
                 name="iPad Pro 12.9",
                 model="iPad Pro 12.9 6th Gen",
                 category="Tablet",
-                serial_number="IPAD111222",
-                condition="Good",
+                serial_number="IPADPRO789",
+                condition="Excellent",
                 availability_status="On Loan"
             ),
             Equipment(
                 name="External Hard Drive",
                 model="WD Blue 2TB",
                 category="Storage",
-                serial_number="WD2TB333444",
-                condition="Good",
-                availability_status="Available"
-            ),
-            Equipment(
-                name="USB-C Hub",
-                model="Anker 7-in-1",
-                category="Accessory",
-                serial_number="HUB555666",
+                serial_number="WD2TB654128",
                 condition="Fair",
+                availability_status="On Loan"
+            ),
+            Equipment(
+                name="Acer Wired Keyboard",
+                model="SK-9626",
+                category="Accessory",
+                serial_number="DKUSB1B0CK",
+                condition="Good",
                 availability_status="Available"
             ),
             Equipment(
-                name="Wireless Mouse",
-                model="Logitech MX Master 3S",
+                name="Acer Wired Mouse",
+                model="SM-9023",
                 category="Accessory",
-                serial_number="MOUSE777888",
-                condition="Good",
+                serial_number="DC1121101C",
+                condition="Excellent",
                 availability_status="Available"
             ),
         ]
@@ -177,13 +183,13 @@ def load_sample_data():
         print("Loading sample staff...")
         staff = [
             Staff(
-                name="John Smith",
-                email="john.smith@university.edu",
+                name="Kirin Void",
+                email="voidkirin026@gmail.com",
                 role="IT Manager"
             ),
             Staff(
-                name="Sarah Johnson",
-                email="sarah.johnson@university.edu",
+                name="Loner",
+                email="lonemperor62@gmail.com",
                 role="IT Technician"
             ),
         ]
@@ -198,32 +204,17 @@ def load_sample_data():
         loans = [
             Loan(
                 student_id=students[0].id,
-                equipment_id=equipment[2].id,  # iPad (On Loan)
+                equipment_id=equipment[2].id,
                 date_borrowed=datetime.now(timezone.utc).date() - timedelta(days=5),
                 date_due=datetime.now(timezone.utc).date() + timedelta(days=10),
                 status="Borrowed"
             ),
             Loan(
-                student_id=students[1].id,
-                equipment_id=equipment[0].id,  # MacBook
-                date_borrowed=datetime.now(timezone.utc).date() - timedelta(days=1),
-                date_due=datetime.now(timezone.utc).date() + timedelta(days=14),
-                status="Borrowed"
-            ),
-            Loan(
                 student_id=students[2].id,
-                equipment_id=equipment[3].id,  # External HD
+                equipment_id=equipment[3].id,
                 date_borrowed=datetime.now(timezone.utc).date() - timedelta(days=30),
-                date_due=datetime.now(timezone.utc).date() - timedelta(days=5),  # Overdue!
+                date_due=datetime.now(timezone.utc).date() - timedelta(days=5),
                 status="Borrowed"
-            ),
-            Loan(
-                student_id=students[3].id,
-                equipment_id=equipment[1].id,  # Dell XPS
-                date_borrowed=datetime.now(timezone.utc).date() - timedelta(days=20),
-                date_due=datetime.now(timezone.utc).date() - timedelta(days=10),
-                date_returned=datetime.now(timezone.utc).date() - timedelta(days=5),
-                status="Returned"
             ),
         ]
         
