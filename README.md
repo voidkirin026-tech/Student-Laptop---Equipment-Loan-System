@@ -4,7 +4,7 @@ A complete web-based information system for managing equipment checkouts, tracki
 
 ## 🎯 System Overview
 
-This system implements **Scenario #7** from the final project requirements:
+This system implements a Student Laptop/Equipment Loan System from the final activity requirements:
 
 - ✅ Form for IT staff to log equipment checkouts (item, student, due date)
 - ✅ Equipment database with status tracking ("Available" or "On Loan")
@@ -24,7 +24,8 @@ This system implements **Scenario #7** from the final project requirements:
 - **Authentication**: Flask-Login with Werkzeug password hashing
 - **Task Scheduler**: APScheduler (daily automated tasks at 8 AM)
 - **Email Service**: Flask-Mail (SMTP support)
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript
+- **Frontend**: ReactJS, Vanilla JavaScript
+- **Backend**: Flask-Python, HTML5, CSS3
 - **ORM**: SQLAlchemy 2.0+
 - **Security**: PBKDF2 password hashing, CSRF protection, secure sessions
 
